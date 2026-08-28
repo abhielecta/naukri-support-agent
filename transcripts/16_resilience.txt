@@ -4,7 +4,7 @@ Part 4 / Task 16 - retries, per-node timeout, global timeout
 command   : python resilience_demo.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 29.7s
+duration  : 30.8s
 ==============================================================================
 
 ==============================================================================
@@ -26,7 +26,7 @@ PART 4 / TASK 16 - TIMEOUTS AND RETRIES
       attempt 3: succeeded
   total calls made to the flaky service : 3
   attempt log                           : [(1, 'FAILED'), (2, 'FAILED'), (3, 'SUCCEEDED')]
-  wall-clock elapsed                    : 21.10s (includes backoff sleeps)
+  wall-clock elapsed                    : 21.78s (includes backoff sleeps)
   node trail                            : ['guard_input', 'flaky_enrichment(attempt 3)', 'route_intent', 'rag_answer', 'finalize']
   final answer                          : The notice period a candidate owes their current employer is declared at application time and cannot be changed after an offer is released without inf
   RESULT: PASS - the run recovered on attempt 3 of 4
@@ -48,11 +48,11 @@ PART 4 / TASK 16 - TIMEOUTS AND RETRIES
   4 chained nodes at 1.2s each = 4.8s of work; each one is well inside
   any per-node budget, but the global budget is 3.0s
       step_1: working for 1.2s (global budget remaining 3.00s)
-      step_2: working for 1.2s (global budget remaining 1.79s)
+      step_2: working for 1.2s (global budget remaining 1.80s)
       step_3: working for 1.2s (global budget remaining 0.59s)
   raised   : GlobalTimeout
   message  : global timeout of 3.0s exceeded; the run was cancelled and the caller was released cleanly
-  elapsed  : 3.02s
+  elapsed  : 3.00s
   RESULT: PASS - the whole run was cancelled at the 3.0s deadline
           instead of running to its natural 4.8s completion.
   (cooperative cancellation check: after the deadline the next node to

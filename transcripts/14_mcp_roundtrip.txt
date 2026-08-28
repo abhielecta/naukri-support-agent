@@ -4,7 +4,7 @@ Part 4 / Task 14 - MCP client/server round trip
 command   : python mcp_client.py --spawn-server
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 4.0s
+duration  : 4.4s
 ==============================================================================
 
 spawning mcp_server.py as a child process...
@@ -13,7 +13,7 @@ PART 4 / TASK 14 - MCP CLIENT -> SERVER ROUND TRIP
 ==============================================================================
 connecting to : http://127.0.0.1:8765/mcp
 (fastmcp's HTTP transport mounts at /mcp, not at the bare host:port)
-client process: PID 22176 - separate from the LangGraph agent
+client process: PID 11056 - separate from the LangGraph agent
 --- tools advertised by the server ---
   name        : check_job_application_status
   description : Look up the status of a Naukri.com job application by its record id.

@@ -4,7 +4,7 @@ Part 2 / Task 8 - multi-turn memory + fresh-conversation reset
 command   : python agent.py memory
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 22.2s
+duration  : 23.6s
 ==============================================================================
 
 ==============================================================================
@@ -23,7 +23,7 @@ and must still resolve to the application from turn 1.
           route: rag  (no record id and no memory reference; treated as a hiring-policy question for the knowledge base)
           AGENT: New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date. During probation either side may end the engagement with fifteen days notice, and
 persisted memory file now contains:
-  conversations : ['conv-multiturn-demo']
+  conversations : ['api-conv-1', 'api-conv-2', 'conv-fresh-demo', 'conv-multiturn-demo']
   facts         : {'last_record_id': 'NAU-1003', 'last_status': 'Interview Scheduled'}
   turns stored  : 6
   history:

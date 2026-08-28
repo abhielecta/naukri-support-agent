@@ -4,7 +4,7 @@ Part 1 / Task 1 - dataset design and validation
 command   : python dataset.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 0.0s
+duration  : 0.1s
 ==============================================================================
 
 ========================================================================

@@ -4,7 +4,7 @@ Part 2 / Task 10 - all three guardrails firing
 command   : python guardrails.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 21.8s
+duration  : 22.9s
 ==============================================================================
 
 ==============================================================================

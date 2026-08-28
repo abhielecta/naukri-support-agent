@@ -4,7 +4,7 @@ Part 1 / Tasks 2-3 - knowledge base, two chunking strategies, two collections
 command   : python rag_core.py index
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 21.6s
+duration  : 22.4s
 ==============================================================================
 
 ==============================================================================
