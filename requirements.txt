@@ -1,0 +1,25 @@
+# Naukri.com Domain Support Agent - capstone dependencies
+# Everything here is free and runs locally. No paid account, no credit card,
+# no API key is required: the default MOCK_LLM=1 mode needs none.
+
+# --- Part 1: embeddings + vector index -------------------------------------
+sentence-transformers>=3.0        # local all-MiniLM-L6-v2 encoder
+chromadb>=0.5                     # two persistent vector collections
+numpy>=1.26
+
+# --- Part 2: orchestration, schema, guardrails -----------------------------
+langgraph>=0.2                    # the agent graph
+jsonschema>=4.20                  # structured-output validation (Task 9)
+
+# --- Part 3: deployment ----------------------------------------------------
+fastapi>=0.110
+uvicorn>=0.27
+pydantic>=2.6
+httpx>=0.27                       # required by fastapi.testclient
+
+# --- Part 4: interoperability + resilience ---------------------------------
+fastmcp>=2.0                      # NOTE: no hyphen. `fast-mcp` is not this package.
+langgraph-checkpoint-sqlite>=1.0  # separate package from core langgraph
+
+# --- optional: only if you deliberately opt out of MOCK_LLM ----------------
+# openai>=1.30

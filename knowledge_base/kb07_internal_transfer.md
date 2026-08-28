@@ -1,0 +1,3 @@
+# Internal Transfer Eligibility
+
+An employee becomes eligible to apply for an internal transfer after twelve months in the current role and after probation has been completed. The application is made against a posted internal requisition, and the current manager is notified automatically once the receiving team shortlists the employee. An employee who is on an active performance improvement plan or in a disciplinary process is not eligible to transfer until that process closes. When a transfer is approved, the release date is agreed between the two managers and should not run beyond forty-five days from the approval date.

@@ -1,0 +1,3 @@
+# Diversity Hiring Guidelines
+
+Employers on Naukri.com are asked to build balanced shortlists and to make sure every open requisition is advertised in a form that does not discourage any group from applying. Job descriptions must avoid gendered wording, age limits, and requirements that are not genuinely needed to do the work. Interview panels for senior requisitions should include at least one member from outside the immediate hiring team so that the assessment is not concentrated in a single perspective. Diversity data submitted by a candidate is voluntary, is never shown to the interview panel, and is used only in aggregate reporting.

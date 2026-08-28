@@ -1,0 +1,17 @@
+==============================================================================
+TRANSCRIPT: 02_chunking_and_index
+Part 1 / Tasks 2-3 - knowledge base, two chunking strategies, two collections
+command   : python rag_core.py index
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 21.6s
+==============================================================================
+
+==============================================================================
+PART 1 / TASK 3 - CHUNKING + EMBEDDING + DUAL CHROMADB INDEX
+==============================================================================
+  [fixed-size-with-overlap ] collection=naukri_kb_fixed_overlap
+      documents=12  chunks=24  chunk chars min/mean/max=241/380/420
+  [sentence-based          ] collection=naukri_kb_sentence
+      documents=12  chunks=36  chunk chars min/mean/max=276/335/413
+Indexed collections: {'naukri_kb_fixed_overlap': 24, 'naukri_kb_sentence': 36}

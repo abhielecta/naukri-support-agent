@@ -1,0 +1,87 @@
+==============================================================================
+TRANSCRIPT: 01_dataset
+Part 1 / Task 1 - dataset design and validation
+command   : python dataset.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 0.0s
+==============================================================================
+
+========================================================================
+PART 1 / TASK 1 - DATASET DESIGN & VALIDATION REPORT
+========================================================================
+seed                     : 20260828
+records generated        : 48  (requirement: >= 40)
+--- all records ---
+record_id  category            status                salary_inr  days  flagged
+NAU-1000   Sales Associate     Offered                1,000,000     4    False
+NAU-1001   Sales Associate     Rejected               1,510,000    13    False
+NAU-1002   Product Manager     Applied                1,360,000    29    False
+NAU-1003   Data Analyst        Interview Scheduled    2,570,000    21    False
+NAU-1004   HR Executive        Rejected                 760,000    20    False
+NAU-1005   Software Engineer   Screening              3,360,000     6    False
+NAU-1006   HR Executive        Applied                  460,000    23    False
+NAU-1007   Data Analyst        Applied                2,000,000     7    False
+NAU-1008   Software Engineer   Offered                2,970,000     2     True
+NAU-1009   Product Manager     Screening              2,960,000    19    False
+NAU-1010   HR Executive        Applied                1,190,000    21    False
+NAU-1011   Sales Associate     Applied                  970,000    30    False
+NAU-1012   HR Executive        Rejected               1,160,000    28    False
+NAU-1013   Data Analyst        Screening              2,390,000    26    False
+NAU-1014   Software Engineer   Interview Scheduled    1,750,000    18    False
+NAU-1015   Software Engineer   Offered                4,330,000     7    False
+NAU-1016   Data Analyst        Rejected               2,030,000    11    False
+NAU-1017   Software Engineer   Interview Scheduled    3,250,000     2    False
+NAU-1018   Product Manager     Screening              3,320,000    17    False
+NAU-1019   HR Executive        Screening              1,280,000    27    False
+NAU-1020   Software Engineer   Applied                2,470,000    24    False
+NAU-1021   Software Engineer   Applied                3,330,000    16     True
+NAU-1022   Product Manager     Applied                4,100,000    11    False
+NAU-1023   HR Executive        Applied                1,380,000    15    False
+NAU-1024   Software Engineer   Rejected               4,330,000     4    False
+NAU-1025   HR Executive        Interview Scheduled      870,000    21    False
+NAU-1026   Data Analyst        Screening              2,420,000     4    False
+NAU-1027   Software Engineer   Applied                2,700,000     6    False
+NAU-1028   Sales Associate     Offered                1,000,000    11    False
+NAU-1029   Data Analyst        Interview Scheduled      670,000    10    False
+NAU-1030   Product Manager     Interview Scheduled    3,080,000     3    False
+NAU-1031   Sales Associate     Rejected               1,140,000    29     True
+NAU-1032   Software Engineer   Applied                4,430,000    29    False
+NAU-1033   Software Engineer   Rejected               3,970,000    24    False
+NAU-1034   Sales Associate     Rejected               1,290,000    10    False
+NAU-1035   Product Manager     Interview Scheduled    2,410,000    23    False
+NAU-1036   Sales Associate     Screening              1,580,000     0    False
+NAU-1037   HR Executive        Interview Scheduled      600,000    10    False
+NAU-1038   Software Engineer   Applied                2,210,000    16    False
+NAU-1039   Data Analyst        Offered                1,760,000     6    False
+NAU-1040   Sales Associate     Applied                1,090,000     2     True
+NAU-1041   HR Executive        Rejected                 960,000     2     True
+NAU-1042   Sales Associate     Interview Scheduled    1,030,000    10    False
+NAU-1043   Product Manager     Offered                2,500,000    10    False
+NAU-1044   Data Analyst        Screening              2,550,000    14    False
+NAU-1045   Data Analyst        Applied                  890,000    13     True
+NAU-1046   Data Analyst        Screening              1,920,000    18     True
+NAU-1047   Product Manager     Screening              1,450,000    18    False
+--- count per category (requirement: every given category >= 3) ---
+  Software Engineer    12   [PASS]
+  Data Analyst         10   [PASS]
+  Product Manager       8   [PASS]
+  HR Executive          9   [PASS]
+  Sales Associate       9   [PASS]
+--- count per status (requirement: every given status >= 1) ---
+  Applied               14   [PASS]
+  Screening             10   [PASS]
+  Interview Scheduled    9   [PASS]
+  Offered                6   [PASS]
+  Rejected               9   [PASS]
+--- flagged_priority_review (requirement: 10% <= pct <= 30%) ---
+  flagged records : 7 / 48
+  percentage      : 14.58%   [PASS]
+--- supporting distribution facts (used to justify Task 6 threshold) ---
+  expected_salary_inr range : 460,000 .. 4,430,000
+  days_since_created p50    : 13.5
+  days_since_created p80    : 23.0
+  days_since_created p90    : 27.3
+========================================================================
+OVERALL: ALL STRUCTURAL THRESHOLDS MET
+========================================================================

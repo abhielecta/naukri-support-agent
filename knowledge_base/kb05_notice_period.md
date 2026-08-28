@@ -1,0 +1,3 @@
+# Notice Period Policy
+
+The notice period a candidate owes their current employer is declared at application time and cannot be changed after an offer is released without informing the recruiter. Naukri.com employers commonly work with notice periods of thirty, sixty or ninety days, and the joining date printed on the offer letter is set from the declared figure. Buying out the remaining notice is possible only when the current employer permits it in writing, and the hiring employer has no obligation to reimburse the buy-out amount unless the offer letter says so. A candidate whose actual joining slips more than fifteen days past the offer letter date needs the delay approved by the hiring manager, otherwise the offer may lapse.

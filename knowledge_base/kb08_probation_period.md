@@ -1,0 +1,3 @@
+# Probation Period Policy
+
+New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date. During probation either side may end the engagement with fifteen days notice, and the longer notice period written into the employment contract applies only after confirmation. A probation review is held in the fifth month, and the outcome is either confirmation, a one-time extension of up to three months, or separation, and that outcome must be given to the employee in writing. Benefits such as the referral bonus and internal transfer eligibility do not accrue until probation has been completed successfully.

@@ -1,0 +1,82 @@
+==============================================================================
+TRANSCRIPT: 07_agent_routing
+Part 2 / Task 7 - LangGraph routing, both branches firing
+command   : python agent.py demo
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 22.6s
+==============================================================================
+
+==============================================================================
+PART 2 / TASK 7 - LANGGRAPH ROUTING (both routes firing)
+==============================================================================
+graph: 5 nodes  [guard_input, route_intent, rag_answer, record_lookup, finalize]
+       2 conditional edges  [after_guard, after_route]
+------------------------------------------------------------------------------
+QUERY: What is the notice period policy for candidates?
+route decision : rag
+reason         : no record id and no memory reference; treated as a hiring-policy question for the knowledge base
+nodes executed : guard_input -> route_intent -> rag_answer -> finalize
+schema valid   : True (valid)
+------------------------------------------------------------------------------
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-eb4b836fb083",
+  "route": "rag",
+  "answer": "The notice period a candidate owes their current employer is declared at application time and cannot be changed after an offer is released without informing the recruiter. Naukri.com employers commonly work with notice periods of thirty, sixty or ninety days, and the joining date printed on the offer letter is set from the declared figure. New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date.",
+  "grounded": true,
+  "sources": [
+    "Notice Period Policy",
+    "Probation Period Policy"
+  ],
+  "guardrails": {
+    "pii_masked": false,
+    "injection_detected": false,
+    "groundedness_refused": false,
+    "masked_query": "What is the notice period policy for candidates?"
+  },
+  "escalation": null,
+  "turn_index": 1,
+  "retrieval": {
+    "top_similarity": 0.5899,
+    "threshold": 0.4104,
+    "doc_ids": [
+      "kb05_notice_period",
+      "kb08_probation_period",
+      "kb05_notice_period"
+    ]
+  }
+}
+------------------------------------------------------------------------------
+QUERY: What is the status of application NAU-1003?
+route decision : record_lookup
+reason         : explicit record id NAU-1003 found in the query
+nodes executed : guard_input -> route_intent -> record_lookup -> finalize
+schema valid   : True (valid)
+------------------------------------------------------------------------------
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-6847bc4ecac7",
+  "route": "record_lookup",
+  "answer": "Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's expected salary is INR 2,570,000 per year, and the application was created 21 day(s) ago. Its escalation score is 0.3652 against a threshold of 0.4, so this application does not need escalation.",
+  "grounded": true,
+  "sources": [
+    "NAU-1003"
+  ],
+  "guardrails": {
+    "pii_masked": false,
+    "injection_detected": false,
+    "groundedness_refused": false,
+    "masked_query": "What is the status of application NAU-1003?"
+  },
+  "escalation": {
+    "record_id": "NAU-1003",
+    "escalation_score": 0.3652,
+    "escalate": false
+  },
+  "turn_index": 1,
+  "retrieval": null
+}
+==============================================================================
+Both branches of conditional edge #2 fired: 'rag' on the policy question
+and 'record_lookup' on the application question.

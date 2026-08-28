@@ -1,0 +1,55 @@
+==============================================================================
+TRANSCRIPT: 03_threshold_calibration
+Part 1 / Task 4 - empirical 'I don't know' threshold calibration
+command   : python calibrate_threshold.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 21.7s
+==============================================================================
+
+==============================================================================
+PART 1 / TASK 4 - EMPIRICAL 'I DON'T KNOW' THRESHOLD CALIBRATION
+6 in-scope queries, 3 deliberately out-of-scope queries
+(requirement: >= 3 in-scope and >= 2 out-of-scope)
+==============================================================================
+### collection: naukri_kb_sentence
+ top-1 cosine  query
+------------------------------------------------------------------------------
+       0.6983  [IN ] How long does an offer stay open before it expires?
+       0.7478  [IN ] What does the background verification check actually cover?
+       0.8006  [IN ] When am I eligible to apply for an internal transfer?
+       0.7247  [IN ] How long is the probation period for a new hire?
+       0.8142  [IN ] When is the referral bonus paid out?
+       0.6930  [IN ] How many times can a candidate reschedule an interview?
+       0.1778  [OUT] What is the best recipe for Hyderabadi biryani?
+       0.1932  [OUT] Who won the 2011 cricket world cup final?
+       0.1451  [OUT] How do I replace the timing belt on a diesel engine?
+  in-scope  cluster : min=0.6930  max=0.8142  n=6
+  out-scope cluster : min=0.1451  max=0.1932  n=3
+  separation gap    : 0.4998
+  => threshold at gap midpoint = 0.4431
+### collection: naukri_kb_fixed_overlap
+ top-1 cosine  query
+------------------------------------------------------------------------------
+       0.6769  [IN ] How long does an offer stay open before it expires?
+       0.7225  [IN ] What does the background verification check actually cover?
+       0.7233  [IN ] When am I eligible to apply for an internal transfer?
+       0.7497  [IN ] How long is the probation period for a new hire?
+       0.7816  [IN ] When is the referral bonus paid out?
+       0.6230  [IN ] How many times can a candidate reschedule an interview?
+       0.1807  [OUT] What is the best recipe for Hyderabadi biryani?
+       0.1979  [OUT] Who won the 2011 cricket world cup final?
+       0.1424  [OUT] How do I replace the timing belt on a diesel engine?
+  in-scope  cluster : min=0.6230  max=0.7816  n=6
+  out-scope cluster : min=0.1424  max=0.1979  n=3
+  separation gap    : 0.4251
+  => threshold at gap midpoint = 0.4104
+==============================================================================
+DECISION
+==============================================================================
+sentence-based collection midpoint : 0.4431
+fixed-size   collection midpoint   : 0.4104
+GROUNDEDNESS_THRESHOLD chosen      : 0.4104
+The lower of the two midpoints is taken so that the single threshold is
+safe for either collection: it still sits above every measured out-of-scope
+score and below every measured in-scope score in both indexes.

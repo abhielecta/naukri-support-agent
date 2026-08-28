@@ -1,0 +1,3 @@
+# Remote Work Eligibility
+
+Remote and hybrid eligibility is set per requisition by the employer and is stated in the job listing, so a candidate should not assume a role is remote unless the listing says so. Fully remote eligibility is normally limited to roles that do not need physical presence for equipment, customer visits or regulated data handling. An employee who wants to move an existing office-based role to hybrid applies through the manager, who confirms that the deliverables of the role can be measured without co-location. Remote employees must keep a working internet connection during declared hours, and they must inform the employer before relocating to a different state because payroll and tax registration depend on the work location.

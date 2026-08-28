@@ -1,0 +1,3 @@
+# Interview Scheduling Process
+
+Once an application moves to the Screening status, the recruiter has five working days to either advance it to Interview Scheduled or close it. Interview invitations are sent through the platform and carry the panel name, the mode (in-person or video), and a slot that the candidate must confirm within forty-eight hours. A candidate may reschedule an interview once at no penalty by requesting a new slot at least twenty-four hours before the confirmed time; a second reschedule request needs recruiter approval. If a candidate does not appear for a confirmed slot and does not inform the recruiter, the application is marked Rejected with a no-show note that is visible only to the employer.

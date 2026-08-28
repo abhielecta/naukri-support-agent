@@ -1,0 +1,136 @@
+==============================================================================
+TRANSCRIPT: 09_output_schema
+Part 2 / Task 9 - structured output JSON Schema
+command   : python schemas.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 0.2s
+==============================================================================
+
+==============================================================================
+PART 2 / TASK 9 - STRUCTURED OUTPUT SCHEMA
+==============================================================================
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NaukriSupportAgentResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "trace_id",
+    "route",
+    "answer",
+    "grounded",
+    "sources",
+    "guardrails",
+    "escalation",
+    "turn_index"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "route": {
+      "description": "which branch of the conditional edge handled this turn",
+      "enum": [
+        "rag",
+        "record_lookup",
+        "blocked"
+      ]
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "grounded": {
+      "type": "boolean",
+      "description": "False when the output-side groundedness guardrail refused, or when the record was not found"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "KB document titles, or the record id for a lookup"
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pii_masked",
+        "injection_detected",
+        "groundedness_refused",
+        "masked_query"
+      ],
+      "properties": {
+        "pii_masked": {
+          "type": "boolean"
+        },
+        "injection_detected": {
+          "type": "boolean"
+        },
+        "groundedness_refused": {
+          "type": "boolean"
+        },
+        "masked_query": {
+          "type": "string"
+        }
+      }
+    },
+    "escalation": {
+      "description": "populated only on the record_lookup route",
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "escalation_score",
+        "escalate"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string"
+        },
+        "escalation_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "escalate": {
+          "type": "boolean"
+        }
+      }
+    },
+    "turn_index": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "retrieval": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "top_similarity": {
+          "type": "number"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "doc_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+==============================================================================
+TRANSCRIPT: 08_memory
+Part 2 / Task 8 - multi-turn memory + fresh-conversation reset
+command   : python agent.py memory
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 22.3s
+==============================================================================
+
+==============================================================================
+PART 2 / TASK 8 - PERSISTED MEMORY
+==============================================================================
+### TRANSCRIPT A - multi-turn conversation 'conv-multiturn-demo'
+State must be carried ACROSS turns: turn 2 says 'it' with no record id
+and must still resolve to the application from turn 1.
+[turn 1] USER : What is the status of application NAU-1003?
+          route: record_lookup  (explicit record id NAU-1003 found in the query)
+          AGENT: Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's expected salary is INR 2,570,000 per year, and the application was created 21 day(s) ago. Its escal
+[turn 2] USER : And what is the escalation score for it?
+          route: record_lookup  (no id in this turn, but the query refers back to an application; resolved from conversation memory -> NAU-1003)
+          AGENT: Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's expected salary is INR 2,570,000 per year, and the application was created 21 day(s) ago. Its escal
+[turn 3] USER : How long is the probation period for a new hire?
+          route: rag  (no record id and no memory reference; treated as a hiring-policy question for the knowledge base)
+          AGENT: New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date. During probation either side may end the engagement with fifteen days notice, and
+persisted memory file now contains:
+  conversations : ['conv-multiturn-demo']
+  facts         : {'last_record_id': 'NAU-1003', 'last_status': 'Interview Scheduled'}
+  turns stored  : 6
+  history:
+  [1] user : What is the status of application NAU-1003?
+  [1] agent: Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's
+  [2] user : And what is the escalation score for it?
+  [2] agent: Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's
+  [3] user : How long is the probation period for a new hire?
+  [3] agent: New hires serve a standard probation of six months, which begins on the actual joining date and not
+  >>> turn 2 carried state correctly: it had NO record id of its own and
+      still answered about NAU-1003, resolved from facts.last_record_id.
+==============================================================================
+### TRANSCRIPT B - FRESH conversation 'conv-fresh-demo' (state absent/reset)
+==============================================================================
+stored snapshot before any turn : None
+  (None => this conversation has no persisted state at all)
+[turn 1] USER : And what is the escalation score for it?
+         route: rag
+         reason: no record id and no memory reference; treated as a hiring-policy question for the knowledge base
+         AGENT: I don't know. I could not find anything in the Naukri.com employer-support knowledge base that answers this question, so I will not guess. Please rephrase the question or contact the employer-support desk.
+  >>> The IDENTICAL query that resolved to NAU-1003 in transcript A did NOT
+      resolve here: with no prior turns there is no facts.last_record_id, so
+      the router could not use memory and fell through to the RAG branch,
+      which correctly refused. State is verifiably absent in a fresh
+      conversation.
+  fresh conversation facts after the turn: {}

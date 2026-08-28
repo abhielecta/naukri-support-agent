@@ -1,0 +1,118 @@
+==============================================================================
+TRANSCRIPT: 05_chunking_comparison
+Part 1 / Task 5 - Precision@3 / Recall@3 for both collections
+command   : python eval_chunking.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 23.1s
+==============================================================================
+
+==============================================================================
+PART 1 / TASK 5 - CHUNKING STRATEGY COMPARISON
+Same 5 queries as Task 4, scored at the parent-document level.
+==============================================================================
+Ground-truth labelling rationale:
+  Q1: Only the offer-negotiation policy states the seven-day window.
+  Q2: Only the BGV document lists what the standard check covers.
+  Q3: kb07 gives the twelve-month rule; kb08 is also genuinely relevant because it states that internal transfer eligibility does not accrue until probation is completed.
+  Q4: Only the probation document states the six-month duration.
+  Q5: kb06 gives the ninety-day service milestone; kb08 is also relevant because it states the referral bonus does not accrue until probation is completed.
+==============================================================================
+COLLECTION: naukri_kb_fixed_overlap   (strategy: fixed-size-with-overlap)
+==============================================================================
+Q1: How long does an offer stay open before it expires?
+  gold documents G          : ['kb03_offer_negotiation']
+  top-3 chunks -> parent docs : ['kb03_offer_negotiation', 'kb03_offer_negotiation', 'kb05_notice_period']
+  de-duplicated retrieved R : ['kb03_offer_negotiation', 'kb05_notice_period']
+  intersection R n G        : ['kb03_offer_negotiation']
+  Precision@3 = |R n G| / |R| = 1/2 = 0.5000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q2: What does the background verification check actually cover?
+  gold documents G          : ['kb04_background_verification']
+  top-3 chunks -> parent docs : ['kb04_background_verification', 'kb12_data_retention', 'kb12_data_retention']
+  de-duplicated retrieved R : ['kb04_background_verification', 'kb12_data_retention']
+  intersection R n G        : ['kb04_background_verification']
+  Precision@3 = |R n G| / |R| = 1/2 = 0.5000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q3: When am I eligible to apply for an internal transfer?
+  gold documents G          : ['kb07_internal_transfer', 'kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb07_internal_transfer', 'kb08_probation_period', 'kb09_remote_work']
+  de-duplicated retrieved R : ['kb07_internal_transfer', 'kb08_probation_period', 'kb09_remote_work']
+  intersection R n G        : ['kb07_internal_transfer', 'kb08_probation_period']
+  Precision@3 = |R n G| / |R| = 2/3 = 0.6667
+  Recall@3    = |R n G| / |G| = 2/2 = 1.0000
+Q4: How long is the probation period for a new hire?
+  gold documents G          : ['kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb08_probation_period', 'kb08_probation_period', 'kb02_interview_scheduling']
+  de-duplicated retrieved R : ['kb08_probation_period', 'kb02_interview_scheduling']
+  intersection R n G        : ['kb08_probation_period']
+  Precision@3 = |R n G| / |R| = 1/2 = 0.5000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q5: When is the referral bonus paid out?
+  gold documents G          : ['kb06_referral_bonus', 'kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb06_referral_bonus', 'kb06_referral_bonus', 'kb08_probation_period']
+  de-duplicated retrieved R : ['kb06_referral_bonus', 'kb08_probation_period']
+  intersection R n G        : ['kb06_referral_bonus', 'kb08_probation_period']
+  Precision@3 = |R n G| / |R| = 2/2 = 1.0000
+  Recall@3    = |R n G| / |G| = 2/2 = 1.0000
+  ------------------------------------------------------------
+  MEAN Precision@3 = (0.5000 + 0.5000 + 0.6667 + 0.5000 + 1.0000) / 5 = 0.6333
+  MEAN Recall@3    = (1.0000 + 1.0000 + 1.0000 + 1.0000 + 1.0000) / 5 = 1.0000
+==============================================================================
+COLLECTION: naukri_kb_sentence   (strategy: sentence-based)
+==============================================================================
+Q1: How long does an offer stay open before it expires?
+  gold documents G          : ['kb03_offer_negotiation']
+  top-3 chunks -> parent docs : ['kb03_offer_negotiation', 'kb03_offer_negotiation', 'kb05_notice_period']
+  de-duplicated retrieved R : ['kb03_offer_negotiation', 'kb05_notice_period']
+  intersection R n G        : ['kb03_offer_negotiation']
+  Precision@3 = |R n G| / |R| = 1/2 = 0.5000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q2: What does the background verification check actually cover?
+  gold documents G          : ['kb04_background_verification']
+  top-3 chunks -> parent docs : ['kb04_background_verification', 'kb12_data_retention', 'kb04_background_verification']
+  de-duplicated retrieved R : ['kb04_background_verification', 'kb12_data_retention']
+  intersection R n G        : ['kb04_background_verification']
+  Precision@3 = |R n G| / |R| = 1/2 = 0.5000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q3: When am I eligible to apply for an internal transfer?
+  gold documents G          : ['kb07_internal_transfer', 'kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb07_internal_transfer', 'kb07_internal_transfer', 'kb07_internal_transfer']
+  de-duplicated retrieved R : ['kb07_internal_transfer']
+  intersection R n G        : ['kb07_internal_transfer']
+  Precision@3 = |R n G| / |R| = 1/1 = 1.0000
+  Recall@3    = |R n G| / |G| = 1/2 = 0.5000
+Q4: How long is the probation period for a new hire?
+  gold documents G          : ['kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb08_probation_period', 'kb08_probation_period', 'kb08_probation_period']
+  de-duplicated retrieved R : ['kb08_probation_period']
+  intersection R n G        : ['kb08_probation_period']
+  Precision@3 = |R n G| / |R| = 1/1 = 1.0000
+  Recall@3    = |R n G| / |G| = 1/1 = 1.0000
+Q5: When is the referral bonus paid out?
+  gold documents G          : ['kb06_referral_bonus', 'kb08_probation_period']
+  top-3 chunks -> parent docs : ['kb06_referral_bonus', 'kb06_referral_bonus', 'kb06_referral_bonus']
+  de-duplicated retrieved R : ['kb06_referral_bonus']
+  intersection R n G        : ['kb06_referral_bonus']
+  Precision@3 = |R n G| / |R| = 1/1 = 1.0000
+  Recall@3    = |R n G| / |G| = 1/2 = 0.5000
+  ------------------------------------------------------------
+  MEAN Precision@3 = (0.5000 + 0.5000 + 1.0000 + 1.0000 + 1.0000) / 5 = 0.8000
+  MEAN Recall@3    = (1.0000 + 1.0000 + 0.5000 + 1.0000 + 0.5000) / 5 = 0.8000
+==============================================================================
+SIDE-BY-SIDE
+==============================================================================
+query                                                  fixed P/R   sentence P/R
+------------------------------------------------------------------------------
+How long does an offer stay open before it expi...     0.50/1.00      0.50/1.00
+What does the background verification check act...     0.50/1.00      0.50/1.00
+When am I eligible to apply for an internal tra...     0.67/1.00      1.00/0.50
+How long is the probation period for a new hire?       0.50/1.00      1.00/1.00
+When is the referral bonus paid out?                   1.00/1.00      1.00/0.50
+------------------------------------------------------------------------------
+MEAN                                               0.6333/1.0000  0.8000/0.8000
+==============================================================================
+RECOMMENDATION
+==============================================================================
+The two strategies split the axes rather than one dominating: sentence-based scores mean Precision@3 = 0.8000 versus 0.6333 for fixed-size-with-overlap, while fixed-size scores mean Recall@3 = 1.0000 versus 0.8000. The per-query rows show why, and they show that the recall gap is not the win it looks like: fixed-size only reaches perfect recall because its 420-character windows straddle document boundaries and sweep extra parent documents into R indiscriminately - the same behaviour that costs it precision on Q1, Q2 and Q4, where it drags in a document that has nothing to do with the question. Sentence-based loses recall on exactly and only Q3 and Q5, the two queries whose gold set contains a secondary cross-reference document (kb08_probation_period) rather than the document that actually answers the question; on both it still retrieved the primary document at rank 1.
+I would deploy the sentence-based collection. For a support agent the failure that hurts a recruiter is a confidently wrong answer assembled from an unrelated policy, which is a precision failure, and precision is the axis sentence-based wins 0.80 to 0.63. Its chunks also end on sentence boundaries, so every retrieved chunk is a complete, quotable statement of policy, which makes the grounded answer cleaner. The costs are real but small: 36 chunks instead of 24 (a 50% larger index) and the missed cross-reference documents, which I would recover by raising top_k rather than by switching back to a chunker that cuts policies in half.

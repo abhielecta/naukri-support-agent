@@ -1,0 +1,3 @@
+# Offer Negotiation Policy
+
+An offer is live from the moment the written offer letter is released on the platform, and it stays open for seven calendar days unless the employer states a shorter window in the letter. Candidates may submit one structured counter-offer during that window, stating the revised expected salary and the reason, and the recruiter must respond within three working days. Employers are expected to keep the revised figure inside the approved salary band for the requisition, and any increase beyond that band needs written approval from the hiring manager. If the candidate does not respond before the offer expires, the application stays in the Offered status with an expiry note and the employer may release the position to another candidate.

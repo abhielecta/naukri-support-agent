@@ -1,0 +1,3 @@
+# Job Application Eligibility Criteria
+
+A candidate may apply to any Naukri.com employer listing provided they hold the minimum qualification named in the job advertisement and are legally permitted to work in India. Applicants must have completed their final academic examination before the listed joining date; provisional results are accepted only when the institution issues a dated completion letter. A candidate who was rejected for the same requisition may reapply only after ninety days have passed from the rejection date. Employers may not set eligibility rules based on gender, marital status, caste, religion or region, and any such listing is removed by the employer-support team once it is reported.

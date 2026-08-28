@@ -1,0 +1,55 @@
+==============================================================================
+TRANSCRIPT: 06_tool_escalation
+Part 2 / Task 6 - check_job_application_status + escalation score
+command   : python tools.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 0.1s
+==============================================================================
+
+==============================================================================
+PART 2 / TASK 6 - check_job_application_status + escalation score
+==============================================================================
+formula   : escalation_score = 0.6*flagged + 0.4*min(days/23.0, 1.0)
+threshold : 0.4
+DAYS_P80  : 23.0  (measured 80th percentile of days_since_created = 23.0)
+            p50 = 13.5, p90 = 27.3
+--- four representative lookups ---
+NAU-1008  [Software Engineer]
+  status              : Offered
+  expected_salary_inr : 2,970,000
+  days_since_created  : 2
+  flagged             : True
+  escalation_score    : 0.6348
+  escalate            : True
+  escalation_score = 0.6 * flagged(1) + 0.4 * min(2/23.0, 1.0)=0.087 = 0.6348; threshold 0.4 -> ESCALATE
+NAU-1031  [Sales Associate]
+  status              : Rejected
+  expected_salary_inr : 1,140,000
+  days_since_created  : 29
+  flagged             : True
+  escalation_score    : 1.0
+  escalate            : True
+  escalation_score = 0.6 * flagged(1) + 0.4 * min(29/23.0, 1.0)=1.0 = 1.0; threshold 0.4 -> ESCALATE
+NAU-1011  [Sales Associate]
+  status              : Applied
+  expected_salary_inr : 970,000
+  days_since_created  : 30
+  flagged             : False
+  escalation_score    : 0.4
+  escalate            : True
+  escalation_score = 0.6 * flagged(0) + 0.4 * min(30/23.0, 1.0)=1.0 = 0.4; threshold 0.4 -> ESCALATE
+NAU-1036  [Sales Associate]
+  status              : Screening
+  expected_salary_inr : 1,580,000
+  days_since_created  : 0
+  flagged             : False
+  escalation_score    : 0.0
+  escalate            : False
+  escalation_score = 0.6 * flagged(0) + 0.4 * min(0/23.0, 1.0)=0.0 = 0.0; threshold 0.4 -> no escalation
+--- unknown id ---
+{'found': False, 'record_id': 'NAU-9999', 'error': "No job application found with record_id 'NAU-9999'. Valid ids look like NAU-1000 .. NAU-1047."}
+--- distribution of the designed score over all 48 records ---
+  min=0.0000  max=1.0000  mean=0.3234
+  records at/over threshold 0.4: 17/48 (35.42%)
+  of which flagged: 7

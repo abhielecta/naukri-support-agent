@@ -1,0 +1,83 @@
+==============================================================================
+TRANSCRIPT: 15_checkpointing
+Part 4 / Task 15 - SQLite checkpointing across an interruption
+command   : python checkpoint_demo.py
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 27.0s
+==============================================================================
+
+==============================================================================
+PART 4 / TASK 15 - SQLITE CHECKPOINTING ACROSS AN INTERRUPTION
+==============================================================================
+checkpointer : langgraph.checkpoint.sqlite.SqliteSaver
+              (from the separate `langgraph-checkpoint-sqlite` package)
+database     : C:\Users\abhie\OneDrive\Desktop\LLM\CAPSTONE\checkpoints.sqlite
+thread id    : naukri-thread-checkpoint-demo
+cleared any previous checkpoints for thread naukri-thread-checkpoint-demo
+##############################################################################
+# launching phase1 as a SEPARATE OS PROCESS
+##############################################################################
+==============================================================================
+PHASE 1 (process A) - RUN, THEN DELIBERATELY STOP BEFORE THE REST
+==============================================================================
+checkpoint db : C:\Users\abhie\OneDrive\Desktop\LLM\CAPSTONE\checkpoints.sqlite
+thread id     : naukri-thread-checkpoint-demo
+query         : What is the offer negotiation policy on Naukri.com?
+interrupt_before=['rag_answer'] - the run must halt after route_intent
+  invoking...
+      >>> NODE ACTUALLY EXECUTED IN THIS PROCESS: guard_input
+      >>> NODE ACTUALLY EXECUTED IN THIS PROCESS: route_intent
+--- state after the interruption ---
+  nodes executed in THIS process : ['guard_input', 'route_intent']
+  state['executed_nodes']        : ['guard_input', 'route_intent']
+  next node(s) still to run      : ('rag_answer',)
+  route decided                  : rag
+  route reason                   : no record id and no memory reference; treated as a hiring-policy question for the knowledge base
+  masked_query persisted         : 'What is the offer negotiation policy on Naukri.com?'
+  answer so far                  : None  (empty - rag_answer has not run)
+  checkpoint rows for this thread: 4
+  PHASE 1 OK: 2 of the 5 nodes ran, execution stopped before the rest,
+  and the partial state is persisted in checkpoints.sqlite.
+##############################################################################
+# launching phase2 as a SEPARATE OS PROCESS
+##############################################################################
+==============================================================================
+PHASE 2 (process B - a brand new interpreter) - RESUME AND COMPLETE
+==============================================================================
+thread id     : naukri-thread-checkpoint-demo   (the SAME id as phase 1)
+this process's execution counter starts empty : []
+--- state loaded from checkpoints.sqlite BEFORE resuming ---
+  executed_nodes recovered : ['guard_input', 'route_intent']
+  route recovered          : rag
+  masked_query recovered   : 'What is the offer negotiation policy on Naukri.com?'
+  next node(s) to run      : ('rag_answer',)
+  (none of these were computed in this process - they were read from disk)
+  resuming with invoke(None, config)...
+      >>> NODE ACTUALLY EXECUTED IN THIS PROCESS: rag_answer
+      >>> NODE ACTUALLY EXECUTED IN THIS PROCESS: finalize
+--- after completion ---
+  nodes ACTUALLY executed in THIS process : ['rag_answer', 'finalize']
+  full node trail in state               : ['guard_input', 'route_intent', 'rag_answer', 'finalize']
+  route                                  : rag
+  answer                                 : Naukri.com employers commonly work with notice periods of thirty, sixty or ninety days, and the joining date printed on the offer letter is set from the declared figure. A candidate may apply to any Naukri.com employer l
+  schema valid                           : True
+  checkpoint rows for this thread        : 6
+------------------------------------------------------------------------------
+PROOF THAT COMPLETED NODES WERE NOT RE-EXECUTED
+------------------------------------------------------------------------------
+  guard_input    in final state=True  ran in process B=False  LOADED FROM CHECKPOINT (not re-executed)
+  route_intent   in final state=True  ran in process B=False  LOADED FROM CHECKPOINT (not re-executed)
+  rag_answer     in final state=True  ran in process B=True   executed in this process (it was still pending)
+  finalize       in final state=True  ran in process B=True   executed in this process (it was still pending)
+  PHASE 2 OK: the run completed on the same thread id, and guard_input
+  and route_intent were NOT re-executed - their results came from the
+  SQLite checkpoint.
+==============================================================================
+TASK 15 COMPLETE:
+  (a) a run executed 2 of the 5 nodes                       [phase 1]
+  (b) execution stopped before the remaining nodes ran      [phase 1]
+  (c) the SAME thread id resumed and completed the run, with
+      the already-completed nodes loaded from the checkpoint
+      and NOT re-executed                                   [phase 2]
+==============================================================================

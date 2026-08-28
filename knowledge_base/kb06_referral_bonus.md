@@ -1,0 +1,3 @@
+# Referral Bonus Policy
+
+An employee referral counts only when it is submitted through the employer referral link before the candidate applies independently, so a referral filed after an existing application does not qualify. The referral bonus becomes payable once the referred candidate completes ninety days of continuous service, and it is paid with the payroll cycle that follows that milestone. If two employees refer the same candidate, the bonus goes to the earlier timestamped referral and the amount is never split between them. Referrals for interns, contractors and rehires of former employees are excluded from the bonus scheme unless the employer explicitly opts them in.

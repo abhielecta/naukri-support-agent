@@ -1,0 +1,3 @@
+# Applicant Data Retention Policy
+
+Application records, including the resume and the contact details supplied at application time, are retained for twenty-four months from the date of the last status change on the application. A candidate may ask for their data to be deleted at any time through the platform privacy request form, and the request is actioned within thirty days unless the record is needed for an ongoing legal or regulatory matter. Background-verification results are held separately under restricted access and are deleted twelve months after the hiring decision. Contact details such as the candidate phone number are masked in all support transcripts, agent logs and analytics exports, and stay readable only to the recruiter assigned to the requisition.

@@ -1,0 +1,120 @@
+==============================================================================
+TRANSCRIPT: 14_mcp_roundtrip
+Part 4 / Task 14 - MCP client/server round trip
+command   : python mcp_client.py --spawn-server
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 4.3s
+==============================================================================
+
+spawning mcp_server.py as a child process...
+==============================================================================
+PART 4 / TASK 14 - MCP CLIENT -> SERVER ROUND TRIP
+==============================================================================
+connecting to : http://127.0.0.1:8765/mcp
+(fastmcp's HTTP transport mounts at /mcp, not at the bare host:port)
+client process: PID 22300 - separate from the LangGraph agent
+--- tools advertised by the server ---
+  name        : check_job_application_status
+  description : Look up the status of a Naukri.com job application by its record id.
+  input schema: {
+  "additionalProperties": false,
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "description": "The application identifier, formatted like \"NAU-1003\".\nValid ids in the current dataset run from NAU-1000 to NAU-1047."
+    }
+  },
+  "required": [
+    "record_id"
+  ],
+  "type": "object"
+}
+------------------------------------------------------------------------------
+CALL: check_job_application_status(record_id='NAU-1003')
+standardized MCP response:
+  is_error       : False
+  content blocks : 1
+    - type=text
+      text={"found":true,"record_id":"NAU-1003","category":"Data Analyst","status":"Interview Scheduled","expected_salary_inr":2570000,"days_since_created":21,"flagged_priority_review":false,"recency_norm":0.913,"escalation_score":0.3652,"escalation_threshold":0.4,"escalate":false,"explanation":"escalation_score = 0.6 * flagged(0) + 0.4 * min(21/23.0, 1.0)=0.913 = 0.3652; threshold 0.4 -> no escalation"}
+  structured_content:
+{
+  "found": true,
+  "record_id": "NAU-1003",
+  "category": "Data Analyst",
+  "status": "Interview Scheduled",
+  "expected_salary_inr": 2570000,
+  "days_since_created": 21,
+  "flagged_priority_review": false,
+  "recency_norm": 0.913,
+  "escalation_score": 0.3652,
+  "escalation_threshold": 0.4,
+  "escalate": false,
+  "explanation": "escalation_score = 0.6 * flagged(0) + 0.4 * min(21/23.0, 1.0)=0.913 = 0.3652; threshold 0.4 -> no escalation"
+}
+  -> NAU-1003: status='Interview Scheduled', expected_salary_inr=2,570,000, escalation_score=0.3652, escalate=False
+------------------------------------------------------------------------------
+CALL: check_job_application_status(record_id='NAU-1031')
+standardized MCP response:
+  is_error       : False
+  content blocks : 1
+    - type=text
+      text={"found":true,"record_id":"NAU-1031","category":"Sales Associate","status":"Rejected","expected_salary_inr":1140000,"days_since_created":29,"flagged_priority_review":true,"recency_norm":1.0,"escalation_score":1.0,"escalation_threshold":0.4,"escalate":true,"explanation":"escalation_score = 0.6 * flagged(1) + 0.4 * min(29/23.0, 1.0)=1.0 = 1.0; threshold 0.4 -> ESCALATE"}
+  structured_content:
+{
+  "found": true,
+  "record_id": "NAU-1031",
+  "category": "Sales Associate",
+  "status": "Rejected",
+  "expected_salary_inr": 1140000,
+  "days_since_created": 29,
+  "flagged_priority_review": true,
+  "recency_norm": 1.0,
+  "escalation_score": 1.0,
+  "escalation_threshold": 0.4,
+  "escalate": true,
+  "explanation": "escalation_score = 0.6 * flagged(1) + 0.4 * min(29/23.0, 1.0)=1.0 = 1.0; threshold 0.4 -> ESCALATE"
+}
+  -> NAU-1031: status='Rejected', expected_salary_inr=1,140,000, escalation_score=1.0, escalate=True
+------------------------------------------------------------------------------
+CALL: check_job_application_status(record_id='NAU-1011')
+standardized MCP response:
+  is_error       : False
+  content blocks : 1
+    - type=text
+      text={"found":true,"record_id":"NAU-1011","category":"Sales Associate","status":"Applied","expected_salary_inr":970000,"days_since_created":30,"flagged_priority_review":false,"recency_norm":1.0,"escalation_score":0.4,"escalation_threshold":0.4,"escalate":true,"explanation":"escalation_score = 0.6 * flagged(0) + 0.4 * min(30/23.0, 1.0)=1.0 = 0.4; threshold 0.4 -> ESCALATE"}
+  structured_content:
+{
+  "found": true,
+  "record_id": "NAU-1011",
+  "category": "Sales Associate",
+  "status": "Applied",
+  "expected_salary_inr": 970000,
+  "days_since_created": 30,
+  "flagged_priority_review": false,
+  "recency_norm": 1.0,
+  "escalation_score": 0.4,
+  "escalation_threshold": 0.4,
+  "escalate": true,
+  "explanation": "escalation_score = 0.6 * flagged(0) + 0.4 * min(30/23.0, 1.0)=1.0 = 0.4; threshold 0.4 -> ESCALATE"
+}
+  -> NAU-1011: status='Applied', expected_salary_inr=970,000, escalation_score=0.4, escalate=True
+------------------------------------------------------------------------------
+CALL: check_job_application_status(record_id='NAU-9999')
+standardized MCP response:
+  is_error       : False
+  content blocks : 1
+    - type=text
+      text={"found":false,"record_id":"NAU-9999","error":"No job application found with record_id 'NAU-9999'. Valid ids look like NAU-1000 .. NAU-1047."}
+  structured_content:
+{
+  "found": false,
+  "record_id": "NAU-9999",
+  "error": "No job application found with record_id 'NAU-9999'. Valid ids look like NAU-1000 .. NAU-1047."
+}
+  -> server correctly reported the id as not found
+==============================================================================
+RESULT: 3 successful lookups over MCP (requirement: >= 2 different record ids)
+        plus 1 not-found case handled cleanly over the same transport
+==============================================================================
+child MCP server terminated.

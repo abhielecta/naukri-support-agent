@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# regenerable local state - rebuild with `python run_all.py`
+chroma_store/
+checkpoints.sqlite
+conversation_memory.json
+logs/*.jsonl
+
+# transcripts ARE part of the submission and are deliberately committed:
+# !transcripts/

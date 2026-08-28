@@ -1,0 +1,3 @@
+# Background Verification Process
+
+Background verification starts only after the candidate accepts the offer and gives written consent through the platform consent form. The standard check covers previous employment dates, the highest education qualification, and a criminal-record search in the districts where the candidate has lived during the last five years. Verification is expected to close within fourteen working days, and if the vendor needs longer the recruiter must inform the candidate in writing with a revised date. A discrepancy is not by itself grounds for withdrawal: the candidate is given seven days to submit a clarification, and only an unexplained material discrepancy allows the employer to withdraw the offer.

@@ -1,0 +1,80 @@
+==============================================================================
+TRANSCRIPT: 04_grounded_generation
+Part 1 / Task 4 - grounded generation, 5 in-scope + 1 out-of-scope
+command   : python rag_core.py demo
+MOCK_LLM  : 1 (no API key, no network)
+exit code : 0
+duration  : 21.8s
+==============================================================================
+
+==============================================================================
+PART 1 / TASK 4 - GROUNDED GENERATION
+collection = naukri_kb_sentence (sentence-based)   top_k = 3
+calibrated 'I don't know' threshold = 0.4104
+==============================================================================
+--- IN-SCOPE QUERY 1/5 ---
+QUERY        : How long does an offer stay open before it expires?
+top-1 cosine : 0.6983   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.6983  doc=kb03_offer_negotiation
+  hit 2: sim=0.5087  doc=kb03_offer_negotiation
+  hit 3: sim=0.4775  doc=kb05_notice_period
+ANSWER       : An offer is live from the moment the written offer letter is released on the platform, and it stays open for seven calendar days unless the employer states a shorter window in the letter. Candidates may submit one structured counter-offer during that window, stating the revised expected salary and the reason, and the recruiter must respond within three working days. If the candidate does not respond before the offer expires, the application stays in the Offered status with an expiry note and the employer may release the position to another candidate.
+SOURCES      : Offer Negotiation Policy, Notice Period Policy
+--- IN-SCOPE QUERY 2/5 ---
+QUERY        : What does the background verification check actually cover?
+top-1 cosine : 0.7478   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.7478  doc=kb04_background_verification
+  hit 2: sim=0.6310  doc=kb12_data_retention
+  hit 3: sim=0.5970  doc=kb04_background_verification
+ANSWER       : Background verification starts only after the candidate accepts the offer and gives written consent through the platform consent form. The standard check covers previous employment dates, the highest education qualification, and a criminal-record search in the districts where the candidate has lived during the last five years. Background-verification results are held separately under restricted access and are deleted twelve months after the hiring decision.
+SOURCES      : Background Verification Process, Applicant Data Retention Policy
+--- IN-SCOPE QUERY 3/5 ---
+QUERY        : When am I eligible to apply for an internal transfer?
+top-1 cosine : 0.8006   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.8006  doc=kb07_internal_transfer
+  hit 2: sim=0.4407  doc=kb07_internal_transfer
+  hit 3: sim=0.3927  doc=kb07_internal_transfer
+ANSWER       : An employee becomes eligible to apply for an internal transfer after twelve months in the current role and after probation has been completed. An employee who is on an active performance improvement plan or in a disciplinary process is not eligible to transfer until that process closes. When a transfer is approved, the release date is agreed between the two managers and should not run beyond forty-five days from the approval date.
+SOURCES      : Internal Transfer Eligibility
+--- IN-SCOPE QUERY 4/5 ---
+QUERY        : How long is the probation period for a new hire?
+top-1 cosine : 0.7247   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.7247  doc=kb08_probation_period
+  hit 2: sim=0.6425  doc=kb08_probation_period
+  hit 3: sim=0.6297  doc=kb08_probation_period
+ANSWER       : New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date. During probation either side may end the engagement with fifteen days notice, and the longer notice period written into the employment contract applies only after confirmation. A probation review is held in the fifth month, and the outcome is either confirmation, a one-time extension of up to three months, or separation, and that outcome must be given to the employee in writing.
+SOURCES      : Probation Period Policy
+--- IN-SCOPE QUERY 5/5 ---
+QUERY        : When is the referral bonus paid out?
+top-1 cosine : 0.8142   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.8142  doc=kb06_referral_bonus
+  hit 2: sim=0.8045  doc=kb06_referral_bonus
+  hit 3: sim=0.6847  doc=kb06_referral_bonus
+ANSWER       : The referral bonus becomes payable once the referred candidate completes ninety days of continuous service, and it is paid with the payroll cycle that follows that milestone. If two employees refer the same candidate, the bonus goes to the earlier timestamped referral and the amount is never split between them. Referrals for interns, contractors and rehires of former employees are excluded from the bonus scheme unless the employer explicitly opts them in.
+SOURCES      : Referral Bonus Policy
+--- DELIBERATELY OUT-OF-SCOPE QUERY ---
+QUERY        : What is the best recipe for Hyderabadi biryani?
+top-1 cosine : 0.1778   (threshold 0.4104)
+grounded     : False
+  hit 1: sim=0.1778  doc=kb01_job_application_eligibility
+  hit 2: sim=0.1453  doc=kb10_diversity_hiring
+  hit 3: sim=0.0414  doc=kb01_job_application_eligibility
+ANSWER       : I don't know. I could not find anything in the Naukri.com employer-support knowledge base that answers this question, so I will not guess. Please rephrase the question or contact the employer-support desk.
+Fallback fired as required: True
+==============================================================================
+Also showing the SAME query on the fixed-size collection, to prove both
+indexes produce sensible retrieval:
+--- naukri_kb_fixed_overlap ---
+QUERY        : How long does an offer stay open before it expires?
+top-1 cosine : 0.6769   (threshold 0.4104)
+grounded     : True
+  hit 1: sim=0.6769  doc=kb03_offer_negotiation
+  hit 2: sim=0.5180  doc=kb03_offer_negotiation
+  hit 3: sim=0.4753  doc=kb05_notice_period
+ANSWER       : An offer is live from the moment the written offer letter is released on the platform, and it stays open for seven calendar days unless the employer states a shorter window in the letter. Candidates may submit one structured counter-offer during that window, stating the revised expected salary and the reason, and the recruiter must respond within three working days. If the candidate does not respond before the offer expires, the application stays in the Offered status with an expiry note and the employer may release the position to another candidate.
+SOURCES      : Offer Negotiation Policy, Notice Period Policy
