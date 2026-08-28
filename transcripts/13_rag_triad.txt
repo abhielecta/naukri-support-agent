@@ -4,7 +4,7 @@ Part 3 / Task 13 - RAG triad over 15 queries
 command   : python eval_rag_triad.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 25.5s
+duration  : 25.0s
 ==============================================================================
 
 ====================================================================================================

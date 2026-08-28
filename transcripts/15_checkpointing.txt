@@ -4,7 +4,7 @@ Part 4 / Task 15 - SQLite checkpointing across an interruption
 command   : python checkpoint_demo.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 27.0s
+duration  : 26.4s
 ==============================================================================
 
 ==============================================================================
@@ -14,7 +14,6 @@ checkpointer : langgraph.checkpoint.sqlite.SqliteSaver
               (from the separate `langgraph-checkpoint-sqlite` package)
 database     : C:\Users\abhie\OneDrive\Desktop\LLM\CAPSTONE\checkpoints.sqlite
 thread id    : naukri-thread-checkpoint-demo
-cleared any previous checkpoints for thread naukri-thread-checkpoint-demo
 ##############################################################################
 # launching phase1 as a SEPARATE OS PROCESS
 ##############################################################################

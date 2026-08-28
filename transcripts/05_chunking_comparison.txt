@@ -4,7 +4,7 @@ Part 1 / Task 5 - Precision@3 / Recall@3 for both collections
 command   : python eval_chunking.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 23.1s
+duration  : 22.4s
 ==============================================================================
 
 ==============================================================================
