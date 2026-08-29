@@ -4,7 +4,7 @@ Part 2 / Task 9 - structured output JSON Schema
 command   : python schemas.py
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 0.2s
+duration  : 0.3s
 ==============================================================================
 
 ==============================================================================

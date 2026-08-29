@@ -470,6 +470,18 @@ prevent. It now uses `shutdown(wait=False)`.
 | `resilience_demo.py` | Task 16 — retries, per-node timeout, global timeout |
 | `run_all.py` | regenerates every transcript from a clean state |
 | `transcripts/` | the demonstration output for every task |
+| `docs/codebase-guide.html` | file-by-file walkthrough in dependency reading order |
+| `docs/annotated-source.html` | line-by-line annotations for every module |
+
+### Reading the code
+
+Two self-contained HTML pages in [`docs/`](docs/) explain the implementation. Open either
+one directly in a browser — no build step, no server, no external assets.
+
+- **[`docs/codebase-guide.html`](docs/codebase-guide.html)** — what each file is *for*, in the
+  order the code is worth reading, with a request-lifecycle diagram and a concepts glossary.
+- **[`docs/annotated-source.html`](docs/annotated-source.html)** — what each *line* does, module
+  by module in file order, with line numbers matching the source.
 
 ---
 

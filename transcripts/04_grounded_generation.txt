@@ -4,7 +4,7 @@ Part 1 / Task 4 - grounded generation, 5 in-scope + 1 out-of-scope
 command   : python rag_core.py demo
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 22.0s
+duration  : 22.3s
 ==============================================================================
 
 ==============================================================================

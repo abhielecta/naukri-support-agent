@@ -4,7 +4,7 @@ Part 2 / Task 8 - multi-turn memory + fresh-conversation reset
 command   : python agent.py memory
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 23.6s
+duration  : 23.1s
 ==============================================================================
 
 ==============================================================================

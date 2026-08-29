@@ -4,7 +4,7 @@ Part 2 / Task 7 - LangGraph routing, both branches firing
 command   : python agent.py demo
 MOCK_LLM  : 1 (no API key, no network)
 exit code : 0
-duration  : 23.4s
+duration  : 22.2s
 ==============================================================================
 
 ==============================================================================
@@ -21,7 +21,7 @@ schema valid   : True (valid)
 ------------------------------------------------------------------------------
 {
   "schema_version": "1.0",
-  "trace_id": "trace-a1a1a7228a17",
+  "trace_id": "trace-ac2fed5342f0",
   "route": "rag",
   "answer": "The notice period a candidate owes their current employer is declared at application time and cannot be changed after an offer is released without informing the recruiter. Naukri.com employers commonly work with notice periods of thirty, sixty or ninety days, and the joining date printed on the offer letter is set from the declared figure. New hires serve a standard probation of six months, which begins on the actual joining date and not on the offer date.",
   "grounded": true,
@@ -56,7 +56,7 @@ schema valid   : True (valid)
 ------------------------------------------------------------------------------
 {
   "schema_version": "1.0",
-  "trace_id": "trace-554dfedfd87d",
+  "trace_id": "trace-344b353fcfb8",
   "route": "record_lookup",
   "answer": "Application NAU-1003 (Data Analyst) is currently in the 'Interview Scheduled' stage. The candidate's expected salary is INR 2,570,000 per year, and the application was created 21 day(s) ago. Its escalation score is 0.3652 against a threshold of 0.4, so this application does not need escalation.",
   "grounded": true,

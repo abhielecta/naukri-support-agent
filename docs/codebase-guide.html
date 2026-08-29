@@ -1,0 +1,1467 @@
+<title>Reading the Naukri Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:      #f7f4ee;
+    --paper-2:    #efeae0;
+    --card:       #fffdf9;
+    --ink:        #241f24;
+    --ink-2:      #564e52;
+    --ink-3:      #857a80;
+    --rule:       #ddd5c8;
+    --rule-soft:  #e8e1d6;
+    --brass:      #a9761f;
+    --brass-soft: #f0e3c9;
+    --sage:       #46704f;
+    --sage-soft:  #e0ebdf;
+    --rose:       #a83f57;
+    --rose-soft:  #f6e2e5;
+    --code-bg:    #2a2430;
+    --code-fg:    #ece5df;
+    --code-dim:   #9c8f97;
+
+    --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #17131a;
+      --paper-2:    #1e1922;
+      --card:       #201b27;
+      --ink:        #ece6ea;
+      --ink-2:      #b3a8b1;
+      --ink-3:      #8a7f89;
+      --rule:       #3a3242;
+      --rule-soft:  #2c2534;
+      --brass:      #d9a94e;
+      --brass-soft: #3a2f1c;
+      --sage:       #8dbf95;
+      --sage-soft:  #23301f;
+      --rose:       #e08a9c;
+      --rose-soft:  #331d24;
+      --code-bg:    #100d14;
+      --code-fg:    #e4dce2;
+      --code-dim:   #7d7280;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #17131a;
+    --paper-2:    #1e1922;
+    --card:       #201b27;
+    --ink:        #ece6ea;
+    --ink-2:      #b3a8b1;
+    --ink-3:      #8a7f89;
+    --rule:       #3a3242;
+    --rule-soft:  #2c2534;
+    --brass:      #d9a94e;
+    --brass-soft: #3a2f1c;
+    --sage:       #8dbf95;
+    --sage-soft:  #23301f;
+    --rose:       #e08a9c;
+    --rose-soft:  #331d24;
+    --code-bg:    #100d14;
+    --code-fg:    #e4dce2;
+    --code-dim:   #7d7280;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.62;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 28px 100px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 54px 0 22px;
+    margin-bottom: 44px;
+  }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 6.5vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 1.16rem;
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin: 0 0 26px;
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+  .fact {
+    padding-right: 30px;
+    margin-right: 30px;
+    border-right: 1px solid var(--rule);
+  }
+  .fact:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+  .fact dt {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 4px;
+  }
+  .fact dd {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 1.32rem;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- layout ---------- */
+  .cols {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 940px) {
+    .cols { grid-template-columns: 1fr; gap: 34px; }
+    .rail { position: static !important; max-height: none !important; }
+  }
+
+  .rail {
+    position: sticky;
+    top: 22px;
+    max-height: calc(100vh - 44px);
+    overflow-y: auto;
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding-right: 6px;
+  }
+  .rail h2 {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 10px;
+  }
+  .rail-group { margin-bottom: 20px; }
+  .rail-group > .rg-title {
+    display: block;
+    color: var(--brass);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .rail a {
+    display: block;
+    color: var(--ink-2);
+    text-decoration: none;
+    padding: 2.5px 0 2.5px 11px;
+    border-left: 2px solid var(--rule-soft);
+  }
+  .rail a:hover, .rail a:focus-visible {
+    color: var(--ink);
+    border-left-color: var(--brass);
+    background: var(--paper-2);
+  }
+
+  /* ---------- sections ---------- */
+  .layer { margin-bottom: 66px; scroll-margin-top: 20px; }
+  .layer-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 8px;
+  }
+  .layer-num {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    flex: none;
+  }
+  .layer-head h2 {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.05;
+  }
+  .layer-intro {
+    color: var(--ink-2);
+    max-width: 68ch;
+    margin: 0 0 30px;
+    font-size: 1.02rem;
+  }
+
+  /* ---------- file cards ---------- */
+  .file {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--brass);
+    padding: 26px 28px 24px;
+    margin-bottom: 26px;
+    scroll-margin-top: 20px;
+  }
+  .file-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .fname {
+    font-family: var(--f-mono);
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .lines {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .task-tag {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--brass);
+    background: var(--brass-soft);
+    padding: 2.5px 7px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .job {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin: 0 0 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule-soft);
+    text-wrap: balance;
+  }
+  .file p { margin: 0 0 14px; max-width: 70ch; }
+  .file p:last-child { margin-bottom: 0; }
+
+  h4 {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 22px 0 9px;
+  }
+
+  code {
+    font-family: var(--f-mono);
+    font-size: 0.87em;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    font-family: var(--f-mono);
+    font-size: 12.6px;
+    line-height: 1.62;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 14px;
+    border-radius: 3px;
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  .cm { color: var(--code-dim); }
+  .kw { color: #d9a94e; }
+  .st { color: #8dbf95; }
+
+  /* ---------- callouts ---------- */
+  .why {
+    border-left: 3px solid var(--brass);
+    background: var(--brass-soft);
+    padding: 13px 17px;
+    margin: 16px 0 0;
+    font-size: 0.96rem;
+  }
+  .why strong {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .why p { margin: 0; max-width: 70ch; }
+  .gotcha { border-left-color: var(--rose); background: var(--rose-soft); }
+  .gotcha strong { color: var(--rose); }
+  .win { border-left-color: var(--sage); background: var(--sage-soft); }
+  .win strong { color: var(--sage); }
+
+  /* ---------- tables ---------- */
+  .tw { overflow-x: auto; margin: 0 0 16px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+    min-width: 460px;
+  }
+  th {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: left;
+    border-bottom: 1.5px solid var(--rule);
+    padding: 7px 12px 7px 0;
+  }
+  td {
+    padding: 8px 12px 8px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+  td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.mono { font-family: var(--f-mono); font-size: 0.92em; white-space: nowrap; }
+
+  /* ---------- diagram ---------- */
+  .figure {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 24px 20px 16px;
+    margin: 0 0 34px;
+    overflow-x: auto;
+  }
+  .figure svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .figcap {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin-top: 14px;
+  }
+
+  /* ---------- glossary ---------- */
+  .gloss { display: grid; gap: 0; }
+  .gterm {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 22px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  @media (max-width: 640px) { .gterm { grid-template-columns: 1fr; gap: 5px; } }
+  .gterm dt {
+    font-family: var(--f-mono);
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--brass);
+  }
+  .gterm dd { margin: 0; color: var(--ink-2); font-size: 0.97rem; }
+
+  .runline {
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 11px 15px;
+    margin: 0 0 10px;
+    overflow-x: auto;
+    border-radius: 3px;
+  }
+  .runline .cm { color: var(--code-dim); }
+
+  a { color: var(--brass); }
+  :focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Capstone codebase / walkthrough</p>
+    <h1>Reading the Naukri Agent</h1>
+    <p class="standfirst">
+      Nineteen Python files that together make a support agent which answers hiring-policy
+      questions, looks up job applications, refuses what it cannot ground, and survives being
+      interrupted. Here is what every one of them does, in the order they are worth reading.
+    </p>
+    <dl class="facts">
+      <div class="fact"><dt>Python files</dt><dd>19</dd></div>
+      <div class="fact"><dt>Lines of code</dt><dd>4,114</dd></div>
+      <div class="fact"><dt>Layers</dt><dd>6</dd></div>
+      <div class="fact"><dt>API keys needed</dt><dd>0</dd></div>
+    </dl>
+  </header>
+
+  <div class="cols">
+
+    <nav class="rail" aria-label="File index">
+      <h2>Reading order</h2>
+
+      <div class="rail-group">
+        <span class="rg-title">1 · Foundations</span>
+        <a href="#config">config.py</a>
+        <a href="#dataset">dataset.py</a>
+        <a href="#embeddings">embeddings.py</a>
+        <a href="#llm">llm.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">2 · Retrieval</span>
+        <a href="#ragcore">rag_core.py</a>
+        <a href="#calibrate">calibrate_threshold.py</a>
+        <a href="#evalchunk">eval_chunking.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">3 · The agent</span>
+        <a href="#tools">tools.py</a>
+        <a href="#schemas">schemas.py</a>
+        <a href="#guardrails">guardrails.py</a>
+        <a href="#memory">memory.py</a>
+        <a href="#agent">agent.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">4 · Serving</span>
+        <a href="#logging">structured_logging.py</a>
+        <a href="#app">app.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">5 · Judging</span>
+        <a href="#triad">eval_rag_triad.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">6 · Hardening</span>
+        <a href="#mcp">mcp_server / client</a>
+        <a href="#checkpoint">checkpoint_demo.py</a>
+        <a href="#resilience">resilience_demo.py</a>
+        <a href="#runall">run_all.py</a>
+      </div>
+
+      <div class="rail-group">
+        <span class="rg-title">Reference</span>
+        <a href="#lifecycle">Request lifecycle</a>
+        <a href="#glossary">Concepts glossary</a>
+      </div>
+    </nav>
+
+    <main>
+
+      <!-- ============ LIFECYCLE ============ -->
+      <section class="layer" id="lifecycle">
+        <div class="layer-head">
+          <span class="layer-num">MAP</span>
+          <h2>What happens to one question</h2>
+        </div>
+        <p class="layer-intro">
+          Before any single file makes sense, hold this shape in your head. A question enters,
+          five graph nodes act on it in turn, and a schema-checked JSON object comes out. Every
+          file in the project is a piece of this path or a way of measuring it.
+        </p>
+
+        <div class="figure">
+          <svg viewBox="0 0 860 400" role="img" aria-label="Diagram of a question flowing through five graph nodes to a validated JSON response">
+            <defs>
+              <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+              </marker>
+            </defs>
+            <g font-family="JetBrains Mono, monospace" font-size="11.5" color="currentColor">
+
+              <!-- entry -->
+              <rect x="8" y="176" width="96" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5"/>
+              <text x="56" y="194" text-anchor="middle" fill="currentColor" font-size="10.5" opacity="0.75">POST /ask</text>
+              <text x="56" y="207" text-anchor="middle" fill="currentColor" font-size="10.5" opacity="0.75">question</text>
+              <line x1="106" y1="196" x2="140" y2="196" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.55"/>
+
+              <!-- node 1 -->
+              <rect x="144" y="170" width="118" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="203" y="190" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">guard_input</text>
+              <text x="203" y="204" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">mask PII</text>
+              <text x="203" y="215" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">spot injection</text>
+
+              <!-- branch 1 up to blocked -->
+              <path d="M203,168 L203,74 L560,74" fill="none" stroke="#a83f57" stroke-width="1.6" marker-end="url(#ar)" color="#a83f57"/>
+              <text x="330" y="66" fill="#a83f57" font-size="10">injection detected → blocked</text>
+
+              <line x1="264" y1="196" x2="300" y2="196" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+
+              <!-- node 2 -->
+              <rect x="304" y="170" width="118" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="363" y="190" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">route_intent</text>
+              <text x="363" y="204" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">find NAU-id, or</text>
+              <text x="363" y="215" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">recall it from memory</text>
+
+              <!-- split -->
+              <path d="M424,186 L462,186 L462,140 L500,140" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+              <path d="M424,206 L462,206 L462,258 L500,258" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+              <text x="470" y="128" fill="currentColor" font-size="9.5" opacity="0.7">"rag"</text>
+              <text x="470" y="278" fill="currentColor" font-size="9.5" opacity="0.7">"record_lookup"</text>
+
+              <!-- node 3 -->
+              <rect x="504" y="114" width="130" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="569" y="134" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">rag_answer</text>
+              <text x="569" y="148" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">retrieve 3 chunks</text>
+              <text x="569" y="159" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">draft from them only</text>
+
+              <!-- node 4 -->
+              <rect x="504" y="232" width="130" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="569" y="252" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">record_lookup</text>
+              <text x="569" y="266" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">read the dataset</text>
+              <text x="569" y="277" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">score escalation</text>
+
+              <!-- merge -->
+              <path d="M636,140 L672,140 L672,186 L706,186" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+              <path d="M636,258 L672,258 L672,206 L706,206" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+
+              <!-- node 5 -->
+              <rect x="710" y="164" width="126" height="64" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <text x="773" y="184" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">finalize</text>
+              <text x="773" y="198" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">grounded?</text>
+              <text x="773" y="209" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">schema valid?</text>
+              <text x="773" y="220" text-anchor="middle" fill="currentColor" font-size="9.5" opacity="0.68">save the turn</text>
+
+              <!-- blocked path lands on finalize -->
+              <path d="M560,74 L773,74 L773,162" fill="none" stroke="#a83f57" stroke-width="1.6" marker-end="url(#ar)" color="#a83f57"/>
+
+              <!-- out -->
+              <line x1="773" y1="230" x2="773" y2="286" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+              <rect x="700" y="292" width="146" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5"/>
+              <text x="773" y="310" text-anchor="middle" fill="currentColor" font-size="10.5" opacity="0.75">validated JSON</text>
+              <text x="773" y="323" text-anchor="middle" fill="currentColor" font-size="10.5" opacity="0.75">+ one log line</text>
+
+              <!-- refuse note -->
+              <text x="712" y="356" fill="#a83f57" font-size="10">if not grounded → "I don't know"</text>
+            </g>
+          </svg>
+          <p class="figcap">agent.py · 5 nodes, 2 conditional edges · every path ends at finalize</p>
+        </div>
+
+        <p>
+          Two decisions in that picture are the whole design. The first conditional edge means a
+          prompt-injection attempt never reaches your retrieval code at all — it is refused in the
+          first node. The second conditional edge is the tool router: it decides whether this is a
+          <em>policy</em> question (go to the knowledge base) or an <em>application</em> question
+          (go to the dataset). And <code>finalize</code> is a single choke point, so there is exactly
+          one place where an answer can be refused and exactly one place where a response is checked
+          against the schema.
+        </p>
+      </section>
+
+      <!-- ============ LAYER 1 ============ -->
+      <section class="layer" id="layer1">
+        <div class="layer-head">
+          <span class="layer-num">01</span>
+          <h2>Foundations</h2>
+        </div>
+        <p class="layer-intro">
+          Four files with no interesting dependencies of their own. Everything else imports them.
+          Read these first and the rest of the project stops containing surprises.
+        </p>
+
+        <article class="file" id="config">
+          <div class="file-head">
+            <span class="fname">config.py</span>
+            <span class="lines">67 lines</span>
+            <span class="task-tag">shared</span>
+          </div>
+          <p class="job">One place where every path, tuning number and mode flag lives.</p>
+          <p>
+            There are no magic numbers scattered through this project. Chunk sizes, the collection
+            names, the top-k value, the file locations and the refusal threshold are all defined
+            here and imported everywhere else. Change <code>FIXED_CHUNK_SIZE</code> here and the
+            indexer, the evaluator and the agent all move together.
+          </p>
+          <p>
+            The last few lines create the output directories on import, which is why you can clone
+            the repo with no <code>logs/</code> folder and the first run still works.
+          </p>
+          <h4>The one number to understand</h4>
+<pre><code><span class="cm"># NOT a tutorial preset. Measured by calibrate_threshold.py</span>
+<span class="cm">#   sentence collection: in-scope 0.6930..0.8142 | out 0.1451..0.1932</span>
+<span class="cm">#   fixed collection   : in-scope 0.6230..0.7816 | out 0.1424..0.1979</span>
+GROUNDEDNESS_THRESHOLD = <span class="kw">0.4104</span>
+
+<span class="kw">def</span> mock_llm_enabled() -> bool:
+    <span class="cm">"""True unless the operator explicitly opts into a real LLM."""</span>
+    <span class="kw">return</span> os.getenv(<span class="st">"MOCK_LLM"</span>, <span class="st">"1"</span>).strip().lower() <span class="kw">not in</span> (<span class="st">"0"</span>, <span class="st">"false"</span>, <span class="st">"no"</span>)</code></pre>
+          <div class="why">
+            <strong>Why it's built this way</strong>
+            <p>
+              The default is <code>"1"</code>, so mock mode is what you get unless you deliberately
+              opt out. That single line is what makes "runs with zero API keys" true rather than
+              aspirational — you cannot accidentally require a key.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="dataset">
+          <div class="file-head">
+            <span class="fname">dataset.py</span>
+            <span class="lines">212 lines</span>
+            <span class="task-tag">Task 1</span>
+          </div>
+          <p class="job">Invents 48 fake job applications, the same 48 every single time.</p>
+          <p>
+            This is a <em>seeded</em> generator. <code>random.Random(20260828)</code> creates a
+            private random number stream, so the "random" salaries and ages are identical on your
+            machine and your grader's. Nothing here touches the global <code>random</code> module,
+            which means importing this file cannot disturb randomness anywhere else.
+          </p>
+          <h4>The trick that guarantees coverage</h4>
+          <p>
+            The brief demands every category appears at least 3 times and every status at least
+            once. Drawing 48 random categories would <em>probably</em> satisfy that, but "probably"
+            is not a guarantee. So instead the code builds a pool with exact counts and shuffles it:
+          </p>
+<pre><code>category_pool = []
+<span class="kw">for</span> cat, n <span class="kw">in</span> CATEGORY_QUOTA.items():   <span class="cm"># {"Software Engineer": 12, ...}</span>
+    category_pool.extend([cat] * n)      <span class="cm"># exactly 12 of them, etc.</span>
+rng.shuffle(category_pool)               <span class="cm"># order is random, counts are not</span></code></pre>
+          <p>
+            Only <code>flagged_priority_review</code> is left to chance — a coin flip at
+            <code>p = 0.20</code> — because the brief wants that percentage to land in a band
+            (10–30%) rather than hit an exact number. It comes out at 7/48 = 14.58%.
+          </p>
+          <h4>The helper that matters later</h4>
+<pre><code><span class="kw">def</span> days_percentile(p: float) -> float:
+    values = sorted(r[<span class="st">"days_since_created"</span>] <span class="kw">for</span> r <span class="kw">in</span> JOB_APPLICATIONS)
+    k = (len(values) - <span class="kw">1</span>) * (p / <span class="kw">100.0</span>)
+    lo, hi = int(k), min(int(k) + <span class="kw">1</span>, len(values) - <span class="kw">1</span>)
+    <span class="kw">return</span> values[lo] + (values[hi] - values[lo]) * (k - lo)  <span class="cm"># interpolate</span></code></pre>
+          <div class="why">
+            <strong>Why it's built this way</strong>
+            <p>
+              <code>days_percentile(80)</code> returns 23.0, and that number becomes the divisor in
+              the escalation formula in <code>tools.py</code>. This is how a "designed" score differs
+              from an invented one — the constant is read out of the data rather than picked because
+              it looked round.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="embeddings">
+          <div class="file-head">
+            <span class="fname">embeddings.py</span>
+            <span class="lines">53 lines</span>
+            <span class="task-tag">shared</span>
+          </div>
+          <p class="job">Turns text into 384 numbers, using one model loaded once.</p>
+          <p>
+            An <em>embedding</em> is a list of numbers that represents meaning. Sentences about
+            probation land near each other in that 384-dimensional space; a sentence about biryani
+            lands far away. That is the entire basis of retrieval in this project.
+          </p>
+          <p>
+            The model is loaded lazily inside <code>get_model()</code> and cached in a module-level
+            variable. Loading MiniLM takes about 20 seconds, so doing it once per process instead of
+            once per call is the difference between the demos taking 20 seconds and 20 minutes.
+          </p>
+<pre><code><span class="kw">def</span> embed(texts, normalize=<span class="kw">True</span>) -> np.ndarray:
+    <span class="kw">return</span> get_model().encode(list(texts), convert_to_numpy=<span class="kw">True</span>,
+                              normalize_embeddings=normalize)</code></pre>
+          <div class="why">
+            <strong>Why it's built this way</strong>
+            <p>
+              <code>normalize_embeddings=True</code> scales every vector to length 1. Once vectors
+              are unit-length, cosine similarity is just the dot product — so elsewhere in the code
+              you will see bare <code>a @ b</code> and <code>mat @ q</code> doing similarity work
+              with no division. That is why those lines are so short.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="llm">
+          <div class="file-head">
+            <span class="fname">llm.py</span>
+            <span class="lines">268 lines</span>
+            <span class="task-tag">MOCK_LLM</span>
+          </div>
+          <p class="job">The only place the project talks to a "language model" — and the mock that stands in for one.</p>
+          <p>
+            This is the most conceptually interesting file in the repo. It defines one interface with
+            two implementations. <code>get_llm()</code> hands back <code>MockLLM</code> by default and
+            <code>RealLLM</code> only if you explicitly set <code>MOCK_LLM=0</code>. Nothing else in
+            the codebase knows or cares which one it got.
+          </p>
+          <h4>How the mock answers a question</h4>
+          <p>
+            It cannot generate text, so it <em>selects</em> text. Given the question and the
+            retrieved chunks, it splits the chunks into sentences, scores each sentence against the
+            question, and returns the best three in their original reading order:
+          </p>
+<pre><code>q   = np.asarray(embed_one(question))
+mat = embed(sentences)
+scored = sorted(((float(np.dot(q, mat[i])), sentences[i])
+                 <span class="kw">for</span> i <span class="kw">in</span> range(len(sentences))), key=<span class="kw">lambda</span> t: -t[<span class="kw">0</span>])
+
+picked = [s <span class="kw">for</span> sc, s <span class="kw">in</span> scored[:<span class="kw">3</span>] <span class="kw">if</span> sc >= SENTENCE_FLOOR]
+picked.sort(key=sentences.index)   <span class="cm"># restore reading order</span>
+<span class="kw">return</span> <span class="st">" "</span>.join(picked)</code></pre>
+          <div class="win">
+            <strong>The elegant part</strong>
+            <p>
+              Because it can only return sentences that are physically present in the retrieved
+              context, <strong>this mock cannot hallucinate</strong>. Not "is unlikely to" —
+              cannot, structurally. That is a genuinely stronger groundedness guarantee than a real
+              LLM gives you, and it is why the whole project is honest under mock mode.
+            </p>
+          </div>
+          <h4>How the mock judges an answer</h4>
+          <p>
+            <code>judge_triad()</code> scores three things a human evaluator would look at: did we
+            retrieve relevant context, is every claim supported, and does the answer address the
+            question. Refusals get special handling, because a refusal is a different kind of object
+            from an answer:
+          </p>
+<pre><code>REFUSAL_PREFIXES = (<span class="st">"i don't know"</span>, <span class="st">"i can't act on that"</span>)
+
+<span class="kw">if</span> refusal:
+    groundedness     = <span class="kw">1.0</span>                      <span class="cm"># asserts nothing → nothing unsupported</span>
+    answer_relevance = <span class="kw">1.0</span> - context_relevance  <span class="cm"># right call iff context was empty</span></code></pre>
+          <div class="why">
+            <strong>Why it's built this way</strong>
+            <p>
+              That second line is doing real work. If the agent refuses when there <em>was</em> good
+              context, <code>context_relevance</code> is high, so answer relevance scores near zero
+              and the metric punishes it. An over-cautious agent that refuses everything would look
+              bad in the numbers, which is exactly what you want an evaluation to do.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ LAYER 2 ============ -->
+      <section class="layer" id="layer2">
+        <div class="layer-head">
+          <span class="layer-num">02</span>
+          <h2>Retrieval</h2>
+        </div>
+        <p class="layer-intro">
+          Turning twelve policy documents into something searchable, then proving the search
+          actually works and choosing a refusal threshold from measurement rather than habit.
+        </p>
+
+        <article class="file" id="ragcore">
+          <div class="file-head">
+            <span class="fname">rag_core.py</span>
+            <span class="lines">350 lines</span>
+            <span class="task-tag">Tasks 2–4</span>
+          </div>
+          <p class="job">Chops documents two different ways, stores both in a vector database, and answers questions from what it finds.</p>
+
+          <h4>Step 1 — chunking</h4>
+          <p>
+            You cannot embed a whole document usefully; the meaning gets averaged into mush. So
+            documents are cut into chunks. This project implements two strategies so it can compare
+            them:
+          </p>
+<pre><code><span class="kw">def</span> chunk_fixed_overlap(text, size=<span class="kw">420</span>, overlap=<span class="kw">90</span>):
+    step = size - overlap            <span class="cm"># slide 330 chars at a time</span>
+    <span class="kw">for</span> start <span class="kw">in</span> range(<span class="kw">0</span>, len(text), step):
+        chunks.append(text[start:start + size])   <span class="cm"># blind character window</span>
+
+<span class="kw">def</span> chunk_sentences(text, group=<span class="kw">2</span>, stride=<span class="kw">1</span>):
+    sents = split_sentences(text)
+    <span class="kw">for</span> start <span class="kw">in</span> range(<span class="kw">0</span>, len(sents), stride):
+        chunks.append(<span class="st">" "</span>.join(sents[start:start + group]))  <span class="cm"># whole sentences</span></code></pre>
+          <p>
+            The first cuts at character 420 regardless of what is there — often mid-sentence. The
+            second always ends on a sentence boundary, and consecutive windows share a sentence so a
+            rule spanning two sentences is never split. Fixed gives 24 chunks; sentence gives 36.
+          </p>
+
+          <h4>Step 2 — indexing</h4>
+          <p>
+            Each strategy gets its <em>own</em> ChromaDB collection. Metadata on every chunk records
+            which parent document it came from, which is what makes document-level scoring possible
+            later.
+          </p>
+<pre><code>coll = client.create_collection(name=coll_name,
+    metadata={<span class="st">"hnsw:space"</span>: <span class="st">"cosine"</span>, <span class="st">"strategy"</span>: label})
+coll.add(ids=ids, documents=texts, metadatas=metas,
+         embeddings=[v.tolist() <span class="kw">for</span> v <span class="kw">in</span> vectors])</code></pre>
+
+          <h4>Step 3 — retrieval</h4>
+<pre><code>res = coll.query(query_embeddings=[qvec], n_results=k)
+<span class="cm"># Chroma returns DISTANCE; convert to similarity so bigger = better</span>
+similarity = round(<span class="kw">1.0</span> - float(dist), <span class="kw">4</span>)</code></pre>
+          <div class="gotcha">
+            <strong>Easy to get wrong</strong>
+            <p>
+              Chroma gives you cosine <em>distance</em>, where 0 means identical. Every threshold in
+              this project is expressed as a <em>similarity</em>, where 1 means identical. Forget the
+              <code>1.0 - dist</code> conversion and every comparison in the codebase silently
+              inverts.
+            </p>
+          </div>
+
+          <h4>Step 4 — grounded answering</h4>
+<pre><code><span class="kw">if not</span> hits <span class="kw">or</span> top_sim &lt; threshold:
+    <span class="kw">return</span> RagResult(answer=FALLBACK_ANSWER, grounded=<span class="kw">False</span>, ...)
+answer = get_llm().generate_grounded(query, contexts)</code></pre>
+          <p>
+            The check comes <em>before</em> generation. If nothing relevant was retrieved, the model
+            is never asked, because there is no context for it to be honest with.
+          </p>
+        </article>
+
+        <article class="file" id="calibrate">
+          <div class="file-head">
+            <span class="fname">calibrate_threshold.py</span>
+            <span class="lines">91 lines</span>
+            <span class="task-tag">Task 4</span>
+          </div>
+          <p class="job">Measures where "I don't know" should kick in, instead of guessing.</p>
+          <p>
+            The brief specifically forbids picking 0.5 or 0.7 off a tutorial. So this script asks the
+            index six questions it <em>can</em> answer and three it cannot, records the top similarity
+            for each, and looks at the gap between the two clusters.
+          </p>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Collection</th><th>In-scope</th><th>Out-of-scope</th><th>Gap</th><th>Midpoint</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">sentence</td><td class="num">0.6930 – 0.8142</td><td class="num">0.1451 – 0.1932</td><td class="num">0.4998</td><td class="num">0.4431</td></tr>
+                <tr><td class="mono">fixed</td><td class="num">0.6230 – 0.7816</td><td class="num">0.1424 – 0.1979</td><td class="num">0.4251</td><td class="num">0.4104</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="win">
+            <strong>What the measurement revealed</strong>
+            <p>
+              The clusters are separated by roughly half a point of cosine similarity. The popular
+              defaults — 0.5, 0.6, 0.7 — all sit <em>inside</em> the in-scope cluster, meaning they
+              would reject real, answerable questions. Guessing would have quietly broken the agent
+              in a way that still looked fine on a happy-path demo.
+            </p>
+          </div>
+          <p>
+            The lower of the two midpoints is taken so one threshold is safe for either collection.
+          </p>
+        </article>
+
+        <article class="file" id="evalchunk">
+          <div class="file-head">
+            <span class="fname">eval_chunking.py</span>
+            <span class="lines">179 lines</span>
+            <span class="task-tag">Task 5</span>
+          </div>
+          <p class="job">Scores both chunking strategies against hand-labelled correct answers.</p>
+          <p>
+            <code>GOLD</code> is a hand-written list: for each of five questions, which knowledge-base
+            documents genuinely answer it. Then for each collection, the top-3 chunks are mapped back
+            to their parent documents, de-duplicated, and compared against that gold set.
+          </p>
+<pre><code>R = de-duplicated retrieved parent documents
+G = hand-labelled relevant documents
+
+Precision@3 = |R ∩ G| / |R|    <span class="cm"># of what I showed, how much was right</span>
+Recall@3    = |R ∩ G| / |G|    <span class="cm"># of what was right, how much did I show</span></code></pre>
+          <p>
+            Using <code>|R|</code> rather than a hard 3 is a deliberate choice, explained in the
+            file's docstring: after de-duplication, three chunks of the <em>same</em> correct document
+            is one document surfaced, and dividing that by 3 would punish the strategy for being
+            consistent.
+          </p>
+          <div class="gotcha">
+            <strong>The result is not a clean win</strong>
+            <p>
+              Sentence-based wins precision (0.80 vs 0.63); fixed-size wins recall (1.00 vs 0.80).
+              The recommendation argues that fixed-size only reaches perfect recall because its wide
+              windows sweep in extra documents indiscriminately — the same behaviour that costs it
+              precision. Worth reading as an example of defending a choice when the numbers do not
+              simply hand it to you.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ LAYER 3 ============ -->
+      <section class="layer" id="layer3">
+        <div class="layer-head">
+          <span class="layer-num">03</span>
+          <h2>The agent</h2>
+        </div>
+        <p class="layer-intro">
+          Five files that turn retrieval into something that can be called an agent: a second tool,
+          a contract for its output, three guardrails, a memory, and the graph that wires them
+          together.
+        </p>
+
+        <article class="file" id="tools">
+          <div class="file-head">
+            <span class="fname">tools.py</span>
+            <span class="lines">181 lines</span>
+            <span class="task-tag">Task 6</span>
+          </div>
+          <p class="job">Looks up one application and scores how urgently a human should look at it.</p>
+          <p>
+            The lookup itself is a dictionary read. The interesting part is the escalation score,
+            which had to be <em>designed</em> rather than being a boolean OR of the two signals:
+          </p>
+<pre><code>recency_norm     = min(days_since_created / <span class="kw">23.0</span>, <span class="kw">1.0</span>)
+escalation_score = <span class="kw">0.60</span> * flagged_priority_review + <span class="kw">0.40</span> * recency_norm</code></pre>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Situation</th><th>Score</th><th>Escalates at 0.40?</th></tr></thead>
+              <tbody>
+                <tr><td>Flagged, any age</td><td class="num">0.60 – 1.00</td><td>yes, on the flag alone</td></tr>
+                <tr><td>Unflagged, 23+ days old</td><td class="num">0.40</td><td>yes, exactly at the line</td></tr>
+                <tr><td>Unflagged, 13.5 days (median)</td><td class="num">0.235</td><td>no</td></tr>
+                <tr><td>Unflagged, brand new</td><td class="num">0.00</td><td>no</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="why">
+            <strong>Where 23.0 comes from</strong>
+            <p>
+              It is the 80th percentile of <code>days_since_created</code> in the generated data.
+              So the threshold of 0.40 reads, in plain English: escalate everything a recruiter
+              already flagged, plus the slowest-moving fifth of everything else. Both the divisor
+              and the threshold are traceable to the dataset instead of chosen for looking tidy.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="schemas">
+          <div class="file-head">
+            <span class="fname">schemas.py</span>
+            <span class="lines">115 lines</span>
+            <span class="task-tag">Task 9</span>
+          </div>
+          <p class="job">Declares the exact shape of every response, and refuses to let a malformed one out.</p>
+          <p>
+            A JSON Schema listing required keys and their types. <code>additionalProperties: false</code>
+            means an unexpected key is an error, not something quietly tolerated. Validation runs
+            inside <code>finalize</code> on every single response.
+          </p>
+<pre><code><span class="st">"trace_id"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"minLength"</span>: <span class="kw">8</span>},
+<span class="st">"route"</span>:    {<span class="st">"enum"</span>: [<span class="st">"rag"</span>, <span class="st">"record_lookup"</span>, <span class="st">"blocked"</span>]},
+<span class="st">"escalation"</span>: {<span class="st">"type"</span>: [<span class="st">"object"</span>, <span class="st">"null"</span>], ...}</code></pre>
+          <div class="win">
+            <strong>It caught a real bug while I was building this</strong>
+            <p>
+              The triad evaluator originally passed <code>trace_id="eval-01"</code> — seven
+              characters. The schema's <code>minLength: 8</code> rejected it, and all 15 queries came
+              back as the blocked error envelope. The schema was not decoration; it stopped bad
+              output from escaping and made the cause obvious. That is what enforcement looks like
+              when it is doing its job.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="guardrails">
+          <div class="file-head">
+            <span class="fname">guardrails.py</span>
+            <span class="lines">254 lines</span>
+            <span class="task-tag">Task 10</span>
+          </div>
+          <p class="job">Three independent safety checks: two on the way in, one on the way out.</p>
+
+          <h4>1 · PII masking</h4>
+<pre><code>PHONE_RE = re.compile(<span class="st">r"""(?&lt;![\w])(
+        (?:\+91[\-\s]?|0)?     # optional +91 or 0 prefix
+        [6-9]\d{4}             # Indian mobiles start 6-9
+        [\-\s]?\d{5}
+    )(?![\w])"""</span>, re.VERBOSE)</code></pre>
+          <p>
+            The lookarounds <code>(?&lt;![\w])</code> and <code>(?![\w])</code> are the important
+            part. Without them the pattern would happily chew into <code>NAU-1003</code> or a salary
+            like <code>2970000</code>. The demo deliberately includes a test case proving both
+            survive untouched.
+          </p>
+
+          <h4>2 · Prompt-injection detection</h4>
+          <p>
+            Nine regex patterns, each paired with a human-readable reason so the log says
+            <em>why</em> something was blocked rather than just that it was — instruction override,
+            system-prompt exfiltration, persona override, guardrail disabling, and so on.
+          </p>
+
+          <h4>3 · Groundedness, in two stages</h4>
+<pre><code><span class="cm"># stage 1 - was anything relevant even retrieved?</span>
+<span class="kw">if</span> top_similarity &lt; threshold:
+    <span class="kw">return</span> GroundednessVerdict(<span class="kw">False</span>, ...)
+
+<span class="cm"># stage 2 - is every SENTENCE of the answer traceable to context?</span>
+sims = embed(ans_sents) @ embed(ctx_sents).T
+unsupported = [s <span class="kw">for</span> i, s <span class="kw">in</span> enumerate(ans_sents) <span class="kw">if</span> sims.max(axis=<span class="kw">1</span>)[i] &lt; <span class="kw">0.60</span>]</code></pre>
+          <div class="why">
+            <strong>Why two stages</strong>
+            <p>
+              Stage 1 catches the out-of-scope question — nothing relevant exists, so refuse. Stage 2
+              catches something subtler: retrieval was <em>good</em> but the answer contains an
+              invented claim. The demo proves it by feeding in a fabricated sentence about a "two
+              lakh rupee relocation bonus" alongside a genuine one; stage 2 flags exactly the
+              fabricated sentence. Stage 2 is the check that would matter most if you swapped the
+              mock for a real LLM.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="memory">
+          <div class="file-head">
+            <span class="fname">memory.py</span>
+            <span class="lines">139 lines</span>
+            <span class="task-tag">Task 8</span>
+          </div>
+          <p class="job">Remembers a conversation in a JSON file that outlives the process.</p>
+          <p>
+            Two things are stored per conversation: <code>turns</code>, an append-only history, and
+            <code>facts</code>, a small dictionary of things worth recalling. <code>facts</code> is
+            what makes multi-turn behaviour visible.
+          </p>
+<pre><code>{<span class="st">"conv-alpha"</span>: {
+   <span class="st">"turns"</span>: [ {<span class="st">"turn_index"</span>: <span class="kw">1</span>, <span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"text"</span>: <span class="st">"..."</span>}, ... ],
+   <span class="st">"facts"</span>: {<span class="st">"last_record_id"</span>: <span class="st">"NAU-1003"</span>}
+}}</code></pre>
+          <p>
+            Every write takes a <code>threading.Lock</code> and rewrites the whole file. That is
+            crude and would not scale, but it is correct under the concurrent requests FastAPI can
+            produce, and correctness at this size is the right trade.
+          </p>
+          <div class="win">
+            <strong>How the demo proves memory actually works</strong>
+            <p>
+              The same sentence — <em>"And what is the escalation score for it?"</em> — is run twice.
+              With history, "it" resolves to NAU-1003 from <code>facts.last_record_id</code>. In a
+              fresh conversation the identical sentence has nothing to resolve against, falls through
+              to the RAG route, and is correctly refused. Same input, different state, different
+              behaviour: that is the proof, and it is much stronger than just showing that memory
+              was written.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="agent">
+          <div class="file-head">
+            <span class="fname">agent.py</span>
+            <span class="lines">569 lines</span>
+            <span class="task-tag">Task 7 · the core</span>
+          </div>
+          <p class="job">The LangGraph graph — five nodes, two conditional edges, one entry point.</p>
+
+          <h4>State</h4>
+          <p>
+            LangGraph passes a single dictionary between nodes. Declaring it as a
+            <code>TypedDict</code> with <code>total=False</code> means every key is optional, so each
+            node returns only the keys it changed and LangGraph merges them in.
+          </p>
+<pre><code><span class="kw">class</span> AgentState(TypedDict, total=<span class="kw">False</span>):
+    query: str
+    masked_query: str
+    route: str                <span class="cm"># "rag" | "record_lookup" | "blocked"</span>
+    contexts: List[str]
+    executed_nodes: List[str] <span class="cm"># breadcrumb trail, used by the checkpoint demo</span></code></pre>
+
+          <h4>Nodes are plain functions</h4>
+          <p>
+            There is nothing framework-ish about them. Each takes state and returns a partial dict:
+          </p>
+<pre><code><span class="kw">def</span> guard_input(state):
+    masked, pii_fired, _ = mask_pii(state[<span class="st">"query"</span>])
+    injected, reasons = detect_injection(masked)
+    <span class="kw">return</span> {<span class="st">"masked_query"</span>: masked, <span class="st">"pii_masked"</span>: pii_fired,
+            <span class="st">"injection_detected"</span>: injected}</code></pre>
+
+          <h4>Edges are also plain functions</h4>
+          <p>
+            A conditional edge is a function returning a string, plus a mapping from string to node:
+          </p>
+<pre><code><span class="kw">def</span> after_route(state):
+    <span class="kw">return</span> state[<span class="st">"route"</span>]         <span class="cm"># "rag" or "record_lookup"</span>
+
+g.add_conditional_edges(<span class="st">"route_intent"</span>, after_route,
+                        {<span class="st">"rag"</span>: <span class="st">"rag_answer"</span>, <span class="st">"record_lookup"</span>: <span class="st">"record_lookup"</span>})</code></pre>
+
+          <h4>How routing actually decides</h4>
+          <p>
+            Three rules, in order: an explicit <code>NAU-1234</code> in the text wins; otherwise a
+            referring phrase ("for it", "that one") <em>plus</em> a lookup keyword <em>plus</em> a
+            remembered record id resolves from memory; otherwise it is a policy question.
+          </p>
+          <div class="why">
+            <strong>Why all three conditions are required together</strong>
+            <p>
+              Requiring the referring phrase <em>and</em> a lookup keyword <em>and</em> a stored id
+              is what stops turn 3 of the demo ("How long is the probation period?") from being
+              dragged back to the record-lookup branch just because a record was discussed earlier.
+              Memory should be available, not sticky.
+            </p>
+          </div>
+
+          <h4>finalize is the choke point</h4>
+          <p>
+            Every path ends here, and it does four things in order: run the groundedness guardrail
+            (rag route only), assemble the response, validate against the schema, and persist the
+            turn. If validation fails, the response is replaced — not patched — with a conformant
+            error envelope:
+          </p>
+<pre><code>ok, msg = validate_agent_response(response)
+<span class="kw">if not</span> ok:
+    response = { <span class="st">"route"</span>: <span class="st">"blocked"</span>,
+                 <span class="st">"answer"</span>: <span class="st">"...did not conform to its output schema..."</span>, ... }</code></pre>
+        </article>
+      </section>
+
+      <!-- ============ LAYER 4 ============ -->
+      <section class="layer" id="layer4">
+        <div class="layer-head">
+          <span class="layer-num">04</span>
+          <h2>Serving</h2>
+        </div>
+        <p class="layer-intro">
+          Putting the agent behind HTTP, and recording what happened without leaking anything.
+        </p>
+
+        <article class="file" id="logging">
+          <div class="file-head">
+            <span class="fname">structured_logging.py</span>
+            <span class="lines">101 lines</span>
+            <span class="task-tag">Task 12</span>
+          </div>
+          <p class="job">Writes one JSON line per request, with the phone number already removed.</p>
+          <p>
+            JSON Lines means one complete JSON object per line — greppable with ordinary tools,
+            streamable, and appendable without rewriting the file. Each entry carries a
+            <code>trace_id</code> and <code>latency_ms</code>.
+          </p>
+<pre><code><span class="kw">def</span> log_request(*, trace_id, endpoint, request_text, ...):
+    safe_text, pii_masked, _raw = mask_pii(request_text <span class="kw">or</span> <span class="st">""</span>)
+    <span class="cm"># ^ masked HERE, unconditionally, even if the caller already masked</span></code></pre>
+          <div class="why">
+            <strong>Why mask twice</strong>
+            <p>
+              The agent already masks before the model sees anything. Masking again at the moment of
+              writing means there is no code path — no future endpoint, no forgotten caller — that
+              can put a raw phone number on disk. Defence at the boundary rather than trust in
+              callers. The demo greps the finished log file to prove it.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="app">
+          <div class="file-head">
+            <span class="fname">app.py</span>
+            <span class="lines">279 lines</span>
+            <span class="task-tag">Task 11</span>
+          </div>
+          <p class="job">Four HTTP endpoints, with request and response shapes enforced by Pydantic.</p>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Endpoint</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">GET /health</td><td>Liveness, and which LLM backend is live</td></tr>
+                <tr><td class="mono">POST /ask</td><td>One turn through the graph</td></tr>
+                <tr><td class="mono">POST /add-document</td><td>Index a new policy doc into both collections</td></tr>
+                <tr><td class="mono">GET /logs</td><td>Read the structured log back</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Pydantic models do validation for free — <code>min_length=1</code> on the query means an
+            empty request is rejected with HTTP 422 before your code runs. The demo drives everything
+            through <code>TestClient</code>, which exercises the real ASGI app and real routes without
+            needing a server process.
+          </p>
+          <div class="win">
+            <strong>The nicest thing in this file</strong>
+            <p>
+              <code>POST /add-document</code> indexes into both collections and deletes any previous
+              version of that <code>doc_id</code> first, so posting twice is safe. The demo adds a
+              travel-reimbursement policy and then immediately asks a question about travel expenses
+              — and gets a grounded answer citing the document that did not exist a second earlier.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ LAYER 5 ============ -->
+      <section class="layer" id="layer5">
+        <div class="layer-head">
+          <span class="layer-num">05</span>
+          <h2>Judging</h2>
+        </div>
+        <p class="layer-intro">
+          Measuring the finished agent across a test set designed to cover everything it should
+          know and several things it should refuse.
+        </p>
+
+        <article class="file" id="triad">
+          <div class="file-head">
+            <span class="fname">eval_rag_triad.py</span>
+            <span class="lines">193 lines</span>
+            <span class="task-tag">Task 13</span>
+          </div>
+          <p class="job">Scores 15 questions on three axes using an LLM-as-judge prompt.</p>
+          <p>
+            The test set is deliberately constructed: twelve questions, one per knowledge-base topic,
+            plus two out-of-scope questions and one prompt injection. The three axes are the standard
+            "RAG triad":
+          </p>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Axis</th><th>Question it answers</th><th>Average</th></tr></thead>
+              <tbody>
+                <tr><td>Context relevance</td><td>Did retrieval find the right material?</td><td class="num">0.5956</td></tr>
+                <tr><td>Groundedness</td><td>Is every claim backed by that material?</td><td class="num">1.0000</td></tr>
+                <tr><td>Answer relevance</td><td>Does the answer address the question?</td><td class="num">0.7511</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="gotcha">
+            <strong>Read this number carefully</strong>
+            <p>
+              Context relevance of 0.5956 looks mediocre until you split it: the twelve in-scope
+              questions average <strong>0.7210</strong>, while the three out-of-scope ones average
+              <strong>0.0939</strong> and drag the mean down. That low score is the system working —
+              there genuinely is no relevant context for a biryani recipe, and the agent refused
+              instead of inventing one. An aggregate metric that you cannot decompose will mislead
+              you; always look at the breakdown.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ LAYER 6 ============ -->
+      <section class="layer" id="layer6">
+        <div class="layer-head">
+          <span class="layer-num">06</span>
+          <h2>Hardening</h2>
+        </div>
+        <p class="layer-intro">
+          The parts that separate a demo from something you could put in front of real recruiters:
+          standard interfaces, surviving interruption, and failing fast instead of hanging.
+        </p>
+
+        <article class="file" id="mcp">
+          <div class="file-head">
+            <span class="fname">mcp_server.py · mcp_client.py</span>
+            <span class="lines">58 + 134 lines</span>
+            <span class="task-tag">Task 14</span>
+          </div>
+          <p class="job">Publishes the lookup tool over a standard protocol so anything can call it.</p>
+          <p>
+            MCP (Model Context Protocol) is a standard way to expose tools to AI systems. Wrapping
+            the function takes one decorator — and the docstring is not decoration, it becomes the
+            tool description other systems read to decide when to call it.
+          </p>
+<pre><code><span class="kw">@mcp.tool</span>
+<span class="kw">def</span> check_job_application_status(record_id: str) -> Dict:
+    <span class="cm">"""Look up the status of a Naukri.com job application by its record id.
+    Args:
+        record_id: The application identifier, for example "NAU-1003".
+    """</span>
+    <span class="kw">return</span> _lookup(record_id)</code></pre>
+          <div class="gotcha">
+            <strong>The mistake that costs an hour</strong>
+            <p>
+              fastmcp's HTTP transport mounts at <code>/mcp</code>, not at the bare root. Point a
+              client at <code>http://127.0.0.1:8765</code> and you get a 404 with no useful hint;
+              it must be <code>http://127.0.0.1:8765/mcp</code>. Also: the package is
+              <code>fastmcp</code>, no hyphen — <code>fast-mcp</code> is a different, unrelated
+              project.
+            </p>
+          </div>
+          <p>
+            The client is a separate file run as a separate process, which is the point: it proves
+            the tool is reachable across a real process boundary rather than just being importable.
+          </p>
+        </article>
+
+        <article class="file" id="checkpoint">
+          <div class="file-head">
+            <span class="fname">checkpoint_demo.py</span>
+            <span class="lines">275 lines</span>
+            <span class="task-tag">Task 15</span>
+          </div>
+          <p class="job">Stops a run halfway, then finishes it in a completely different process.</p>
+          <p>
+            LangGraph can save its state to SQLite after every node. Attach a checkpointer, give the
+            run a thread id, and an interrupted run can be resumed later:
+          </p>
+<pre><code><span class="kw">with</span> SqliteSaver.from_conn_string(str(CHECKPOINT_DB)) <span class="kw">as</span> saver:
+    graph  = build_graph(saver, interrupt_before=[<span class="st">"rag_answer"</span>])
+    config = {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: THREAD_ID}}
+    graph.invoke(state, config=config)   <span class="cm"># runs 2 nodes, then stops</span>
+    <span class="cm"># ... later, elsewhere ...</span>
+    graph.invoke(<span class="kw">None</span>, config=config)    <span class="cm"># None = "resume, don't restart"</span></code></pre>
+          <div class="win">
+            <strong>How it proves nodes weren't re-run</strong>
+            <p>
+              Each node is wrapped in a counter that records executions <em>in this process</em>. The
+              two phases run as separate OS processes, so process B starts with an empty counter. After
+              resuming, its counter reads <code>['rag_answer', 'finalize']</code> — yet the final state
+              contains all four nodes. The first two were loaded from SQLite, not recomputed. Running
+              it in one process would have proved much less, since anything could have been left in
+              memory.
+            </p>
+          </div>
+        </article>
+
+        <article class="file" id="resilience">
+          <div class="file-head">
+            <span class="fname">resilience_demo.py</span>
+            <span class="lines">431 lines</span>
+            <span class="task-tag">Task 16</span>
+          </div>
+          <p class="job">Retries flaky calls, and refuses to hang when something takes too long.</p>
+
+          <h4>Retries with exponential backoff</h4>
+<pre><code>RETRY_POLICY = RetryPolicy(
+    max_attempts=<span class="kw">4</span>, initial_interval=<span class="kw">0.25</span>, backoff_factor=<span class="kw">2.0</span>,
+    max_interval=<span class="kw">2.0</span>, jitter=<span class="kw">True</span>,
+    retry_on=(TransientToolError,),   <span class="cm"># NOT bare Exception</span>
+)</code></pre>
+          <p>
+            Waits grow 0.25s → 0.5s → 1.0s, so a struggling service gets increasing breathing room.
+            <em>Jitter</em> adds randomness so that a thousand clients retrying do not all hit at the
+            same instant. Naming a specific exception in <code>retry_on</code> matters: with bare
+            <code>Exception</code>, a genuine bug would be retried four times and take four times as
+            long to surface.
+          </p>
+
+          <h4>Timeouts</h4>
+<pre><code>pool = ThreadPoolExecutor(max_workers=<span class="kw">1</span>)
+<span class="kw">try</span>:
+    <span class="kw">return</span> pool.submit(fn, state).result(timeout=timeout_s)
+<span class="kw">except</span> FutureTimeout:
+    <span class="kw">raise</span> NodeTimeout(...)
+<span class="kw">finally</span>:
+    pool.shutdown(wait=<span class="kw">False</span>)   <span class="cm"># do NOT wait for the doomed worker</span></code></pre>
+          <div class="gotcha">
+            <strong>A bug I hit building this — worth internalising</strong>
+            <p>
+              The first version used <code>with ThreadPoolExecutor(...) as pool:</code>. That reads
+              naturally, but the context manager's exit calls <code>shutdown(wait=True)</code>, which
+              blocks until the worker finishes. The timeout fired correctly at 1 second and then the
+              caller sat there for the full 5 seconds anyway — reintroducing the exact hang the
+              timeout existed to prevent. The test caught it because it asserts on
+              <em>elapsed time</em>, not just on the exception type. Assert on the property you
+              actually care about.
+            </p>
+          </div>
+          <p>
+            The global timeout uses two mechanisms together: an outer bound that releases the caller
+            at the deadline, and a shared <code>Deadline</code> object every node checks on entry so
+            the run genuinely stops advancing. Both are needed, because Python cannot forcibly kill
+            a running thread.
+          </p>
+        </article>
+
+        <article class="file" id="runall">
+          <div class="file-head">
+            <span class="fname">run_all.py</span>
+            <span class="lines">165 lines</span>
+            <span class="task-tag">tooling</span>
+          </div>
+          <p class="job">Runs every demo as its own subprocess and saves the output.</p>
+          <p>
+            Each step runs isolated, so one crash cannot corrupt another's state, and output is
+            filtered of model-loading noise before being written to <code>transcripts/</code>.
+          </p>
+          <div class="why">
+            <strong>One ordering detail worth noticing</strong>
+            <p>
+              The API demo adds a thirteenth document via <code>/add-document</code>. If the triad
+              evaluation ran after that, it would score a different knowledge base than the one
+              documented. So there is an explicit re-index step between them. Evaluation has to score
+              a known, fixed corpus or the numbers mean nothing.
+            </p>
+          </div>
+          <p>Regenerate a single transcript instead of all sixteen:</p>
+          <div class="runline">python run_all.py 13&nbsp;&nbsp;&nbsp;<span class="cm"># only the RAG triad step</span></div>
+        </article>
+      </section>
+
+      <!-- ============ GLOSSARY ============ -->
+      <section class="layer" id="glossary">
+        <div class="layer-head">
+          <span class="layer-num">REF</span>
+          <h2>Concepts glossary</h2>
+        </div>
+        <p class="layer-intro">
+          Every term in this codebase that is worth being able to define out loud.
+        </p>
+        <dl class="gloss">
+          <div class="gterm"><dt>Embedding</dt><dd>A list of numbers representing a piece of text's meaning. Here, 384 of them per chunk, produced by all-MiniLM-L6-v2.</dd></div>
+          <div class="gterm"><dt>Cosine similarity</dt><dd>How close two embeddings point in the same direction. 1.0 is identical, 0 is unrelated. On unit-length vectors it is just the dot product.</dd></div>
+          <div class="gterm"><dt>Chunking</dt><dd>Splitting documents into retrievable pieces. Too big and meaning is diluted; too small and context is lost.</dd></div>
+          <div class="gterm"><dt>Vector store</dt><dd>A database that finds the nearest embeddings to a query embedding. ChromaDB here, one collection per chunking strategy.</dd></div>
+          <div class="gterm"><dt>RAG</dt><dd>Retrieval-Augmented Generation: retrieve relevant text first, then answer using only that text.</dd></div>
+          <div class="gterm"><dt>Grounding</dt><dd>Every claim in an answer traceable to retrieved source text. The opposite of hallucination.</dd></div>
+          <div class="gterm"><dt>Top-k</dt><dd>How many chunks to retrieve per query. This project uses 3.</dd></div>
+          <div class="gterm"><dt>Precision / Recall</dt><dd>Precision: of what you returned, how much was right. Recall: of what was right, how much you returned. They trade off against each other.</dd></div>
+          <div class="gterm"><dt>Graph state</dt><dd>The dictionary LangGraph passes from node to node. Each node returns only the keys it changed.</dd></div>
+          <div class="gterm"><dt>Conditional edge</dt><dd>An edge whose destination is decided at runtime by a function returning a route name.</dd></div>
+          <div class="gterm"><dt>Checkpointer</dt><dd>Storage that saves graph state after each node, so an interrupted run can resume where it stopped.</dd></div>
+          <div class="gterm"><dt>Thread id</dt><dd>The key a checkpointed conversation is stored under. Same id means same conversation.</dd></div>
+          <div class="gterm"><dt>MCP</dt><dd>Model Context Protocol — a standard interface for exposing tools to AI systems.</dd></div>
+          <div class="gterm"><dt>Exponential backoff</dt><dd>Doubling the wait between retries, so a failing service is not hammered.</dd></div>
+          <div class="gterm"><dt>Jitter</dt><dd>Randomness added to backoff so many clients do not retry in lockstep.</dd></div>
+          <div class="gterm"><dt>Prompt injection</dt><dd>Input crafted to override an agent's instructions. Blocked here before it reaches retrieval.</dd></div>
+          <div class="gterm"><dt>JSON Lines</dt><dd>One JSON object per line. Appendable, streamable, greppable with ordinary tools.</dd></div>
+          <div class="gterm"><dt>LLM-as-judge</dt><dd>Using a model to score another model's output on defined axes rather than checking exact strings.</dd></div>
+        </dl>
+      </section>
+
+    </main>
+  </div>
+</div>

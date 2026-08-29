@@ -1,0 +1,1281 @@
+<title>Annotated Source</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:#f7f4ee; --paper-2:#efeae0; --card:#fffdf9;
+    --ink:#241f24; --ink-2:#564e52; --ink-3:#857a80;
+    --rule:#ddd5c8; --rule-soft:#e8e1d6;
+    --brass:#a9761f; --brass-soft:#f0e3c9;
+    --sage:#46704f; --sage-soft:#e0ebdf;
+    --rose:#a83f57; --rose-soft:#f6e2e5;
+    --code-bg:#2a2430; --code-fg:#ece5df; --code-dim:#9c8f97;
+    --ln:#6d6272;
+    --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --f-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#17131a; --paper-2:#1e1922; --card:#201b27;
+      --ink:#ece6ea; --ink-2:#b3a8b1; --ink-3:#8a7f89;
+      --rule:#3a3242; --rule-soft:#2c2534;
+      --brass:#d9a94e; --brass-soft:#3a2f1c;
+      --sage:#8dbf95; --sage-soft:#23301f;
+      --rose:#e08a9c; --rose-soft:#331d24;
+      --code-bg:#100d14; --code-fg:#e4dce2; --code-dim:#7d7280; --ln:#584d5f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#17131a; --paper-2:#1e1922; --card:#201b27;
+    --ink:#ece6ea; --ink-2:#b3a8b1; --ink-3:#8a7f89;
+    --rule:#3a3242; --rule-soft:#2c2534;
+    --brass:#d9a94e; --brass-soft:#3a2f1c;
+    --sage:#8dbf95; --sage-soft:#23301f;
+    --rose:#e08a9c; --rose-soft:#331d24;
+    --code-bg:#100d14; --code-fg:#e4dce2; --code-dim:#7d7280; --ln:#584d5f;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--f-body);
+       font-size:17px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px 90px}
+
+  .masthead{border-bottom:2px solid var(--ink);padding:50px 0 20px;margin-bottom:38px}
+  .eyebrow{font-family:var(--f-mono);font-size:11.5px;font-weight:500;letter-spacing:.14em;
+           text-transform:uppercase;color:var(--brass);margin:0 0 13px}
+  h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2.3rem,6vw,3.7rem);
+     line-height:.98;letter-spacing:-.028em;margin:0 0 16px;text-wrap:balance}
+  .standfirst{font-size:1.14rem;color:var(--ink-2);max-width:62ch;margin:0 0 22px}
+  .scope{border-left:3px solid var(--brass);background:var(--brass-soft);
+         padding:14px 18px;font-size:.97rem;max-width:74ch}
+  .scope strong{font-family:var(--f-mono);font-size:10.5px;font-weight:700;
+                letter-spacing:.12em;text-transform:uppercase;color:var(--brass);
+                display:block;margin-bottom:5px}
+  .scope p{margin:0}
+
+  .cols{display:grid;grid-template-columns:214px minmax(0,1fr);gap:50px;align-items:start}
+  @media (max-width:960px){.cols{grid-template-columns:1fr;gap:30px}
+    .rail{position:static!important;max-height:none!important}}
+  .rail{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;
+        font-family:var(--f-mono);font-size:12.5px;line-height:1.5;padding-right:6px}
+  .rail h2{font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.13em;
+           text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+  .rg{margin-bottom:17px}
+  .rg .t{display:block;color:var(--brass);font-weight:700;font-size:11px;
+         letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+  .rail a{display:block;color:var(--ink-2);text-decoration:none;padding:2.5px 0 2.5px 11px;
+          border-left:2px solid var(--rule-soft)}
+  .rail a:hover,.rail a:focus-visible{color:var(--ink);border-left-color:var(--brass);
+          background:var(--paper-2)}
+
+  .mod{margin-bottom:60px;scroll-margin-top:18px}
+  .mod-head{border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:6px;
+            display:flex;flex-wrap:wrap;align-items:baseline;gap:12px}
+  .mod-head h2{font-family:var(--f-mono);font-weight:700;
+               font-size:clamp(1.15rem,2.7vw,1.5rem);letter-spacing:-.015em;margin:0}
+  .mod-lines{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+  .mod-tag{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.07em;
+           text-transform:uppercase;color:var(--brass);background:var(--brass-soft);
+           padding:2.5px 7px;margin-left:auto;white-space:nowrap}
+  .mod-role{font-family:var(--f-display);font-weight:600;font-size:1.03rem;
+            color:var(--ink-2);margin:0 0 24px;max-width:70ch;text-wrap:balance}
+
+  .chunk{margin:0 0 26px}
+  .chunk-title{font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.13em;
+               text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+  pre{background:var(--code-bg);color:var(--code-fg);font-family:var(--f-mono);
+      font-size:12.5px;line-height:1.66;padding:15px 17px;overflow-x:auto;margin:0;
+      border-radius:3px 3px 0 0}
+  pre code{background:none;padding:0;color:inherit;font-size:inherit}
+  .ln{color:var(--ln);user-select:none}
+  .cm{color:var(--code-dim)} .kw{color:#d9a94e} .st{color:#8dbf95}
+
+  ol.notes{list-style:none;margin:0;padding:12px 17px;background:var(--card);
+           border:1px solid var(--rule);border-top:0;border-radius:0 0 3px 3px;
+           font-size:.95rem}
+  ol.notes li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;
+              padding:4px 0;align-items:baseline}
+  @media (max-width:560px){ol.notes li{grid-template-columns:1fr;gap:2px}}
+  ol.notes b{font-family:var(--f-mono);font-size:11px;font-weight:700;color:var(--brass);
+             letter-spacing:.02em}
+  ol.notes span{color:var(--ink-2)}
+  ol.notes code{font-family:var(--f-mono);font-size:.86em;background:var(--paper-2);
+                padding:1px 4px;border-radius:2px;color:var(--ink)}
+
+  .why{border-left:3px solid var(--brass);background:var(--brass-soft);padding:12px 16px;
+       margin:0 0 26px;font-size:.95rem}
+  .why strong{font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;
+              text-transform:uppercase;color:var(--brass);display:block;margin-bottom:4px}
+  .why p{margin:0;max-width:72ch}
+  .gotcha{border-left-color:var(--rose);background:var(--rose-soft)}
+  .gotcha strong{color:var(--rose)}
+  .win{border-left-color:var(--sage);background:var(--sage-soft)}
+  .win strong{color:var(--sage)}
+
+  p.body{max-width:72ch;margin:0 0 16px;color:var(--ink-2)}
+  a{color:var(--brass)}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Capstone codebase / annotated source</p>
+  <h1>Annotated Source</h1>
+  <p class="standfirst">
+    Every module of the Naukri agent, walked through in file order with the real code and a
+    note on each line that does something. Companion to the reading-order guide.
+  </p>
+  <div class="scope">
+    <strong>How this is scoped</strong>
+    <p>
+      The project is 4,114 lines, and roughly a third of that is <code>print()</code> formatting
+      inside the <code>_demo()</code> functions. Annotating 200 print statements individually
+      would bury the parts that matter, so every line of <em>logic</em> is annotated here and the
+      display scaffolding is summarised. Line numbers match the files on disk.
+    </p>
+  </div>
+</header>
+
+<div class="cols">
+<nav class="rail" aria-label="Module index">
+  <h2>Modules</h2>
+  <div class="rg"><span class="t">1 · Foundations</span>
+    <a href="#config">config.py</a><a href="#dataset">dataset.py</a>
+    <a href="#embeddings">embeddings.py</a><a href="#llm">llm.py</a></div>
+  <div class="rg"><span class="t">2 · Retrieval</span>
+    <a href="#ragcore">rag_core.py</a><a href="#calibrate">calibrate_threshold.py</a>
+    <a href="#evalchunk">eval_chunking.py</a></div>
+  <div class="rg"><span class="t">3 · Agent</span>
+    <a href="#tools">tools.py</a><a href="#schemas">schemas.py</a>
+    <a href="#guardrails">guardrails.py</a><a href="#memory">memory.py</a>
+    <a href="#agent">agent.py</a></div>
+  <div class="rg"><span class="t">4 · Serving</span>
+    <a href="#logging">structured_logging.py</a><a href="#app">app.py</a></div>
+  <div class="rg"><span class="t">5 · Judging</span>
+    <a href="#triad">eval_rag_triad.py</a></div>
+  <div class="rg"><span class="t">6 · Hardening</span>
+    <a href="#mcp">mcp_server / client</a><a href="#checkpoint">checkpoint_demo.py</a>
+    <a href="#resilience">resilience_demo.py</a><a href="#runall">run_all.py</a></div>
+</nav>
+
+<main>
+
+<!-- ================= CONFIG ================= -->
+<section class="mod" id="config">
+  <div class="mod-head"><h2>config.py</h2><span class="mod-lines">67 lines</span>
+    <span class="mod-tag">shared</span></div>
+  <p class="mod-role">Every path, tuning constant and mode flag in one importable place.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Paths — lines 8–20</p>
+<pre><code><span class="ln">08</span> <span class="kw">import</span> os
+<span class="ln">09</span> <span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="ln">10</span>
+<span class="ln">11</span> ROOT = Path(__file__).resolve().parent
+<span class="ln">12</span>
+<span class="ln">13</span> KB_DIR         = ROOT / <span class="st">"knowledge_base"</span>
+<span class="ln">14</span> CHROMA_DIR     = ROOT / <span class="st">"chroma_store"</span>
+<span class="ln">15</span> TRANSCRIPT_DIR = ROOT / <span class="st">"transcripts"</span>
+<span class="ln">16</span> LOG_DIR        = ROOT / <span class="st">"logs"</span>
+<span class="ln">18</span> MEMORY_FILE    = ROOT / <span class="st">"conversation_memory.json"</span>
+<span class="ln">19</span> CHECKPOINT_DB  = ROOT / <span class="st">"checkpoints.sqlite"</span>
+<span class="ln">20</span> REQUEST_LOG    = LOG_DIR / <span class="st">"requests.jsonl"</span></code></pre>
+    <ol class="notes">
+      <li><b>L11</b><span><code>__file__</code> is this file's path; <code>.resolve()</code> makes it absolute (following symlinks), <code>.parent</code> gives the folder. So <code>ROOT</code> is the project directory <em>regardless of where you ran python from</em>.</span></li>
+      <li><b>L13–20</b><span><code>Path</code> overloads <code>/</code> to join paths, so this works on Windows and Linux with no <code>os.path.join</code> and no backslash escaping.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Tuning constants — lines 23–36</p>
+<pre><code><span class="ln">23</span> EMBEDDING_MODEL = <span class="st">"sentence-transformers/all-MiniLM-L6-v2"</span>
+<span class="ln">25</span> COLLECTION_FIXED    = <span class="st">"naukri_kb_fixed_overlap"</span>
+<span class="ln">26</span> COLLECTION_SENTENCE = <span class="st">"naukri_kb_sentence"</span>
+<span class="ln">29</span> FIXED_CHUNK_SIZE    = <span class="kw">420</span>
+<span class="ln">30</span> FIXED_CHUNK_OVERLAP = <span class="kw">90</span>
+<span class="ln">33</span> SENTENCE_GROUP_SIZE   = <span class="kw">2</span>   <span class="cm"># sentences per chunk</span>
+<span class="ln">34</span> SENTENCE_GROUP_STRIDE = <span class="kw">1</span>   <span class="cm"># slide 1 -> 1 sentence of overlap</span>
+<span class="ln">36</span> TOP_K = <span class="kw">3</span></code></pre>
+    <ol class="notes">
+      <li><b>L23</b><span>A HuggingFace model id. 6 transformer layers, 384-dimensional output, ~80 MB — small enough to run on CPU in a couple of seconds.</span></li>
+      <li><b>L25–26</b><span>Two collection names because the brief requires each chunking strategy in its own index. Naming them here means no string is typed twice anywhere else.</span></li>
+      <li><b>L29–30</b><span>420 characters with 90 overlapping. Effective step is 330, so consecutive windows share 90 characters of text.</span></li>
+      <li><b>L33–34</b><span>Group 2, stride 1 means windows are <em>sentences 1–2, 2–3, 3–4…</em> — each pair shares one sentence with its neighbour.</span></li>
+      <li><b>L36</b><span>Retrieve 3 chunks per query. Small corpus (36 chunks total), so 3 is roughly the top 8%.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">The threshold and the mode flag — lines 52–67</p>
+<pre><code><span class="ln">52</span> GROUNDEDNESS_THRESHOLD = <span class="kw">0.4104</span>
+<span class="ln">54</span> FALLBACK_ANSWER = (
+<span class="ln">55</span>     <span class="st">"I don't know. I could not find anything in the Naukri.com ..."</span>
+<span class="ln">58</span> )
+<span class="ln">61</span> <span class="kw">def</span> mock_llm_enabled() -> bool:
+<span class="ln">63</span>     <span class="kw">return</span> os.getenv(<span class="st">"MOCK_LLM"</span>, <span class="st">"1"</span>).strip().lower() <span class="kw">not in</span> (<span class="st">"0"</span>,<span class="st">"false"</span>,<span class="st">"no"</span>)
+<span class="ln">66</span> <span class="kw">for</span> _d <span class="kw">in</span> (CHROMA_DIR, TRANSCRIPT_DIR, LOG_DIR):
+<span class="ln">67</span>     _d.mkdir(parents=<span class="kw">True</span>, exist_ok=<span class="kw">True</span>)</code></pre>
+    <ol class="notes">
+      <li><b>L52</b><span>Measured, not chosen. The 13 comment lines above it record the raw numbers so nobody later "tidies" it to 0.5.</span></li>
+      <li><b>L54–58</b><span>Adjacent string literals in parentheses concatenate automatically — a multi-line string with no <code>+</code> and no stray newlines in the output.</span></li>
+      <li><b>L63</b><span>The default <code>"1"</code> is the whole zero-API-key guarantee. <code>.strip().lower()</code> then a <em>denylist</em> means any unrecognised value stays safe (mock), rather than falling through to a real API call.</span></li>
+      <li><b>L66–67</b><span>Runs at import time. <code>exist_ok=True</code> makes it idempotent, <code>parents=True</code> creates intermediate folders. This is why a fresh clone with no <code>logs/</code> folder works.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= DATASET ================= -->
+<section class="mod" id="dataset">
+  <div class="mod-head"><h2>dataset.py</h2><span class="mod-lines">212 lines</span>
+    <span class="mod-tag">Task 1</span></div>
+  <p class="mod-role">Generates 48 fake job applications — the same 48 on every machine, every run.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Quotas — lines 54–77</p>
+<pre><code><span class="ln">54</span> CATEGORY_QUOTA = {<span class="st">"Software Engineer"</span>: <span class="kw">12</span>, <span class="st">"Data Analyst"</span>: <span class="kw">10</span>,
+<span class="ln">57</span>                   <span class="st">"Product Manager"</span>: <span class="kw">8</span>, <span class="st">"HR Executive"</span>: <span class="kw">9</span>,
+<span class="ln">59</span>                   <span class="st">"Sales Associate"</span>: <span class="kw">9</span>}
+<span class="ln">62</span> STATUS_QUOTA = {<span class="st">"Applied"</span>: <span class="kw">14</span>, <span class="st">"Screening"</span>: <span class="kw">10</span>,
+<span class="ln">65</span>                 <span class="st">"Interview Scheduled"</span>: <span class="kw">9</span>, <span class="st">"Offered"</span>: <span class="kw">6</span>, <span class="st">"Rejected"</span>: <span class="kw">9</span>}
+<span class="ln">71</span> SALARY_BAND_INR = {
+<span class="ln">72</span>     <span class="st">"Software Engineer"</span>: (<span class="kw">600_000</span>, <span class="kw">4_500_000</span>),
+<span class="ln">75</span>     <span class="st">"HR Executive"</span>:      (<span class="kw">300_000</span>, <span class="kw">1_400_000</span>), ... }</code></pre>
+    <ol class="notes">
+      <li><b>L54–59</b><span>Sums to 48. Because these are exact counts rather than probabilities, "every category ≥ 3" is guaranteed by construction, not by luck.</span></li>
+      <li><b>L62–65</b><span>Also sums to 48, giving the same guarantee for "every status ≥ 1".</span></li>
+      <li><b>L71–77</b><span>Per-category salary bands. A Sales Associate cannot draw ₹44 lakh, so the data stays plausible instead of uniformly random.</span></li>
+      <li><b>L72</b><span><code>600_000</code> — Python ignores underscores in numeric literals. Purely for human readability.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">The generator — lines 80–112</p>
+<pre><code><span class="ln">80</span> <span class="kw">def</span> _build_records():
+<span class="ln">81</span>     rng = random.Random(SEED)
+<span class="ln">83</span>     category_pool = []
+<span class="ln">84</span>     <span class="kw">for</span> cat, n <span class="kw">in</span> CATEGORY_QUOTA.items():
+<span class="ln">85</span>         category_pool.extend([cat] * n)
+<span class="ln">90</span>     <span class="kw">assert</span> len(category_pool) == N_RECORDS, len(category_pool)
+<span class="ln">93</span>     rng.shuffle(category_pool)
+<span class="ln">94</span>     rng.shuffle(status_pool)
+<span class="ln">97</span>     <span class="kw">for</span> i <span class="kw">in</span> range(N_RECORDS):
+<span class="ln">98</span>         category  = category_pool[i]
+<span class="ln">99</span>         low, high = SALARY_BAND_INR[category]
+<span class="ln">101</span>        salary    = rng.randrange(low, high + <span class="kw">1</span>, <span class="kw">10_000</span>)
+<span class="ln">104</span>        <span class="st">"record_id"</span>: <span class="st">f"NAU-{1000 + i}"</span>,
+<span class="ln">108</span>        <span class="st">"days_since_created"</span>: rng.randint(<span class="kw">0</span>, <span class="kw">30</span>),
+<span class="ln">109</span>        <span class="st">"flagged_priority_review"</span>: rng.random() &lt; FLAG_PROBABILITY,</code></pre>
+    <ol class="notes">
+      <li><b>L81</b><span><code>random.Random(SEED)</code> builds a <em>private</em> generator. Critical: using the module-level <code>random.shuffle</code> would consume from the global stream, so merely importing this file could change random numbers elsewhere in the program.</span></li>
+      <li><b>L84–85</b><span><code>["Data Analyst"] * 10</code> makes a 10-element list; <code>extend</code> flattens it into the pool. After the loop the pool holds exactly the quota counts.</span></li>
+      <li><b>L90</b><span>A cheap invariant check. If someone edits a quota and breaks the total, this fails loudly at import rather than producing 47 records silently.</span></li>
+      <li><b>L93–94</b><span>Shuffle randomises <em>order</em> while leaving counts untouched. This is the trick that makes coverage guaranteed and arrangement still random.</span></li>
+      <li><b>L99</b><span>Tuple unpacking pulls the band for whichever category this record drew.</span></li>
+      <li><b>L101</b><span><code>randrange(low, high+1, 10_000)</code> — the third argument is a <em>step</em>, so results land on 10,000 boundaries. <code>+1</code> makes the top of the band reachable, since randrange excludes its stop value.</span></li>
+      <li><b>L104</b><span>Ids are <code>NAU-1000</code>…<code>NAU-1047</code>: sequential, so they are memorable in demos, and always 4 digits, which lets the router match them with a simple regex.</span></li>
+      <li><b>L109</b><span><code>rng.random()</code> returns a float in [0,1); comparing to 0.20 is a 20% coin flip. This is the one field left to chance, because the brief wants a percentage band rather than an exact count.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Module-level state and the percentile — lines 115–133</p>
+<pre><code><span class="ln">115</span> JOB_APPLICATIONS = _build_records()
+<span class="ln">118</span> JOB_APPLICATIONS_BY_ID = {r[<span class="st">"record_id"</span>]: r <span class="kw">for</span> r <span class="kw">in</span> JOB_APPLICATIONS}
+<span class="ln">121</span> <span class="kw">def</span> get_record(record_id: str):
+<span class="ln">123</span>     <span class="kw">return</span> JOB_APPLICATIONS_BY_ID.get(record_id)
+<span class="ln">126</span> <span class="kw">def</span> days_percentile(p: float) -> float:
+<span class="ln">128</span>     values = sorted(r[<span class="st">"days_since_created"</span>] <span class="kw">for</span> r <span class="kw">in</span> JOB_APPLICATIONS)
+<span class="ln">131</span>     k = (len(values) - <span class="kw">1</span>) * (p / <span class="kw">100.0</span>)
+<span class="ln">132</span>     lo, hi = int(k), min(int(k) + <span class="kw">1</span>, len(values) - <span class="kw">1</span>)
+<span class="ln">133</span>     <span class="kw">return</span> values[lo] + (values[hi] - values[lo]) * (k - lo)</code></pre>
+    <ol class="notes">
+      <li><b>L115</b><span>Runs once at import. Every module that imports <code>dataset</code> shares this one list — no regeneration, no drift between callers.</span></li>
+      <li><b>L118</b><span>A dict comprehension building an id → record index. Turns lookup from O(n) scanning into O(1).</span></li>
+      <li><b>L123</b><span><code>.get()</code> rather than <code>[]</code> returns <code>None</code> for a missing id instead of raising <code>KeyError</code> — so the tool can report "not found" as data rather than as an exception.</span></li>
+      <li><b>L131</b><span>Linear interpolation. For p=80 over 48 values: <code>k = 47 × 0.8 = 37.6</code>, i.e. the answer sits 60% of the way between the 38th and 39th sorted values.</span></li>
+      <li><b>L132</b><span><code>min(..., len-1)</code> clamps the upper index so <code>p=100</code> cannot run off the end of the list.</span></li>
+      <li><b>L133</b><span>The interpolation itself: <code>lower + (upper − lower) × fraction</code>. This is what returns <strong>23.0</strong> for p80 — the number that becomes the divisor in the escalation formula.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= EMBEDDINGS ================= -->
+<section class="mod" id="embeddings">
+  <div class="mod-head"><h2>embeddings.py</h2><span class="mod-lines">53 lines</span>
+    <span class="mod-tag">shared</span></div>
+  <p class="mod-role">One lazily-loaded encoder, shared by everything that needs to compare meaning.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The whole module</p>
+<pre><code><span class="ln">14</span> _model = <span class="kw">None</span>
+<span class="ln">17</span> <span class="kw">def</span> get_model():
+<span class="ln">19</span>     <span class="kw">global</span> _model
+<span class="ln">20</span>     <span class="kw">if</span> _model <span class="kw">is None</span>:
+<span class="ln">21</span>         <span class="kw">from</span> sentence_transformers <span class="kw">import</span> SentenceTransformer
+<span class="ln">23</span>         _model = SentenceTransformer(EMBEDDING_MODEL)
+<span class="ln">24</span>     <span class="kw">return</span> _model
+<span class="ln">27</span> <span class="kw">def</span> embed(texts, normalize: bool = <span class="kw">True</span>) -> np.ndarray:
+<span class="ln">29</span>     <span class="kw">if</span> isinstance(texts, str):
+<span class="ln">30</span>         texts = [texts]
+<span class="ln">31</span>     vecs = get_model().encode(list(texts), convert_to_numpy=<span class="kw">True</span>,
+<span class="ln">34</span>         normalize_embeddings=normalize, show_progress_bar=<span class="kw">False</span>)
+<span class="ln">36</span>     <span class="kw">return</span> np.asarray(vecs, dtype=np.float32)
+<span class="ln">39</span> <span class="kw">@lru_cache(maxsize=4096)</span>
+<span class="ln">40</span> <span class="kw">def</span> embed_one(text: str) -> tuple:
+<span class="ln">42</span>     <span class="kw">return</span> tuple(float(x) <span class="kw">for</span> x <span class="kw">in</span> embed([text])[<span class="kw">0</span>])
+<span class="ln">45</span> <span class="kw">def</span> cosine(a, b) -> float:
+<span class="ln">49</span>     na, nb = np.linalg.norm(a), np.linalg.norm(b)
+<span class="ln">50</span>     <span class="kw">if</span> na == <span class="kw">0.0</span> <span class="kw">or</span> nb == <span class="kw">0.0</span>:
+<span class="ln">51</span>         <span class="kw">return</span> <span class="kw">0.0</span>
+<span class="ln">52</span>     <span class="kw">return</span> float(np.dot(a, b) / (na * nb))</code></pre>
+    <ol class="notes">
+      <li><b>L14</b><span>Module-level cache slot. Modules are executed once per process, so this survives across every call.</span></li>
+      <li><b>L19</b><span><code>global</code> is required to <em>rebind</em> a module-level name inside a function. Without it, line 23 would create a local variable and the cache would never fill.</span></li>
+      <li><b>L21</b><span>The import is inside the function, not at the top. Importing <code>sentence_transformers</code> pulls in torch and costs seconds, so a module that only needs <code>cosine()</code> never pays for it.</span></li>
+      <li><b>L29–30</b><span>Ergonomics: a bare string would otherwise be iterated character by character, silently embedding each letter separately. This coerces it to a one-element list.</span></li>
+      <li><b>L34</b><span><strong>The key argument.</strong> Scales every vector to length 1. Once vectors are unit-length, cosine similarity reduces to the plain dot product — which is why similarity code elsewhere is just <code>mat @ q</code> with no division.</span></li>
+      <li><b>L36</b><span>float32 rather than float64: half the memory, and the precision difference is irrelevant for similarity ranking.</span></li>
+      <li><b>L39</b><span><code>lru_cache</code> memoises by argument. The same query embedded twice costs one forward pass.</span></li>
+      <li><b>L42</b><span>Returns a <code>tuple</code>, not an array, because <code>lru_cache</code> requires hashable values and numpy arrays are unhashable.</span></li>
+      <li><b>L50–51</b><span>Guard against divide-by-zero on an all-zero vector. Rare, but it turns a crash into a defensible 0.0.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= LLM ================= -->
+<section class="mod" id="llm">
+  <div class="mod-head"><h2>llm.py</h2><span class="mod-lines">268 lines</span>
+    <span class="mod-tag">MOCK_LLM</span></div>
+  <p class="mod-role">One interface, two backends. The mock is deterministic, offline, and structurally unable to hallucinate.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Sentence splitting — the shared primitive</p>
+<pre><code>_SENT_SPLIT = re.compile(<span class="st">r"(?&lt;=[.!?])\s+(?=[A-Z0-9])"</span>)
+
+<span class="kw">def</span> split_sentences(text: str) -> List[str]:
+    text = re.sub(<span class="st">r"^#.*$"</span>, <span class="st">""</span>, text, flags=re.MULTILINE)  <span class="cm"># drop headings</span>
+    text = re.sub(<span class="st">r"\s+"</span>, <span class="st">" "</span>, text).strip()
+    <span class="kw">return</span> [s.strip() <span class="kw">for</span> s <span class="kw">in</span> _SENT_SPLIT.split(text) <span class="kw">if</span> s.strip()]</code></pre>
+    <ol class="notes">
+      <li><b>regex</b><span>Two <em>zero-width</em> assertions. <code>(?&lt;=[.!?])</code> means "preceded by sentence punctuation"; <code>(?=[A-Z0-9])</code> means "followed by a capital or digit". The split happens on the whitespace between them, and because lookarounds consume nothing, no characters are lost.</span></li>
+      <li><b>why</b><span>Requiring a following capital stops it splitting on abbreviations. The whitespace collapse on the next line means a newline mid-sentence does not create a phantom break.</span></li>
+      <li><b>reuse</b><span>Used by the chunker, the mock generator, the groundedness check and the judge — one definition of "sentence" across the whole project.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">MockLLM.generate_grounded — extractive answering</p>
+<pre><code>SENTENCE_FLOOR = <span class="kw">0.22</span>
+MAX_SENTENCES  = <span class="kw">3</span>
+
+<span class="kw">def</span> generate_grounded(self, question, contexts):
+    sentences = []
+    <span class="kw">for</span> c <span class="kw">in</span> contexts:
+        <span class="kw">for</span> s <span class="kw">in</span> split_sentences(c):
+            <span class="kw">if</span> s <span class="kw">not in</span> sentences:          <span class="cm"># dedupe overlapping chunks</span>
+                sentences.append(s)
+
+    q   = np.asarray(embed_one(question), dtype=np.float32)
+    mat = embed(sentences)
+    scored = sorted(((float(np.dot(q, mat[i])), sentences[i])
+                     <span class="kw">for</span> i <span class="kw">in</span> range(len(sentences))), key=<span class="kw">lambda</span> t: -t[<span class="kw">0</span>])
+
+    picked = [s <span class="kw">for</span> sc, s <span class="kw">in</span> scored[:self.MAX_SENTENCES] <span class="kw">if</span> sc >= self.SENTENCE_FLOOR]
+    <span class="kw">if not</span> picked:
+        <span class="kw">return</span> <span class="st">"I don't know."</span>
+    picked.sort(key=sentences.index)
+    <span class="kw">return</span> <span class="st">" "</span>.join(picked)</code></pre>
+    <ol class="notes">
+      <li><b>dedupe</b><span>Sentence chunks overlap by design, so the same sentence arrives in two chunks. The <code>not in</code> check keeps the answer from repeating itself.</span></li>
+      <li><b>np.dot</b><span>Plain dot product — valid as cosine similarity only because <code>embed()</code> normalised the vectors. This is where that decision pays off.</span></li>
+      <li><b>lambda</b><span><code>key=lambda t: -t[0]</code> negates the score to sort descending. Sorting tuples would otherwise compare the sentence text on ties; negating the number keeps the intent obvious.</span></li>
+      <li><b>floor</b><span>0.22 is a low bar deliberately: retrieval has already filtered by the time we get here, so this only drops sentences swept in as chunk padding.</span></li>
+      <li><b>sort</b><span><code>picked.sort(key=sentences.index)</code> restores <em>original reading order</em>. Without it the answer would be ordered by relevance and read as disconnected fragments.</span></li>
+    </ol>
+  </div>
+  <div class="win">
+    <strong>Why this cannot hallucinate</strong>
+    <p>
+      Every returned sentence came out of <code>contexts</code>. There is no code path that
+      composes new text. That is a stronger guarantee than any prompt gives you with a real model —
+      and it is why the whole project stays honest under mock mode.
+    </p>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">MockLLM.judge_triad — the three axes</p>
+<pre><code>refusal = is_refusal(answer)
+
+<span class="cm"># --- context relevance: best question&lt;-&gt;chunk similarity ---</span>
+cmat = embed(ctx_text)
+context_relevance = float(np.max(cmat @ q))
+
+<span class="cm"># --- groundedness: fraction of answer sentences with support ---</span>
+<span class="kw">if</span> refusal:
+    groundedness = <span class="kw">1.0</span>
+<span class="kw">else</span>:
+    sims = embed(ans_sents) @ embed(ctx_sents).T   <span class="cm"># (n_ans, n_ctx)</span>
+    best = sims.max(axis=<span class="kw">1</span>)
+    groundedness = float(np.mean(best >= <span class="kw">0.60</span>))
+
+<span class="cm"># --- answer relevance ---</span>
+<span class="kw">if</span> refusal:
+    answer_relevance = _clip01(<span class="kw">1.0</span> - context_relevance)
+<span class="kw">else</span>:
+    answer_relevance = _clip01(cosine(embed_one(question), embed_one(answer)))</code></pre>
+    <ol class="notes">
+      <li><b>cmat @ q</b><span>Matrix times vector: one similarity per chunk in a single operation. <code>np.max</code> takes the best — "did retrieval find <em>anything</em> relevant".</span></li>
+      <li><b>.T</b><span>Transpose turns an <code>(n_ctx, 384)</code> matrix into <code>(384, n_ctx)</code> so the product is an <code>(n_ans, n_ctx)</code> grid: every answer sentence scored against every context sentence at once.</span></li>
+      <li><b>axis=1</b><span>Max along each row = "the best support this answer sentence has anywhere in the context". An answer sentence only needs <em>one</em> supporting source, not all of them.</span></li>
+      <li><b>np.mean</b><span><code>best >= 0.60</code> is a boolean array; the mean of booleans is the fraction that are True. So groundedness is literally "what proportion of my sentences are supported".</span></li>
+      <li><b>refusal → 1.0</b><span>A refusal asserts no claim about hiring policy, so nothing in it can be unsupported. Vacuously grounded.</span></li>
+      <li><b>1.0 − ctx</b><span>The clever one. A refusal is <em>correct</em> exactly when there was nothing to work with. If good context existed, this scores near zero — so an over-refusing agent is punished by the metric.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= RAG CORE ================= -->
+<section class="mod" id="ragcore">
+  <div class="mod-head"><h2>rag_core.py</h2><span class="mod-lines">350 lines</span>
+    <span class="mod-tag">Tasks 2–4</span></div>
+  <p class="mod-role">Loads the knowledge base, chunks it two ways, indexes both, retrieves, and answers.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Loading — lines 44–59</p>
+<pre><code><span class="ln">44</span> <span class="kw">@dataclass</span>
+<span class="ln">45</span> <span class="kw">class</span> Document:
+<span class="ln">46</span>     doc_id: str;  title: str;  text: str
+<span class="ln">51</span> <span class="kw">def</span> load_documents() -> List[Document]:
+<span class="ln">53</span>     <span class="kw">for</span> path <span class="kw">in</span> sorted(KB_DIR.glob(<span class="st">"*.md"</span>)):
+<span class="ln">54</span>         raw   = path.read_text(encoding=<span class="st">"utf-8"</span>).strip()
+<span class="ln">55</span>         lines = raw.splitlines()
+<span class="ln">56</span>         title = lines[<span class="kw">0</span>].lstrip(<span class="st">"# "</span>).strip() <span class="kw">if</span> lines <span class="kw">else</span> path.stem
+<span class="ln">57</span>         body  = <span class="st">"\n"</span>.join(lines[<span class="kw">1</span>:]).strip()
+<span class="ln">58</span>         docs.append(Document(doc_id=path.stem, title=title, text=body))</code></pre>
+    <ol class="notes">
+      <li><b>L44</b><span><code>@dataclass</code> generates <code>__init__</code>, <code>__repr__</code> and <code>__eq__</code> from the annotations. Three lines instead of fifteen.</span></li>
+      <li><b>L53</b><span><code>sorted()</code> matters — filesystem order is not guaranteed, and without it chunk ids would differ between machines, breaking reproducibility.</span></li>
+      <li><b>L54</b><span>Explicit <code>encoding="utf-8"</code>. On Windows the default is cp1252, which would corrupt any non-ASCII character.</span></li>
+      <li><b>L56</b><span><code>lstrip("# ")</code> strips any leading '#' and space characters, turning <code>"# Notice Period Policy"</code> into the clean title.</span></li>
+      <li><b>L57</b><span><code>lines[1:]</code> drops the heading from the body. The heading becomes metadata; embedding it as content would add noise to every chunk.</span></li>
+      <li><b>L58</b><span><code>path.stem</code> is the filename without extension — <code>kb05_notice_period</code>. That becomes the stable document id used for scoring later.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">The two chunkers — lines 66–109</p>
+<pre><code><span class="ln">73</span>     text = <span class="st">" "</span>.join(text.split())          <span class="cm"># collapse all whitespace</span>
+<span class="ln">76</span>     step = max(<span class="kw">1</span>, size - overlap)           <span class="cm"># 420 - 90 = 330</span>
+<span class="ln">78</span>     <span class="kw">for</span> start <span class="kw">in</span> range(<span class="kw">0</span>, len(text), step):
+<span class="ln">79</span>         piece = text[start : start + size].strip()
+<span class="ln">80</span>         <span class="kw">if</span> piece: chunks.append(piece)
+<span class="ln">82</span>         <span class="kw">if</span> start + size >= len(text): <span class="kw">break</span>
+<span class="ln">98</span>     sents = split_sentences(text)
+<span class="ln">102</span>    <span class="kw">for</span> start <span class="kw">in</span> range(<span class="kw">0</span>, len(sents), stride):
+<span class="ln">103</span>        window = sents[start : start + group]
+<span class="ln">106</span>        chunks.append(<span class="st">" "</span>.join(window))
+<span class="ln">107</span>        <span class="kw">if</span> start + group >= len(sents): <span class="kw">break</span></code></pre>
+    <ol class="notes">
+      <li><b>L73</b><span><code>" ".join(text.split())</code> is the idiomatic whitespace collapse — split on any run of whitespace, rejoin with single spaces. Keeps chunk sizes honest.</span></li>
+      <li><b>L76</b><span><code>max(1, …)</code> prevents an infinite loop if someone sets overlap ≥ size.</span></li>
+      <li><b>L79</b><span>Python slicing past the end is safe — no <code>IndexError</code>, it just returns what exists. That is why the final short chunk needs no special case.</span></li>
+      <li><b>L82</b><span>Without this break, the last window would be re-emitted as ever-shorter tails. It stops as soon as the window reaches the end of the text.</span></li>
+      <li><b>L102–103</b><span>Same sliding-window shape, but the unit is a sentence rather than a character. <code>group=2, stride=1</code> yields sentences 1–2, 2–3, 3–4 …</span></li>
+      <li><b>L106</b><span>Because windows are built from whole sentences, every chunk is a complete, quotable statement — which is what makes the extractive answers read well.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Indexing — lines 141–176</p>
+<pre><code><span class="ln">142</span>    <span class="kw">try</span>: client.delete_collection(coll_name)
+<span class="ln">144</span>    <span class="kw">except</span> Exception: <span class="kw">pass</span>
+<span class="ln">146</span>    coll = client.create_collection(name=coll_name,
+<span class="ln">147</span>        metadata={<span class="st">"hnsw:space"</span>: <span class="st">"cosine"</span>, <span class="st">"strategy"</span>: label})
+<span class="ln">152</span>    <span class="kw">for</span> i, chunk <span class="kw">in</span> enumerate(chunker(d.text)):
+<span class="ln">153</span>        ids.append(<span class="st">f"{coll_name}::{d.doc_id}::{i}"</span>)
+<span class="ln">157</span>        metas.append({<span class="st">"doc_id"</span>: d.doc_id, <span class="st">"title"</span>: d.title, ...})
+<span class="ln">164</span>    vectors = embed(texts)
+<span class="ln">165</span>    coll.add(ids=ids, documents=texts, metadatas=metas,
+<span class="ln">166</span>             embeddings=[v.tolist() <span class="kw">for</span> v <span class="kw">in</span> vectors])</code></pre>
+    <ol class="notes">
+      <li><b>L142–144</b><span>Delete-then-create makes rebuilding idempotent. The bare <code>except</code> covers the first run, when there is nothing to delete.</span></li>
+      <li><b>L147</b><span><code>hnsw:space: cosine</code> tells Chroma to use cosine distance rather than the L2 default. Get this wrong and every calibrated threshold is meaningless.</span></li>
+      <li><b>L153</b><span>Composite id — collection, document, chunk index. Globally unique, and human-readable when something goes wrong.</span></li>
+      <li><b>L157</b><span><code>doc_id</code> in metadata is what makes document-level Precision/Recall possible: it is the thread back from a chunk to its parent.</span></li>
+      <li><b>L164</b><span>All chunks embedded in <em>one</em> batched call. Batching is many times faster than looping — the model processes them as a single tensor.</span></li>
+      <li><b>L166</b><span><code>.tolist()</code> converts numpy arrays to plain Python lists, which is what Chroma's API accepts.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Retrieval and the distance conversion — lines 223–241</p>
+<pre><code><span class="ln">226</span>    qvec = embed([query])[<span class="kw">0</span>].tolist()
+<span class="ln">227</span>    res = coll.query(query_embeddings=[qvec], n_results=k,
+<span class="ln">228</span>                     include=[<span class="st">"documents"</span>, <span class="st">"metadatas"</span>, <span class="st">"distances"</span>])
+<span class="ln">230</span>    <span class="kw">for</span> text, meta, dist <span class="kw">in</span> zip(res[<span class="st">"documents"</span>][<span class="kw">0</span>],
+<span class="ln">231</span>                                res[<span class="st">"metadatas"</span>][<span class="kw">0</span>], res[<span class="st">"distances"</span>][<span class="kw">0</span>]):
+<span class="ln">238</span>        similarity=round(<span class="kw">1.0</span> - float(dist), <span class="kw">4</span>)</code></pre>
+    <ol class="notes">
+      <li><b>L226</b><span><code>[0]</code> because <code>embed</code> always returns a matrix; we want the single row.</span></li>
+      <li><b>L230–231</b><span>The <code>[0]</code> on each result is Chroma's batch dimension — you can pass several query vectors at once, and we passed one. <code>zip</code> walks the three parallel lists together.</span></li>
+      <li><b>L238</b><span><strong>The conversion that matters.</strong> Chroma returns cosine <em>distance</em> (0 = identical); every threshold in this project is a <em>similarity</em> (1 = identical). Omit <code>1.0 −</code> and every comparison silently inverts.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">answer_query — the refusal gate</p>
+<pre><code>hits    = retrieve(query, k=k, collection=collection)
+top_sim = hits[<span class="kw">0</span>].similarity <span class="kw">if</span> hits <span class="kw">else</span> <span class="kw">0.0</span>
+
+<span class="kw">if not</span> hits <span class="kw">or</span> top_sim &lt; threshold:
+    <span class="kw">return</span> RagResult(answer=FALLBACK_ANSWER, grounded=<span class="kw">False</span>, ...)
+
+answer = get_llm().generate_grounded(query, contexts)
+<span class="kw">if</span> answer.strip().lower().startswith(<span class="st">"i don't know"</span>):
+    <span class="kw">return</span> RagResult(answer=FALLBACK_ANSWER, grounded=<span class="kw">False</span>, ...)</code></pre>
+    <ol class="notes">
+      <li><b>hits[0]</b><span>Chroma returns results already sorted best-first, so index 0 is the top hit. The <code>if hits</code> guard covers an empty collection.</span></li>
+      <li><b>gate</b><span>The check runs <em>before</em> generation. If nothing relevant was retrieved the model is never called — there is no context for it to be honest with.</span></li>
+      <li><b>second gate</b><span>Even past the threshold, the mock can still decline (no sentence cleared its floor). That decline is normalised into the same <code>FALLBACK_ANSWER</code>, so callers see one refusal string rather than two.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= CALIBRATE ================= -->
+<section class="mod" id="calibrate">
+  <div class="mod-head"><h2>calibrate_threshold.py</h2><span class="mod-lines">91 lines</span>
+    <span class="mod-tag">Task 4</span></div>
+  <p class="mod-role">Measures where the refusal threshold belongs instead of copying one from a tutorial.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The measurement</p>
+<pre><code>IN_SCOPE  = [ <span class="cm"># 6 questions the KB genuinely answers</span> ]
+OUT_OF_SCOPE = [ <span class="cm"># 3 it has nothing on: biryani, cricket, timing belts</span> ]
+
+<span class="kw">for</span> q <span class="kw">in</span> IN_SCOPE:
+    s = retrieve(q, k=<span class="kw">1</span>, collection=collection)[<span class="kw">0</span>].similarity
+    in_scores.append(s)
+
+lo_in, hi_out = min(in_scores), max(out_scores)
+gap = lo_in - hi_out
+<span class="kw">if</span> gap > <span class="kw">0</span>:
+    mid = (lo_in + hi_out) / <span class="kw">2.0</span>
+
+chosen = min(res_sent[<span class="st">"threshold"</span>], res_fixed[<span class="st">"threshold"</span>])</code></pre>
+    <ol class="notes">
+      <li><b>k=1</b><span>Only the <em>top</em> hit matters — that is the number <code>answer_query</code> actually compares against the threshold, so it is the number to calibrate on.</span></li>
+      <li><b>lo_in / hi_out</b><span>The two cluster edges that face each other: the <em>worst</em> in-scope score and the <em>best</em> out-of-scope score. Everything else is interior.</span></li>
+      <li><b>gap</b><span>If this were negative the clusters would overlap and no clean threshold could exist. The code checks rather than assuming — it prints an honest failure instead of a bogus number.</span></li>
+      <li><b>mid</b><span>Midpoint of the empty region, maximising margin on both sides.</span></li>
+      <li><b>min(...)</b><span>Take the lower of the two collections' midpoints so a single constant is safe for either index.</span></li>
+    </ol>
+  </div>
+  <div class="win">
+    <strong>What the measurement found</strong>
+    <p>
+      In-scope 0.62–0.81, out-of-scope 0.14–0.20 — a gap of roughly 0.43. The popular defaults
+      (0.5, 0.6, 0.7) all sit <em>inside</em> the in-scope cluster, so they would have refused real,
+      answerable questions. Guessing would have broken the agent in a way a happy-path demo
+      would never have revealed.
+    </p>
+  </div>
+</section>
+
+<!-- ================= EVAL CHUNKING ================= -->
+<section class="mod" id="evalchunk">
+  <div class="mod-head"><h2>eval_chunking.py</h2><span class="mod-lines">179 lines</span>
+    <span class="mod-tag">Task 5</span></div>
+  <p class="mod-role">Scores both chunking strategies against hand-labelled correct documents.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Ground truth and scoring</p>
+<pre><code>GOLD = [{<span class="st">"query"</span>: <span class="st">"How long does an offer stay open...?"</span>,
+         <span class="st">"relevant"</span>: {<span class="st">"kb03_offer_negotiation"</span>},
+         <span class="st">"why"</span>: <span class="st">"Only this doc states the seven-day window."</span>}, ...]
+
+<span class="kw">def</span> retrieved_docs(query, collection):
+    docs = []
+    <span class="kw">for</span> hit <span class="kw">in</span> retrieve(query, k=TOP_K, collection=collection):
+        <span class="kw">if</span> hit.doc_id <span class="kw">not in</span> docs:
+            docs.append(hit.doc_id)
+    <span class="kw">return</span> docs
+
+inter = [d <span class="kw">for</span> d <span class="kw">in</span> got <span class="kw">if</span> d <span class="kw">in</span> gold]
+p = len(inter) / len(got)    <span class="cm"># Precision@3</span>
+r = len(inter) / len(gold)   <span class="cm"># Recall@3</span></code></pre>
+    <ol class="notes">
+      <li><b>set literal</b><span><code>{"kb03_offer_negotiation"}</code> is a <em>set</em>, so <code>in</code> is O(1) and duplicates are impossible.</span></li>
+      <li><b>"why"</b><span>Every label carries a written justification. Ground truth that nobody can audit is not ground truth.</span></li>
+      <li><b>dedupe</b><span>Three chunks from the same document collapse to one entry. The list (not a set) preserves rank order, so the printout shows which document was found first.</span></li>
+      <li><b>len(got)</b><span>The denominator is <code>|R|</code>, not a hard 3 — after de-duplication, three chunks of one correct document <em>is</em> one document surfaced, and dividing by 3 would punish consistency. The choice is stated in the file's docstring rather than left implicit.</span></li>
+    </ol>
+  </div>
+  <div class="gotcha">
+    <strong>The result refuses to be tidy</strong>
+    <p>
+      Sentence-based wins precision 0.80 vs 0.63; fixed-size wins recall 1.00 vs 0.80. Neither
+      dominates. The recommendation argues that fixed-size only reaches perfect recall because its
+      wide windows sweep in extra documents indiscriminately — the same behaviour that costs it
+      precision — and picks sentence-based because a confidently wrong answer is the failure that
+      actually hurts a recruiter.
+    </p>
+  </div>
+</section>
+
+<!-- ================= TOOLS ================= -->
+<section class="mod" id="tools">
+  <div class="mod-head"><h2>tools.py</h2><span class="mod-lines">181 lines</span>
+    <span class="mod-tag">Task 6</span></div>
+  <p class="mod-role">The second tool: look up one application and score how urgently a human should see it.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The formula</p>
+<pre><code>W_FLAG   = <span class="kw">0.60</span>
+W_AGE    = <span class="kw">0.40</span>
+DAYS_P80 = <span class="kw">23.0</span>
+ESCALATION_THRESHOLD = <span class="kw">0.40</span>
+
+<span class="kw">def</span> compute_escalation_score(flagged: bool, days_since_created: int) -> float:
+    recency_norm = min(days_since_created / DAYS_P80, <span class="kw">1.0</span>)
+    score = W_FLAG * (<span class="kw">1.0</span> <span class="kw">if</span> flagged <span class="kw">else</span> <span class="kw">0.0</span>) + W_AGE * recency_norm
+    <span class="kw">return</span> round(min(<span class="kw">1.0</span>, max(<span class="kw">0.0</span>, score)), <span class="kw">4</span>)</code></pre>
+    <ol class="notes">
+      <li><b>DAYS_P80</b><span>Not invented — it is <code>days_percentile(80)</code> from the dataset. That is what makes this a <em>designed</em> score rather than a guessed one.</span></li>
+      <li><b>min(…, 1.0)</b><span>Saturates the age term. An application 30 days old and one 23 days old both score 1.0 on recency — past the 80th percentile, "older" stops carrying extra information.</span></li>
+      <li><b>weights</b><span>0.60 + 0.40 = 1.0, so the score is bounded in [0,1] by construction. The flag alone clears 0.60; age alone maxes at 0.40.</span></li>
+      <li><b>min/max</b><span>Belt-and-braces clamp. Harmless today, but it means a future weight change cannot silently produce a score outside the schema's declared range.</span></li>
+      <li><b>threshold</b><span>0.40 is exactly what an <em>unflagged</em> application scores at 23 days. So the rule reads: escalate everything already flagged, plus the slowest-moving fifth of everything else.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">The lookup — errors as data</p>
+<pre><code>record = get_record(record_id)
+<span class="kw">if</span> record <span class="kw">is None</span>:
+    <span class="kw">return</span> {<span class="st">"found"</span>: <span class="kw">False</span>, <span class="st">"record_id"</span>: record_id,
+            <span class="st">"error"</span>: <span class="st">f"No job application found with record_id '{record_id}'. "</span>
+                     <span class="st">f"Valid ids look like NAU-1000 .. NAU-1047."</span>}
+...
+explanation = (<span class="st">f"escalation_score = {W_FLAG} * flagged({int(flagged)}) + "</span>
+               <span class="st">f"{W_AGE} * min({days}/{DAYS_P80}, 1.0)={recency_norm} = {score}; ..."</span>)</code></pre>
+    <ol class="notes">
+      <li><b>found:False</b><span>A missing id returns a dict, not an exception. The graph node, the API and the MCP client all handle it as ordinary data — no try/except at three call sites.</span></li>
+      <li><b>error text</b><span>Says what a valid id looks like. An error that only says "not found" makes the caller guess.</span></li>
+      <li><b>explanation</b><span>The tool shows its arithmetic in its own output. When the score appears in a transcript, the reader can check it without opening the source.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= SCHEMAS ================= -->
+<section class="mod" id="schemas">
+  <div class="mod-head"><h2>schemas.py</h2><span class="mod-lines">115 lines</span>
+    <span class="mod-tag">Task 9</span></div>
+  <p class="mod-role">The output contract, and the validator that stops a malformed response escaping.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The schema</p>
+<pre><code>AGENT_RESPONSE_SCHEMA = {
+    <span class="st">"$schema"</span>: <span class="st">"https://json-schema.org/draft/2020-12/schema"</span>,
+    <span class="st">"type"</span>: <span class="st">"object"</span>,
+    <span class="st">"additionalProperties"</span>: <span class="kw">False</span>,
+    <span class="st">"required"</span>: [<span class="st">"schema_version"</span>, <span class="st">"trace_id"</span>, <span class="st">"route"</span>, <span class="st">"answer"</span>, ...],
+    <span class="st">"properties"</span>: {
+        <span class="st">"schema_version"</span>: {<span class="st">"const"</span>: <span class="st">"1.0"</span>},
+        <span class="st">"trace_id"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"minLength"</span>: <span class="kw">8</span>},
+        <span class="st">"route"</span>:    {<span class="st">"enum"</span>: [<span class="st">"rag"</span>, <span class="st">"record_lookup"</span>, <span class="st">"blocked"</span>]},
+        <span class="st">"escalation"</span>: {<span class="st">"type"</span>: [<span class="st">"object"</span>, <span class="st">"null"</span>], ...},
+    }}
+
+_VALIDATOR = Draft202012Validator(AGENT_RESPONSE_SCHEMA)
+
+<span class="kw">def</span> validate_agent_response(payload) -> Tuple[bool, str]:
+    <span class="kw">try</span>:
+        _VALIDATOR.validate(payload)
+        <span class="kw">return</span> <span class="kw">True</span>, <span class="st">"valid"</span>
+    <span class="kw">except</span> ValidationError <span class="kw">as</span> exc:
+        path = <span class="st">"/"</span>.join(str(p) <span class="kw">for</span> p <span class="kw">in</span> exc.absolute_path) <span class="kw">or</span> <span class="st">"&lt;root&gt;"</span>
+        <span class="kw">return</span> <span class="kw">False</span>, <span class="st">f"schema violation at {path}: {exc.message}"</span></code></pre>
+    <ol class="notes">
+      <li><b>additionalProperties</b><span><code>False</code> means an unexpected key is an <em>error</em>. A typo like <code>"anwser"</code> fails loudly instead of being quietly carried through.</span></li>
+      <li><b>const</b><span>Pins the version to exactly <code>"1.0"</code>. When the shape changes, this is the field that forces a conscious decision.</span></li>
+      <li><b>enum</b><span>Only three routes are legal. A typo in a route string cannot reach a consumer.</span></li>
+      <li><b>["object","null"]</b><span>A union type: populated on the lookup route, explicitly <code>null</code> otherwise. "Absent" is modelled rather than left undefined.</span></li>
+      <li><b>_VALIDATOR</b><span>Compiled once at module level. Rebuilding it per call would re-parse the schema on every request.</span></li>
+      <li><b>absolute_path</b><span>The location of the failure inside the document, e.g. <code>guardrails/pii_masked</code>. Turns "invalid" into something actionable.</span></li>
+      <li><b>Tuple return</b><span>Returns <code>(ok, message)</code> rather than raising, so <code>finalize</code> can substitute an error envelope instead of crashing the request.</span></li>
+    </ol>
+  </div>
+  <div class="win">
+    <strong>It caught a real bug during the build</strong>
+    <p>
+      The triad evaluator originally passed <code>trace_id="eval-01"</code> — seven characters.
+      <code>minLength: 8</code> rejected it and all 15 queries came back as the blocked envelope.
+      The schema stopped bad output escaping <em>and</em> made the cause obvious. That is enforcement
+      doing its job rather than documentation pretending to.
+    </p>
+  </div>
+</section>
+
+<!-- ================= GUARDRAILS ================= -->
+<section class="mod" id="guardrails">
+  <div class="mod-head"><h2>guardrails.py</h2><span class="mod-lines">254 lines</span>
+    <span class="mod-tag">Task 10</span></div>
+  <p class="mod-role">Two checks on the way in, one on the way out.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">PII masking — lines 37–61</p>
+<pre><code><span class="ln">37</span> PHONE_RE = re.compile(
+<span class="ln">38</span>     <span class="st">r"""(?&lt;![\w])(</span>
+<span class="ln">39</span> <span class="st">            (?:\+91[\-\s]?|0)?    # optional +91 / 0 prefix</span>
+<span class="ln">40</span> <span class="st">            [6-9]\d{4}            # Indian mobiles start 6-9</span>
+<span class="ln">41</span> <span class="st">            [\-\s]?</span>
+<span class="ln">42</span> <span class="st">            \d{5}</span>
+<span class="ln">43</span> <span class="st">        )(?![\w])"""</span>, re.VERBOSE)
+<span class="ln">58</span> found = [m.group(<span class="kw">1</span>) <span class="kw">for</span> m <span class="kw">in</span> PHONE_RE.finditer(text)]
+<span class="ln">59</span> <span class="kw">if not</span> found: <span class="kw">return</span> text, <span class="kw">False</span>, []
+<span class="ln">61</span> <span class="kw">return</span> PHONE_RE.sub(PHONE_MASK, text), <span class="kw">True</span>, found</code></pre>
+    <ol class="notes">
+      <li><b>L38</b><span><code>(?&lt;![\w])</code> — negative lookbehind. Refuses to match if a word character precedes, which is what stops it biting into <code>NAU-1003</code>.</span></li>
+      <li><b>L39</b><span><code>(?:...)</code> is a <em>non-capturing</em> group — grouping without creating a numbered capture, so <code>group(1)</code> stays the whole number.</span></li>
+      <li><b>L40</b><span><code>[6-9]</code> encodes a real domain fact: Indian mobile numbers start 6–9. It narrows the pattern enough to avoid ordinary 10-digit figures.</span></li>
+      <li><b>L41</b><span>Optional separator, so <code>98765-43210</code>, <code>98765 43210</code> and <code>9876543210</code> all match one pattern.</span></li>
+      <li><b>L43</b><span><code>(?![\w])</code> — negative lookahead, the mirror of the lookbehind. Together they require the number to stand alone.</span></li>
+      <li><b>L43</b><span><code>re.VERBOSE</code> lets the pattern span lines with inline comments. A regex you can annotate is a regex you can maintain.</span></li>
+      <li><b>L58</b><span><code>finditer</code> is lazy — it yields matches instead of building a list of match objects first.</span></li>
+      <li><b>L61</b><span>Returns a 3-tuple: masked text, whether it fired, and what it caught. The third element exists only so the demo can prove what was matched — callers must never persist it.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Injection detection — lines 68–102</p>
+<pre><code><span class="ln">68</span> INJECTION_PATTERNS = [
+<span class="ln">69</span>     (<span class="st">r"ignore\s+(all\s+)?(previous|prior|above|earlier)\s+(instructions?|...)"</span>,
+<span class="ln">70</span>      <span class="st">"override of prior instructions"</span>),
+<span class="ln">78</span>     (<span class="st">r"you\s+are\s+now\s+(a|an|in)\b"</span>, <span class="st">"persona override"</span>), ... ]
+<span class="ln">88</span> _COMPILED_INJECTION = [(re.compile(p, re.IGNORECASE), why)
+<span class="ln">89</span>                        <span class="kw">for</span> p, why <span class="kw">in</span> INJECTION_PATTERNS]
+<span class="ln">101</span> reasons = [why <span class="kw">for</span> rx, why <span class="kw">in</span> _COMPILED_INJECTION <span class="kw">if</span> rx.search(text)]
+<span class="ln">102</span> <span class="kw">return</span> bool(reasons), reasons</code></pre>
+    <ol class="notes">
+      <li><b>L69</b><span><code>\s+</code> instead of a literal space tolerates newlines and double spaces — a trivial evasion otherwise.</span></li>
+      <li><b>L69</b><span><code>instructions?</code> — the <code>?</code> makes the 's' optional, catching singular and plural in one pattern.</span></li>
+      <li><b>L70</b><span>Each pattern is paired with a human-readable reason, so the log records <em>why</em> something was blocked rather than just that it was.</span></li>
+      <li><b>L78</b><span><code>\b</code> is a word boundary, so "an" does not match inside "another".</span></li>
+      <li><b>L88</b><span>Compiled once at import. Recompiling nine regexes per request would be pure waste.</span></li>
+      <li><b>L101</b><span>Collects <em>all</em> matching reasons rather than stopping at the first — the demo query trips two, which is more informative than one.</span></li>
+      <li><b>L102</b><span><code>bool(reasons)</code> — an empty list is falsy, so this is the idiomatic "did anything match".</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Groundedness — lines 137–178</p>
+<pre><code><span class="ln">137</span> <span class="kw">if not</span> contexts: <span class="kw">return</span> GroundednessVerdict(<span class="kw">False</span>, ..., <span class="st">"no context at all"</span>)
+<span class="ln">141</span> <span class="kw">if</span> top_similarity &lt; threshold:
+<span class="ln">142</span>     <span class="kw">return</span> GroundednessVerdict(<span class="kw">False</span>, ...)          <span class="cm"># stage 1</span>
+<span class="ln">149</span> <span class="kw">import</span> numpy <span class="kw">as</span> np                                 <span class="cm"># deferred import</span>
+<span class="ln">162</span> sims = embed(ans_sents) @ embed(ctx_sents).T
+<span class="ln">163</span> best = sims.max(axis=<span class="kw">1</span>)
+<span class="ln">164</span> unsupported = [ans_sents[i] <span class="kw">for</span> i <span class="kw">in</span> range(len(ans_sents))
+<span class="ln">165</span>                <span class="kw">if</span> best[i] &lt; SUPPORT_FLOOR]</code></pre>
+    <ol class="notes">
+      <li><b>L141–142</b><span>Stage 1 — if the best chunk is not similar enough to the question, no answer can be supported. This is the stage the out-of-scope query trips.</span></li>
+      <li><b>L149</b><span>Imports inside the function so the module can be imported (for <code>mask_pii</code>, say) without loading torch.</span></li>
+      <li><b>L162</b><span><code>@</code> is matrix multiplication. Produces an <code>(n_answer, n_context)</code> grid of similarities in one operation.</span></li>
+      <li><b>L163</b><span>Best support per answer sentence. A sentence needs one good source, not agreement from all of them.</span></li>
+      <li><b>L164–165</b><span>Stage 2 — collects the sentences that fail. Returning <em>which</em> sentences are unsupported is what lets the demo point at the fabricated relocation-bonus claim specifically.</span></li>
+      <li><b>0.60</b><span><code>SUPPORT_FLOOR</code> is higher than the retrieval threshold, and deliberately so: matching a specific sentence is a stricter test than matching a topic.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= MEMORY ================= -->
+<section class="mod" id="memory">
+  <div class="mod-head"><h2>memory.py</h2><span class="mod-lines">139 lines</span>
+    <span class="mod-tag">Task 8</span></div>
+  <p class="mod-role">Conversation state in a JSON file that outlives the process.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Load, save, lock</p>
+<pre><code><span class="ln">35</span> _lock = threading.Lock()
+<span class="ln">42</span> <span class="kw">def</span> _load_all() -> Dict:
+<span class="ln">43</span>     <span class="kw">if not</span> MEMORY_FILE.exists(): <span class="kw">return</span> {}
+<span class="ln">45</span>     <span class="kw">try</span>:
+<span class="ln">46</span>         <span class="kw">return</span> json.loads(MEMORY_FILE.read_text(encoding=<span class="st">"utf-8"</span>))
+<span class="ln">47</span>     <span class="kw">except</span> (json.JSONDecodeError, OSError):
+<span class="ln">48</span>         <span class="kw">return</span> {}
+<span class="ln">70</span>     <span class="kw">with</span> _lock:
+<span class="ln">71</span>         data = _load_all()
+<span class="ln">81</span>         conv[<span class="st">"turns"</span>].append(entry)
+<span class="ln">83</span>         _save_all(data)</code></pre>
+    <ol class="notes">
+      <li><b>L35</b><span>One process-wide lock. FastAPI serves requests on a thread pool, so two turns can be written concurrently.</span></li>
+      <li><b>L43</b><span>Missing file is a normal first-run state, not an error — return an empty store.</span></li>
+      <li><b>L47–48</b><span>A corrupt file also degrades to empty rather than crashing. Losing conversation history is recoverable; refusing to start is not.</span></li>
+      <li><b>L70–83</b><span>Read-modify-write inside one lock. Splitting the read and write outside the lock would let two threads interleave and lose a turn.</span></li>
+      <li><b>cost</b><span>Rewriting the whole file per turn is crude and would not scale — but it is <em>correct</em> under concurrency, and correctness at this size is the right trade.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Facts and turn counting</p>
+<pre><code><span class="ln">90</span> conv = data.setdefault(conversation_id, {... <span class="st">"turns"</span>: [], <span class="st">"facts"</span>: {}})
+<span class="ln">96</span> conv.setdefault(<span class="st">"facts"</span>, {})[key] = value
+<span class="ln">101</span> <span class="kw">return</span> load_conversation(cid).get(<span class="st">"facts"</span>, {}).get(key, default)
+<span class="ln">107</span> <span class="kw">return</span> sum(<span class="kw">1</span> <span class="kw">for</span> t <span class="kw">in</span> conv[<span class="st">"turns"</span>] <span class="kw">if</span> t[<span class="st">"role"</span>] == <span class="st">"user"</span>)
+<span class="ln">137</span> <span class="kw">return</span> _load_all().get(conversation_id)   <span class="cm"># None if never seen</span></code></pre>
+    <ol class="notes">
+      <li><b>L90</b><span><code>setdefault</code> inserts the default only if the key is absent, and returns whatever is there — create-or-fetch in one call.</span></li>
+      <li><b>L96</b><span>A second <code>setdefault</code> so an older file written without a <code>facts</code> key still works. Cheap forward compatibility.</span></li>
+      <li><b>L101</b><span>Chained <code>.get()</code> with defaults — never raises, whatever is missing.</span></li>
+      <li><b>L107</b><span>Counts only <code>user</code> turns, because each exchange writes two rows (user + agent). This is what makes <code>turn_index</code> come out as 1, 2, 3 rather than 1, 3, 5.</span></li>
+      <li><b>L137</b><span><code>snapshot()</code> returns <code>None</code> for an unknown conversation — distinct from an empty one. That distinction is exactly what the fresh-conversation transcript prints as proof.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= AGENT ================= -->
+<section class="mod" id="agent">
+  <div class="mod-head"><h2>agent.py</h2><span class="mod-lines">569 lines</span>
+    <span class="mod-tag">Task 7 · core</span></div>
+  <p class="mod-role">The LangGraph graph: five nodes, two conditional edges, one entry point.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">State — lines 70–108</p>
+<pre><code><span class="ln">70</span> <span class="kw">class</span> AgentState(TypedDict, total=<span class="kw">False</span>):
+<span class="ln">72</span>     query: str
+<span class="ln">78</span>     masked_query: str
+<span class="ln">84</span>     route: str            <span class="cm"># "rag" | "record_lookup" | "blocked"</span>
+<span class="ln">96</span>     contexts: List[str]
+<span class="ln">99</span>     executed_nodes: List[str]
+<span class="ln">107</span> <span class="kw">def</span> _mark(state, node) -> List[str]:
+<span class="ln">108</span>     <span class="kw">return</span> list(state.get(<span class="st">"executed_nodes"</span>, [])) + [node]</code></pre>
+    <ol class="notes">
+      <li><b>L70</b><span><code>total=False</code> makes every key optional. Essential, because each node returns only the keys it changed and LangGraph merges the partial dict into the running state.</span></li>
+      <li><b>L96</b><span>Retrieved chunk texts are carried in state so <code>finalize</code> can re-check them without retrieving a second time.</span></li>
+      <li><b>L99</b><span>A breadcrumb trail. Not needed by the agent itself — it exists so the checkpoint demo can prove which nodes ran.</span></li>
+      <li><b>L108</b><span><code>list(...) + [node]</code> builds a <em>new</em> list rather than appending in place. Mutating shared state is how you get bugs that only appear when a checkpointer replays a run.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Node 1 and conditional edge 1 — lines 115–131</p>
+<pre><code><span class="ln">115</span> <span class="kw">def</span> guard_input(state: AgentState) -> AgentState:
+<span class="ln">116</span>     raw = state[<span class="st">"query"</span>]
+<span class="ln">117</span>     masked, pii_fired, _found = mask_pii(raw)
+<span class="ln">118</span>     injected, reasons = detect_injection(masked)
+<span class="ln">120</span>     <span class="kw">return</span> {<span class="st">"masked_query"</span>: masked, <span class="st">"pii_masked"</span>: pii_fired,
+<span class="ln">123</span>             <span class="st">"injection_detected"</span>: injected, <span class="st">"injection_reasons"</span>: reasons,
+<span class="ln">125</span>             <span class="st">"executed_nodes"</span>: _mark(state, <span class="st">"guard_input"</span>)}
+<span class="ln">129</span> <span class="kw">def</span> after_guard(state) -> str:
+<span class="ln">131</span>     <span class="kw">return</span> <span class="st">"blocked"</span> <span class="kw">if</span> state.get(<span class="st">"injection_detected"</span>) <span class="kw">else</span> <span class="st">"continue"</span></code></pre>
+    <ol class="notes">
+      <li><b>L117</b><span><code>_found</code> — the leading underscore signals "deliberately unused". The raw matches are never bound to a name that could accidentally be logged.</span></li>
+      <li><b>L118</b><span>Injection detection runs on the <em>masked</em> text, so masking cannot be defeated by hiding an instruction inside a phone number.</span></li>
+      <li><b>L120</b><span>Returns a partial dict. <code>query</code> is untouched, so it survives unchanged in state.</span></li>
+      <li><b>L131</b><span>The edge function returns a <em>label</em>, not a node name. The label is mapped to a destination at graph-build time, which keeps routing logic and graph wiring separate.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Node 2 — routing, lines 138–178</p>
+<pre><code><span class="ln">143</span> m = RECORD_ID_RE.search(q)
+<span class="ln">144</span> <span class="kw">if</span> m:
+<span class="ln">145</span>     rid = <span class="st">f"NAU-{m.group(1)}"</span>
+<span class="ln">146</span>     <span class="kw">return</span> {<span class="st">"route"</span>: <span class="st">"record_lookup"</span>, <span class="st">"record_id"</span>: rid, ...}
+<span class="ln">153</span> remembered  = mem.get_fact(conv_id, <span class="st">"last_record_id"</span>) <span class="kw">if</span> conv_id <span class="kw">else</span> <span class="kw">None</span>
+<span class="ln">154</span> referential = any(tok <span class="kw">in</span> low <span class="kw">for</span> tok <span class="kw">in</span> REFERENTIAL)
+<span class="ln">155</span> lookupish   = any(kw <span class="kw">in</span> low <span class="kw">for</span> kw <span class="kw">in</span> LOOKUP_KEYWORDS)
+<span class="ln">157</span> <span class="kw">if</span> remembered <span class="kw">and</span> lookupish <span class="kw">and</span> referential:
+<span class="ln">159</span>     <span class="kw">return</span> {<span class="st">"route"</span>: <span class="st">"record_lookup"</span>, <span class="st">"record_id"</span>: remembered, ...}
+<span class="ln">167</span> <span class="kw">return</span> {<span class="st">"route"</span>: <span class="st">"rag"</span>, <span class="st">"record_id"</span>: <span class="kw">None</span>, ...}</code></pre>
+    <ol class="notes">
+      <li><b>L143</b><span><code>RECORD_ID_RE</code> is <code>\bNAU[-\s]?(\d{4})\b</code> — tolerates "NAU-1003", "NAU 1003", "NAU1003", case-insensitively.</span></li>
+      <li><b>L145</b><span>Rebuilds the id in canonical form from <code>group(1)</code>, so "nau 1003" normalises to "NAU-1003" before the lookup.</span></li>
+      <li><b>L153</b><span>The <code>if conv_id</code> guard matters: with no conversation id there is no memory, which is exactly the fresh-conversation case.</span></li>
+      <li><b>L154–155</b><span><code>any()</code> short-circuits on the first hit. Two cheap substring scans.</span></li>
+      <li><b>L157</b><span><strong>All three conditions together.</strong> This is what stops turn 3 ("How long is probation?") being dragged back to the lookup branch just because a record was discussed earlier. Memory should be available, not sticky.</span></li>
+      <li><b>L167</b><span>RAG is the default. An unrecognised question goes to the knowledge base, where the groundedness guardrail will refuse it if there is nothing relevant — a safe fallback.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Node 5 — finalize, lines 280–368</p>
+<pre><code><span class="ln">289</span> <span class="kw">elif</span> route == <span class="st">"rag"</span>:
+<span class="ln">292</span>     verdict = groundedness_check(state[<span class="st">"masked_query"</span>],
+<span class="ln">293</span>                 state.get(<span class="st">"answer"</span>, <span class="st">""</span>), contexts,
+<span class="ln">294</span>                 retrieval.get(<span class="st">"top_similarity"</span>, <span class="kw">0.0</span>))
+<span class="ln">296</span>     <span class="kw">if</span> verdict.passed: answer = state[<span class="st">"answer"</span>]; grounded = <span class="kw">True</span>
+<span class="ln">301</span>     <span class="kw">else</span>: answer = FALLBACK_ANSWER; grounded = <span class="kw">False</span>; refused = <span class="kw">True</span>
+<span class="ln">329</span> ok, msg = validate_agent_response(response)
+<span class="ln">330</span> <span class="kw">if not</span> ok:
+<span class="ln">333</span>     response = { <span class="st">"route"</span>: <span class="st">"blocked"</span>, <span class="st">"answer"</span>: <span class="st">"...suppressed..."</span>, ... }
+<span class="ln">353</span> <span class="kw">if</span> conv_id:
+<span class="ln">354</span>     mem.append_turn(conv_id, ..., <span class="st">"user"</span>, state.get(<span class="st">"masked_query"</span>, <span class="st">""</span>))</code></pre>
+    <ol class="notes">
+      <li><b>L292</b><span>The groundedness check runs on the <em>masked</em> query — the same text the model saw, so the check is evaluating the real interaction.</span></li>
+      <li><b>L301</b><span>On failure the drafted answer is <em>discarded</em>, not edited. There is no path where a partially-supported answer reaches the caller.</span></li>
+      <li><b>L329–333</b><span>Validation failure replaces the whole response with a conformant envelope. The output is always schema-valid, even when something upstream went wrong.</span></li>
+      <li><b>L354</b><span>Memory stores the masked query. PII never reaches <code>conversation_memory.json</code> either — the same rule as the request log.</span></li>
+      <li><b>choke point</b><span>Every route converges here, so groundedness, schema validation and persistence each exist in exactly one place.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Graph construction — lines 375–427</p>
+<pre><code><span class="ln">376</span> g = StateGraph(AgentState)
+<span class="ln">378</span> g.add_node(<span class="st">"guard_input"</span>, guard_input)
+<span class="ln">384</span> g.add_edge(START, <span class="st">"guard_input"</span>)
+<span class="ln">387</span> g.add_conditional_edges(<span class="st">"guard_input"</span>, after_guard,
+<span class="ln">389</span>     {<span class="st">"blocked"</span>: <span class="st">"finalize"</span>, <span class="st">"continue"</span>: <span class="st">"route_intent"</span>})
+<span class="ln">393</span> g.add_conditional_edges(<span class="st">"route_intent"</span>, after_route,
+<span class="ln">395</span>     {<span class="st">"rag"</span>: <span class="st">"rag_answer"</span>, <span class="st">"record_lookup"</span>: <span class="st">"record_lookup"</span>})
+<span class="ln">400</span> g.add_edge(<span class="st">"finalize"</span>, END)
+<span class="ln">402</span> <span class="kw">return</span> g.compile(checkpointer=checkpointer) <span class="kw">if</span> checkpointer <span class="kw">else</span> g.compile()
+<span class="ln">418</span> turn_index = (mem.turn_count(conversation_id) + <span class="kw">1</span>) <span class="kw">if</span> conversation_id <span class="kw">else</span> <span class="kw">1</span>
+<span class="ln">426</span> out = get_graph().invoke(state)</code></pre>
+    <ol class="notes">
+      <li><b>L376</b><span>Passing <code>AgentState</code> tells LangGraph the shape of the state it will merge.</span></li>
+      <li><b>L384</b><span><code>START</code> and <code>END</code> are sentinel nodes supplied by LangGraph, not strings you define.</span></li>
+      <li><b>L387–389</b><span>The dict maps the edge function's return label to a destination node. The function knows nothing about node names.</span></li>
+      <li><b>L402</b><span>The <code>checkpointer</code> parameter is why the same builder serves both the normal agent and the checkpoint demo — one graph definition, two configurations.</span></li>
+      <li><b>L418</b><span>Turn index derived from stored history, so resuming a conversation continues the numbering rather than restarting at 1.</span></li>
+      <li><b>L426</b><span><code>invoke</code> runs the graph to completion and returns the final merged state; <code>ask()</code> pulls just <code>response</code> out of it.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= LOGGING ================= -->
+<section class="mod" id="logging">
+  <div class="mod-head"><h2>structured_logging.py</h2><span class="mod-lines">101 lines</span>
+    <span class="mod-tag">Task 12</span></div>
+  <p class="mod-role">One JSON line per request, with PII removed at the moment of writing.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Timer and writer — lines 36–93</p>
+<pre><code><span class="ln">36</span> <span class="kw">class</span> RequestTimer:
+<span class="ln">43</span>     <span class="kw">def</span> __enter__(self):
+<span class="ln">44</span>         self.started_at = time.perf_counter(); <span class="kw">return</span> self
+<span class="ln">47</span>     <span class="kw">def</span> __exit__(self, *exc):
+<span class="ln">48</span>         self.elapsed_ms = round((time.perf_counter() - self.started_at) * <span class="kw">1000</span>, <span class="kw">2</span>)
+<span class="ln">49</span>         <span class="kw">return</span> <span class="kw">False</span>
+<span class="ln">52</span> <span class="kw">def</span> log_request(*, trace_id, endpoint, request_text, ...):
+<span class="ln">68</span>     safe_text, pii_masked, _raw = mask_pii(request_text <span class="kw">or</span> <span class="st">""</span>)
+<span class="ln">84</span>     <span class="kw">for</span> k, v <span class="kw">in</span> extra.items():
+<span class="ln">85</span>         clean[k] = mask_pii(v)[<span class="kw">0</span>] <span class="kw">if</span> isinstance(v, str) <span class="kw">else</span> v
+<span class="ln">89</span>     line = json.dumps(entry, ensure_ascii=<span class="kw">False</span>)
+<span class="ln">90</span>     <span class="kw">with</span> _write_lock:
+<span class="ln">91</span>         <span class="kw">with</span> open(REQUEST_LOG, <span class="st">"a"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> fh:
+<span class="ln">92</span>             fh.write(line + <span class="st">"\n"</span>)</code></pre>
+    <ol class="notes">
+      <li><b>L44</b><span><code>perf_counter</code>, not <code>time.time()</code> — it is monotonic, so an NTP clock adjustment mid-request cannot produce a negative latency.</span></li>
+      <li><b>L44</b><span><code>return self</code> is what makes <code>with RequestTimer() as t:</code> bind the object, so <code>t.elapsed_ms</code> is readable afterwards.</span></li>
+      <li><b>L49</b><span><code>return False</code> means "do not swallow exceptions". Returning True would silently suppress a real error.</span></li>
+      <li><b>L52</b><span>The bare <code>*</code> forces every argument to be keyword-only. At a call site with nine arguments, positional order is a bug waiting to happen.</span></li>
+      <li><b>L68</b><span><strong>Masking at the write boundary.</strong> The agent already masked, but doing it again here means no future caller or endpoint can put a raw number on disk.</span></li>
+      <li><b>L85</b><span>Even caller-supplied <code>extra</code> strings get masked. Defence at the boundary rather than trust in callers.</span></li>
+      <li><b>L89</b><span><code>ensure_ascii=False</code> keeps non-ASCII readable instead of writing <code>é</code> escapes.</span></li>
+      <li><b>L90–92</b><span>Lock plus append mode. Append is atomic enough for line writes, and the lock prevents two threads interleaving mid-line.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= APP ================= -->
+<section class="mod" id="app">
+  <div class="mod-head"><h2>app.py</h2><span class="mod-lines">279 lines</span>
+    <span class="mod-tag">Task 11</span></div>
+  <p class="mod-role">Four HTTP endpoints with Pydantic-enforced request and response shapes.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Models and the /ask endpoint</p>
+<pre><code><span class="kw">class</span> AskRequest(BaseModel):
+    query: str = Field(..., min_length=<span class="kw">1</span>, max_length=<span class="kw">2000</span>)
+    conversation_id: Optional[str] = Field(<span class="kw">None</span>, ...)
+
+<span class="kw">@app.post</span>(<span class="st">"/ask"</span>, response_model=AskResponse)
+<span class="kw">def</span> ask_endpoint(req: AskRequest) -> AskResponse:
+    trace_id = new_trace_id()
+    <span class="kw">with</span> RequestTimer() <span class="kw">as</span> t:
+        result = agent_ask(req.query, conversation_id=req.conversation_id,
+                           trace_id=trace_id)
+    log_request(trace_id=trace_id, endpoint=<span class="st">"POST /ask"</span>,
+                request_text=req.query, status_code=<span class="kw">200</span>,
+                latency_ms=t.elapsed_ms, route=result[<span class="st">"route"</span>], ...)
+    <span class="kw">return</span> AskResponse(**result, latency_ms=t.elapsed_ms)</code></pre>
+    <ol class="notes">
+      <li><b>Field(...)</b><span>The literal <code>...</code> (Ellipsis) marks the field <em>required</em>. <code>min_length=1</code> rejects an empty query with HTTP 422 before any of your code runs.</span></li>
+      <li><b>max_length</b><span>A cheap denial-of-service guard — nobody embeds a 10 MB "question".</span></li>
+      <li><b>response_model</b><span>FastAPI validates the <em>outgoing</em> object too, and generates OpenAPI docs from it. A response that drifts from the declared shape fails here.</span></li>
+      <li><b>with timer</b><span>Wraps only the agent call, so latency measures the work rather than the logging.</span></li>
+      <li><b>request_text</b><span>Passes the <em>raw</em> query, relying on <code>log_request</code> to mask. That is the single-responsibility split: the endpoint does not have to remember.</span></li>
+      <li><b>**result</b><span>Dictionary unpacking spreads the agent's response dict into the Pydantic model's constructor, then <code>latency_ms</code> is added as the one extra field.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">/add-document — idempotent indexing</p>
+<pre><code><span class="kw">def</span> add_document(doc_id, title, text) -> Dict[str, int]:   <span class="cm"># in rag_core</span>
+    <span class="kw">for</span> coll_name, (label, chunker) <span class="kw">in</span> CHUNKERS.items():
+        coll = client.get_collection(coll_name)
+        <span class="kw">try</span>:
+            coll.delete(where={<span class="st">"doc_id"</span>: doc_id})   <span class="cm"># drop old version first</span>
+        <span class="kw">except</span> Exception:
+            <span class="kw">pass</span>
+        ...
+        added[coll_name] = len(ids)</code></pre>
+    <ol class="notes">
+      <li><b>delete first</b><span>Makes re-posting the same <code>doc_id</code> safe. Without it, a second POST would leave two copies competing in retrieval.</span></li>
+      <li><b>where=</b><span>A metadata filter — delete every chunk whose parent is this document, however many there were.</span></li>
+      <li><b>both collections</b><span>Looping <code>CHUNKERS</code> keeps the two indexes in step. Updating only one would quietly invalidate any later comparison between them.</span></li>
+    </ol>
+  </div>
+  <div class="win">
+    <strong>The demo proves it end to end</strong>
+    <p>
+      It POSTs a travel-reimbursement policy, then immediately asks "Can I claim travel expenses
+      for attending an interview?" — and gets a grounded answer citing a document that did not
+      exist a second earlier.
+    </p>
+  </div>
+</section>
+
+<!-- ================= TRIAD ================= -->
+<section class="mod" id="triad">
+  <div class="mod-head"><h2>eval_rag_triad.py</h2><span class="mod-lines">193 lines</span>
+    <span class="mod-tag">Task 13</span></div>
+  <p class="mod-role">Scores the finished agent on 15 queries across three axes.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The evaluation loop — lines 83–109</p>
+<pre><code><span class="ln">87</span> <span class="kw">for</span> i, case <span class="kw">in</span> enumerate(TEST_SET, <span class="kw">1</span>):
+<span class="ln">89</span>     resp = ask(q, conversation_id=<span class="kw">None</span>, trace_id=<span class="st">f"eval-triad-{i:02d}"</span>)
+<span class="ln">92</span>     <span class="kw">if</span> resp[<span class="st">"route"</span>] == <span class="st">"blocked"</span>:
+<span class="ln">93</span>         contexts = []
+<span class="ln">95</span>     <span class="kw">else</span>:
+<span class="ln">96</span>         contexts = [h.text <span class="kw">for</span> h <span class="kw">in</span> retrieve(q, k=TOP_K, ...)]
+<span class="ln">98</span>     scores = judge.judge_triad(q, contexts, resp[<span class="st">"answer"</span>])
+<span class="ln">107</span>     **scores,</code></pre>
+    <ol class="notes">
+      <li><b>L87</b><span><code>enumerate(TEST_SET, 1)</code> — the second argument starts counting at 1, so query numbers read naturally.</span></li>
+      <li><b>L89</b><span><code>conversation_id=None</code> means each query is evaluated independently. Memory carrying between test cases would make scores order-dependent.</span></li>
+      <li><b>L89</b><span><code>f"eval-triad-{i:02d}"</code> — zero-padded to two digits, and long enough to clear the schema's <code>minLength: 8</code>. This is the exact line that was originally <code>eval-01</code> and failed.</span></li>
+      <li><b>L92–93</b><span>A blocked query never reached retrieval, so the judge is honestly given <em>no</em> context. Handing it context the agent never saw would inflate the scores.</span></li>
+      <li><b>L98</b><span>The judge sees question, context and answer — the same three things a human evaluator would.</span></li>
+      <li><b>L107</b><span><code>**scores</code> spreads the three axes into the row dict, so each becomes a top-level column.</span></li>
+    </ol>
+  </div>
+  <div class="gotcha">
+    <strong>Always decompose the average</strong>
+    <p>
+      Context relevance averages 0.5956, which looks mediocre — until you split it: 12 in-scope
+      queries average <strong>0.7210</strong>, the 3 out-of-scope ones average <strong>0.0939</strong>
+      and drag the mean down. The low number is the system working correctly. An aggregate you
+      cannot decompose will mislead you.
+    </p>
+  </div>
+</section>
+
+<!-- ================= MCP ================= -->
+<section class="mod" id="mcp">
+  <div class="mod-head"><h2>mcp_server.py &nbsp;·&nbsp; mcp_client.py</h2>
+    <span class="mod-lines">58 + 134 lines</span><span class="mod-tag">Task 14</span></div>
+  <p class="mod-role">Publishes the lookup tool over a standard protocol, and calls it from a separate process.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Server</p>
+<pre><code>HOST, PORT, MCP_PATH = <span class="st">"127.0.0.1"</span>, <span class="kw">8765</span>, <span class="st">"/mcp"</span>
+MCP_URL = <span class="st">f"http://{HOST}:{PORT}{MCP_PATH}"</span>
+
+mcp = FastMCP(<span class="st">"naukri-support-tools"</span>)
+
+<span class="kw">@mcp.tool</span>
+<span class="kw">def</span> check_job_application_status(record_id: str) -> Dict[str, Any]:
+    <span class="cm">"""Look up the status of a Naukri.com job application by its record id.
+    Args:
+        record_id: The application identifier, for example "NAU-1003".
+    """</span>
+    <span class="kw">return</span> _lookup(record_id)
+
+mcp.run(transport=<span class="st">"http"</span>, host=HOST, port=PORT)</code></pre>
+    <ol class="notes">
+      <li><b>127.0.0.1</b><span>Loopback only — the server is not reachable from the network. "Private MCP server locally", as the brief asks.</span></li>
+      <li><b>@mcp.tool</b><span>The decorator reads the type hints to build the input schema automatically. <code>record_id: str</code> becomes a required string parameter.</span></li>
+      <li><b>docstring</b><span>Not decoration — it becomes the tool <em>description</em> other systems read to decide when to call this. The <code>Args:</code> block becomes the parameter description.</span></li>
+      <li><b>_lookup</b><span>The import is aliased so the MCP wrapper and the underlying function can share a name without shadowing.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Client</p>
+<pre><code><span class="kw">async with</span> Client(MCP_URL) <span class="kw">as</span> client:
+    tools  = <span class="kw">await</span> client.list_tools()
+    result = <span class="kw">await</span> client.call_tool(<span class="st">"check_job_application_status"</span>,
+                                       {<span class="st">"record_id"</span>: rid})
+    print(result.is_error, result.content, result.structured_content)</code></pre>
+    <ol class="notes">
+      <li><b>async with</b><span>The connection is an async context manager — it opens the HTTP session and guarantees cleanup on exit.</span></li>
+      <li><b>list_tools</b><span>Discovery. The client learns what exists and what arguments it takes without any shared import from the server.</span></li>
+      <li><b>content vs structured</b><span>MCP returns both: <code>content</code> is text blocks for a model to read, <code>structured_content</code> is the parsed object for code. The transcript prints both.</span></li>
+      <li><b>separate file</b><span>Run as its own process, so the round trip crosses a real process boundary rather than just being an import.</span></li>
+    </ol>
+  </div>
+  <div class="gotcha">
+    <strong>Two traps that cost time</strong>
+    <p>
+      fastmcp's HTTP transport mounts at <code>/mcp</code>, not the bare root — point a client at
+      <code>http://127.0.0.1:8765</code> and you get an unhelpful 404. And the package is
+      <code>fastmcp</code> with no hyphen; <code>fast-mcp</code> is a different, unrelated project.
+    </p>
+  </div>
+</section>
+
+<!-- ================= CHECKPOINT ================= -->
+<section class="mod" id="checkpoint">
+  <div class="mod-head"><h2>checkpoint_demo.py</h2><span class="mod-lines">275 lines</span>
+    <span class="mod-tag">Task 15</span></div>
+  <p class="mod-role">Stops a run halfway, then finishes it in a different process.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Instrumentation and the two phases</p>
+<pre><code>EXECUTED_HERE = []                      <span class="cm"># nodes that ran IN THIS PROCESS</span>
+
+<span class="kw">def</span> _instrument(name, fn):
+    <span class="kw">def</span> wrapped(state):
+        EXECUTED_HERE.append(name)
+        print(<span class="st">f"      &gt;&gt;&gt; NODE ACTUALLY EXECUTED: {name}"</span>)
+        <span class="kw">return</span> fn(state)
+    wrapped.__name__ = name
+    <span class="kw">return</span> wrapped
+
+<span class="cm"># phase 1</span>
+graph = build_checkpointed_graph(saver, interrupt_before=[<span class="st">"rag_answer"</span>])
+config = {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: THREAD_ID}}
+graph.invoke(state, config=config)
+snap = graph.get_state(config)
+<span class="kw">assert</span> snap.next == (<span class="st">"rag_answer"</span>,)
+
+<span class="cm"># phase 2 - a brand new interpreter</span>
+result = graph.invoke(<span class="kw">None</span>, config=config)
+<span class="kw">assert</span> EXECUTED_HERE == [<span class="st">"rag_answer"</span>, <span class="st">"finalize"</span>]</code></pre>
+    <ol class="notes">
+      <li><b>EXECUTED_HERE</b><span>A module-level list, so it resets to empty every time a new Python process starts. That reset <em>is</em> the experiment.</span></li>
+      <li><b>_instrument</b><span>A closure wrapping each node. The graph shape is identical to the real agent; only the observation is added.</span></li>
+      <li><b>__name__</b><span>Restores the wrapper's name so LangGraph's own tracing shows the real node name rather than "wrapped".</span></li>
+      <li><b>interrupt_before</b><span>Tells LangGraph to stop <em>before</em> running that node, leaving it pending.</span></li>
+      <li><b>thread_id</b><span>The key the checkpoint is stored under. Same id in phase 2 is what makes it a resume rather than a new run.</span></li>
+      <li><b>snap.next</b><span>A tuple of pending nodes. Asserting it equals <code>("rag_answer",)</code> proves the interruption landed exactly where intended.</span></li>
+      <li><b>invoke(None)</b><span><code>None</code> instead of a state dict means "resume from the checkpoint" rather than "start a new run".</span></li>
+      <li><b>the assert</b><span>The proof. In process B only two nodes ran, yet the final state lists all four — so the first two came from SQLite. Running both phases in one process would have proved far less.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= RESILIENCE ================= -->
+<section class="mod" id="resilience">
+  <div class="mod-head"><h2>resilience_demo.py</h2><span class="mod-lines">431 lines</span>
+    <span class="mod-tag">Task 16</span></div>
+  <p class="mod-role">Retries transient failures; refuses to hang on slow ones.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">Retry policy — lines 62–83</p>
+<pre><code><span class="ln">62</span> <span class="kw">class</span> TransientToolError(RuntimeError): ...
+<span class="ln">66</span> <span class="kw">class</span> NodeTimeout(TimeoutError): ...
+<span class="ln">70</span> <span class="kw">class</span> GlobalTimeout(TimeoutError): ...
+<span class="ln">76</span> RETRY_POLICY = RetryPolicy(
+<span class="ln">77</span>     max_attempts=<span class="kw">4</span>, initial_interval=<span class="kw">0.25</span>, backoff_factor=<span class="kw">2.0</span>,
+<span class="ln">80</span>     max_interval=<span class="kw">2.0</span>, jitter=<span class="kw">True</span>,
+<span class="ln">82</span>     retry_on=(TransientToolError,))</code></pre>
+    <ol class="notes">
+      <li><b>L62–70</b><span>Custom exception types. Subclassing <code>TimeoutError</code> means existing <code>except TimeoutError</code> handlers still catch them, while the specific type stays available.</span></li>
+      <li><b>L77</b><span>Waits grow 0.25 → 0.5 → 1.0 s. Three waits for four attempts.</span></li>
+      <li><b>L80</b><span><code>max_interval</code> caps the growth. Not reached here, but it stops a longer retry chain from waiting minutes.</span></li>
+      <li><b>L80</b><span><code>jitter</code> adds randomness so a thousand clients recovering from the same outage do not retry in lockstep and re-create it.</span></li>
+      <li><b>L82</b><span><strong>Naming the exception matters.</strong> With a bare <code>Exception</code>, a genuine bug would be retried four times and take four times as long to surface.</span></li>
+    </ol>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Per-node timeout — lines 118–142</p>
+<pre><code><span class="ln">122</span>     current_deadline().check(name)
+<span class="ln">128</span>     pool = ThreadPoolExecutor(max_workers=<span class="kw">1</span>)
+<span class="ln">129</span>     <span class="kw">try</span>:
+<span class="ln">130</span>         fut = pool.submit(fn, state)
+<span class="ln">132</span>         <span class="kw">return</span> fut.result(timeout=timeout_s)
+<span class="ln">133</span>     <span class="kw">except</span> FutureTimeout:
+<span class="ln">134</span>         <span class="kw">raise</span> NodeTimeout(...) <span class="kw">from None</span>
+<span class="ln">138</span>     <span class="kw">finally</span>:
+<span class="ln">139</span>         pool.shutdown(wait=<span class="kw">False</span>)</code></pre>
+    <ol class="notes">
+      <li><b>L128</b><span><strong>Deliberately not <code>with ThreadPoolExecutor(...)</code>.</strong> The context manager's exit calls <code>shutdown(wait=True)</code>, which blocks until the worker finishes.</span></li>
+      <li><b>L132</b><span><code>.result(timeout=…)</code> bounds how long the <em>caller</em> waits — it cannot stop the worker, only stop waiting for it.</span></li>
+      <li><b>L134</b><span><code>from None</code> suppresses the chained <code>FutureTimeout</code>, so the traceback shows the domain error rather than plumbing.</span></li>
+      <li><b>L139</b><span><code>wait=False</code> releases the caller immediately and abandons the doomed worker. This one keyword is the difference between failing in 1.01 s and 5.00 s.</span></li>
+    </ol>
+  </div>
+  <div class="gotcha">
+    <strong>The bug this line fixes</strong>
+    <p>
+      The first version used the context-manager form. The timeout fired correctly at 1 second —
+      and then the caller sat there for the full 5 seconds anyway, reintroducing exactly the hang
+      the timeout existed to prevent. The test caught it only because it asserts on <em>elapsed
+      time</em>, not just on the exception type. Assert on the property you actually care about.
+    </p>
+  </div>
+
+  <div class="chunk">
+    <p class="chunk-title">Global timeout — lines 90–175</p>
+<pre><code><span class="ln">102</span>     <span class="kw">def</span> check(self, node_name: str) -> <span class="kw">None</span>:
+<span class="ln">103</span>         <span class="kw">if</span> self.expires_at <span class="kw">is not None and</span> time.perf_counter() > self.expires_at:
+<span class="ln">104</span>             <span class="kw">raise</span> GlobalTimeout(...)
+<span class="ln">110</span> _deadline = threading.local()
+<span class="ln">160</span> <span class="kw">def</span> target():
+<span class="ln">161</span>     _deadline.value = deadline      <span class="cm"># set INSIDE the worker thread</span>
+<span class="ln">162</span>     <span class="kw">return</span> graph.invoke(state)
+<span class="ln">168</span> <span class="kw">return</span> fut.result(timeout=timeout_s)</code></pre>
+    <ol class="notes">
+      <li><b>L103</b><span>Every node calls this on entry. Once the deadline has passed, the next node refuses to start — this is what genuinely <em>cancels</em> the run.</span></li>
+      <li><b>L110</b><span><code>threading.local()</code> gives each thread its own <code>.value</code>, so concurrent runs cannot see each other's deadline.</span></li>
+      <li><b>L161</b><span>Set inside <code>target()</code>, not outside — thread-local storage belongs to the thread that writes it, and <code>target</code> is what actually runs in the worker.</span></li>
+      <li><b>L168</b><span>The outer bound, releasing the caller at the deadline.</span></li>
+      <li><b>both</b><span>Both halves are necessary. Python cannot forcibly kill a thread, so the outer bound alone would leave work running invisibly in the background; the deadline check alone would not release a caller stuck inside one long node.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= RUN ALL ================= -->
+<section class="mod" id="runall">
+  <div class="mod-head"><h2>run_all.py</h2><span class="mod-lines">165 lines</span>
+    <span class="mod-tag">tooling</span></div>
+  <p class="mod-role">Runs every demo as its own subprocess and writes the transcripts.</p>
+
+  <div class="chunk">
+    <p class="chunk-title">The runner</p>
+<pre><code>env[<span class="st">"MOCK_LLM"</span>] = <span class="st">"1"</span>
+env[<span class="st">"PYTHONIOENCODING"</span>] = <span class="st">"utf-8"</span>
+env[<span class="st">"TOKENIZERS_PARALLELISM"</span>] = <span class="st">"false"</span>
+
+proc = subprocess.run([sys.executable] + argv, cwd=str(ROOT), env=env,
+                      capture_output=<span class="kw">True</span>, text=<span class="kw">True</span>,
+                      encoding=<span class="st">"utf-8"</span>, errors=<span class="st">"replace"</span>)
+body = clean((proc.stdout <span class="kw">or</span> <span class="st">""</span>) + (proc.stderr <span class="kw">or</span> <span class="st">""</span>))
+
+STEPS = [ ..., (<span class="st">"11_12_fastapi_logging"</span>, ...),
+          (<span class="st">"__reindex__"</span>, [<span class="st">"rag_core.py"</span>, <span class="st">"index"</span>], <span class="st">"housekeeping"</span>),
+          (<span class="st">"13_rag_triad"</span>, ...) ]</code></pre>
+    <ol class="notes">
+      <li><b>MOCK_LLM</b><span>Forced explicitly rather than relying on the default, so a stray shell variable cannot change what the transcripts record.</span></li>
+      <li><b>PYTHONIOENCODING</b><span>Windows consoles default to cp1252, which would mangle any non-ASCII character in a transcript.</span></li>
+      <li><b>sys.executable</b><span>The <em>current</em> interpreter path, so subprocesses use the same virtualenv rather than whatever <code>python</code> resolves to on PATH.</span></li>
+      <li><b>errors="replace"</b><span>An undecodable byte becomes a replacement character instead of crashing the whole run at step 14.</span></li>
+      <li><b>__reindex__</b><span><strong>The ordering detail.</strong> Step 11/12 adds a 13th document via <code>/add-document</code>. Without this re-index between them, the triad evaluation would score a different corpus than the one documented. Evaluation must run against a known, fixed knowledge base.</span></li>
+      <li><b>isolation</b><span>Each step is a fresh process, so a crash in one cannot corrupt another's state — and each pays the 20 s model load, which is why the full suite takes about 6 minutes.</span></li>
+    </ol>
+  </div>
+</section>
+
+</main>
+</div>
+</div>
