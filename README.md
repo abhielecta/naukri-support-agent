@@ -2,6 +2,10 @@
 
 **Track completed: Naukri.com (Recruitment & HR).**
 
+> **AI assistance was used in building this project.** See the
+> [AI assistance disclosure](#ai-assistance-disclosure) at the end of this README for what
+> that covered.
+
 A production-minded LangGraph support agent for Naukri.com's employer-support desk. It
 answers hiring-policy questions from a knowledge base written for this brief, looks up a
 specific job application's status from a dataset generated for this brief, remembers a
@@ -500,7 +504,19 @@ A real backend is wired behind the flag for completeness (`MOCK_LLM=0` plus
 `OPENAI_API_KEY`), but **nothing in the acceptance criteria requires it**, and no part of
 this submission was produced with it.
 
-## Originality
+## AI assistance disclosure
 
-The dataset design, the 12 knowledge-base documents, all code, and all analysis in this
-repository are my own work, written for this specific brief.
+**This project was developed with the help of an AI coding assistant.**
+
+I am disclosing this openly rather than leaving it to be inferred. The assistant was used
+substantially throughout: it generated the majority of the Python modules, the twelve
+knowledge-base documents, the evaluation harnesses and the written analysis in this README,
+working from the capstone brief. My role was directing the work, making the scope and design
+decisions, running and verifying the code on my own machine, and reviewing the output.
+
+Everything in the repository has been executed and verified end to end — all sixteen
+transcripts in [`transcripts/`](transcripts/) were produced by real runs on my machine, and
+the numbers quoted throughout this README match those runs.
+
+If AI assistance is not permitted for this assessment, please treat this disclosure as
+notice of that before grading, rather than discovering it afterwards.
